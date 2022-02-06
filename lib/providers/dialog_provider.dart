@@ -21,11 +21,11 @@ class DialogProvider {
     required Widget child,
     required List<Widget> actions,
     String iconUrl = 'assets/images/logo.png',
-    double iconBorderWidth = 4.0,
+    double iconBorderWidth = 2.0,
     EdgeInsets childPadding = const EdgeInsets.all(offsetXMd),
     Color background = Colors.white,
     double borderRadius = offsetBase,
-    Color borderColor = kSecondaryColor,
+    Color borderColor = kAccentColor,
     double borderWidth = 2.0,
     double bubbleSize = 80.0,
     double sigmaSize = 5.0,
@@ -89,16 +89,15 @@ class DialogProvider {
                           decoration: BoxDecoration(
                             color: background,
                             border: Border.all(
-                                color: borderColor, width: iconBorderWidth),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(bubbleSize)),
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              iconUrl,
-                              width: bubbleSize * 0.6,
-                              height: bubbleSize * 0.6,
+                              color: borderColor,
+                              width: iconBorderWidth,
                             ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(bubbleSize / 2.0),
+                            child: Image.asset(iconUrl),
                           ),
                         ),
                         const Spacer(),
@@ -215,7 +214,23 @@ class DialogProvider {
     );
   }
 
-  void showBottomSheet() {}
+  void showBottomSheet(Widget child) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(offsetBase),
+          topLeft: Radius.circular(offsetBase),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      builder: (_) => Container(
+        padding: const EdgeInsets.all(offsetBase),
+        child: child,
+      ),
+    );
+  }
 
   void kShowProcessingDialog() {
     showSnackBar(

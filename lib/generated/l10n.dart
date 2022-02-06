@@ -319,6 +319,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose Gender`
+  String get choose_gender {
+    return Intl.message(
+      'Choose Gender',
+      name: 'choose_gender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous`
+  String get previous {
+    return Intl.message(
+      'Previous',
+      name: 'previous',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill all fields`
+  String get not_complete_field {
+    return Intl.message(
+      'Please fill all fields',
+      name: 'not_complete_field',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

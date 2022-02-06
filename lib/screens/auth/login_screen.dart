@@ -61,12 +61,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Spacer(),
                   Container(
                     decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(offsetLg),
-                        boxShadow: [
-                          kTopLeftShadow,
-                          kBottomRightShadow,
-                        ]),
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(offsetLg),
+                      boxShadow: [
+                        kTopLeftShadow,
+                        kBottomRightShadow,
+                      ],
+                    ),
                     child: Image.asset(
                       'assets/images/logo.png',
                       width: 120.0,
@@ -89,10 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            S.current.email,
-                            style: kTextThin,
-                          ),
+                          S.current.email.thinText(),
                           const SizedBox(
                             height: offsetSm,
                           ),
@@ -110,10 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: offsetBase,
                           ),
-                          Text(
-                            S.current.password,
-                            style: kTextThin,
-                          ),
+                          S.current.password.thinText(),
                           const SizedBox(
                             height: offsetSm,
                           ),
@@ -225,6 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: offsetBase,
+                  ),
                 ],
               ),
             );
@@ -240,8 +238,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     _event!.value = LoginEvent.GOOGLE;
-    Future.delayed(
-        const Duration(seconds: 3), () => _event!.value = LoginEvent.NONE);
+    await Future.delayed(const Duration(seconds: 3));
+    _event!.value = LoginEvent.NONE;
   }
 
   void _appleLogin() async {
@@ -250,8 +248,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     _event!.value = LoginEvent.APPLE;
-    Future.delayed(
-        const Duration(seconds: 3), () => _event!.value = LoginEvent.NONE);
+    await Future.delayed(const Duration(seconds: 3));
+    _event!.value = LoginEvent.NONE;
   }
 
   void _facebookLogin() async {
@@ -260,8 +258,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     _event!.value = LoginEvent.FACEBOOK;
-    Future.delayed(
-        const Duration(seconds: 3), () => _event!.value = LoginEvent.NONE);
+    await Future.delayed(const Duration(seconds: 3));
+    _event!.value = LoginEvent.NONE;
   }
 
   void _login() async {
@@ -270,8 +268,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     _event!.value = LoginEvent.LOGIN;
-    Future.delayed(
-        const Duration(seconds: 3), () => _event!.value = LoginEvent.NONE);
+    await Future.delayed(const Duration(seconds: 3));
+    _event!.value = LoginEvent.NONE;
   }
 }
 

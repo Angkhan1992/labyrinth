@@ -30,4 +30,5 @@ class Assets {
   static const String imagesWood01 = 'assets/images/wood_01.png';
   static const String imagesWood02 = 'assets/images/wood_02.png';
   static const String imagesWood03 = 'assets/images/wood_03.png';
+  static const String jsonsCountry = 'assets/jsons/country.json';
 }

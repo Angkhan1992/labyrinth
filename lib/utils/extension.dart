@@ -1,5 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:labyrinth/generated/l10n.dart';
+import 'package:labyrinth/themes/colors.dart';
+import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/themes/shadows.dart';
+import 'package:labyrinth/themes/textstyles.dart';
+import 'package:labyrinth/widgets/button.dart';
 
 extension StringExtension on String {
   DateTime get getFullDate => DateFormat('yyyy-MM-dd HH:mm:ss').parse(this);
@@ -10,14 +16,14 @@ extension StringExtension on String {
   String? get validateEmail => (trim().isEmpty)
       ? S.current.emailEmpty
       : (!RegExp(emailRegx).hasMatch(trim()))
-      ? S.current.emailNotMatch
-      : null;
+          ? S.current.emailNotMatch
+          : null;
 
   String? get validatePassword => trim().isEmpty
       ? S.current.passwordEmpty
       : trim().length < 6
-      ? S.current.passwordLess
-      : null;
+          ? S.current.passwordLess
+          : null;
 
   String? get validateValue => trim().isEmpty ? S.current.emptyValue : null;
 
@@ -43,5 +49,118 @@ extension StringExtension on String {
     } else {
       return null;
     }
+  }
+
+  Text thinText({
+    double fontSize = fontBase,
+    Color color = Colors.black,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Text(
+      this,
+      style: CustomText.thin(
+        fontSize: fontSize,
+        color: color,
+      ),
+      textAlign: textAlign,
+    );
+  }
+
+  Text regularText({
+    double fontSize = fontBase,
+    Color color = Colors.black,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Text(
+      this,
+      style: CustomText.regular(
+        fontSize: fontSize,
+        color: color,
+      ),
+      textAlign: textAlign,
+    );
+  }
+
+  Text mediumText({
+    double fontSize = fontBase,
+    Color color = Colors.black,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Text(
+      this,
+      style: CustomText.medium(
+        fontSize: fontSize,
+        color: color,
+      ),
+      textAlign: textAlign,
+    );
+  }
+
+  Text semiBoldText({
+    double fontSize = fontBase,
+    Color color = Colors.black,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Text(
+      this,
+      style: CustomText.semiBold(
+        fontSize: fontSize,
+        color: color,
+      ),
+      textAlign: textAlign,
+    );
+  }
+
+  Text boldText({
+    double fontSize = fontBase,
+    Color color = Colors.black,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Text(
+      this,
+      style: CustomText.bold(
+        fontSize: fontSize,
+        color: color,
+      ),
+      textAlign: textAlign,
+    );
+  }
+
+  TextButton button({
+    required Function() onPressed,
+    double borderWidth = 0.0,
+    double width = double.infinity,
+    double height = kButtonHeight,
+    bool isLoading = false,
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: borderWidth == 0.0 ? kAccentColor : Colors.white,
+          borderRadius: BorderRadius.circular(offsetSm),
+          border: Border.all(
+            width: borderWidth,
+            color: kAccentColor,
+          ),
+          boxShadow: [
+            kTopLeftShadow,
+            kBottomRightShadow,
+          ],
+        ),
+        child: Center(
+          child: isLoading
+              ? ProgressWidget(
+                  color: borderWidth == 0 ? Colors.white : kAccentColor,
+                )
+              : semiBoldText(
+                  fontSize: fontSm,
+                  color: borderWidth > 0.0 ? kAccentColor : Colors.white,
+                ),
+        ),
+      ),
+    );
   }
 }

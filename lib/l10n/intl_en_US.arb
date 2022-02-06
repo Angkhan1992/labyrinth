@@ -25,5 +25,9 @@
   "female" : "Female",
   "rePassword" : "Re-Password",
   "fullName" : "Full Name",
-  "userID" : "User ID"
+  "userID" : "User ID",
+  "choose_gender" : "Choose Gender",
+  "next" : "Next",
+  "previous" : "Previous",
+  "not_complete_field" : "Please fill all fields"
 }

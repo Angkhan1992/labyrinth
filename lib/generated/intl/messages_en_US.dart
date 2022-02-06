@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
+        "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "emailEmpty":
@@ -41,13 +42,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "information": MessageLookupByLibrary.simpleMessage("Information"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "male": MessageLookupByLibrary.simpleMessage("Male"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "notAccount": MessageLookupByLibrary.simpleMessage(
             "If you have not account yet?"),
+        "not_complete_field":
+            MessageLookupByLibrary.simpleMessage("Please fill all fields"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordEmpty":
             MessageLookupByLibrary.simpleMessage("The password is empty"),
         "passwordLess": MessageLookupByLibrary.simpleMessage(
             "The password length should be over 6 characters"),
+        "previous": MessageLookupByLibrary.simpleMessage("Previous"),
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
         "rePassword": MessageLookupByLibrary.simpleMessage("Re-Password"),
