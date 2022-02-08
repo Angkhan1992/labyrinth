@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/network_provider.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -7,14 +10,15 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/utils/extension.dart';
-import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 
 class UserScreen extends StatefulWidget {
-  final Function() next;
+  final Function(String) next;
+  final Function(bool) progress;
 
   const UserScreen({
     Key? key,
+    required this.progress,
     required this.next,
   }) : super(key: key);
 
@@ -31,7 +35,6 @@ class _UserScreenState extends State<UserScreen> {
   var _fullName = '';
   var _userID = '';
   var _email = '';
-  var _code = '';
 
   final _emailController = TextEditingController();
 
@@ -78,6 +81,10 @@ class _UserScreenState extends State<UserScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        'Register to Labyrinth'.boldText(fontSize: fontXMd),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
                         S.current.fullName.thinText(),
                         const SizedBox(
                           height: offsetSm,
@@ -131,36 +138,6 @@ class _UserScreenState extends State<UserScreen> {
                         const SizedBox(
                           height: offsetBase,
                         ),
-                        S.current.verifyCode.thinText(),
-                        const SizedBox(
-                          height: offsetSm,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                hintText: S.current.verifyCode,
-                                prefixIcon: const Icon(LineIcons.code),
-                                validator: (code) {
-                                  return code!.validateValue;
-                                },
-                                onSaved: (code) {
-                                  _code = code!;
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              width: offsetBase,
-                            ),
-                            CustomButton(
-                              width: 100,
-                              btnText: S.current.send,
-                              onPressed: () => _sendCode(),
-                              isLoading: _event!.value == UserEvent.send,
-                            ),
-                          ],
-                        ),
                         const SizedBox(
                           height: offsetBase,
                         ),
@@ -189,26 +166,6 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  void _sendCode() async {
-    if (_event!.value != UserEvent.none) {
-      DialogProvider.of(context).kShowProcessingDialog();
-      return;
-    }
-
-    var email = _emailController.text;
-    if (email.validateEmail != null) {
-      DialogProvider.of(context).showSnackBar(
-        email.validateEmail!,
-        type: SnackBarType.ERROR,
-      );
-      return;
-    }
-
-    _event!.value = UserEvent.send;
-    await Future.delayed(const Duration(seconds: 3));
-    _event!.value = UserEvent.none;
-  }
-
   void _next() async {
     if (_event!.value != UserEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
@@ -226,9 +183,31 @@ class _UserScreenState extends State<UserScreen> {
     _formKey.currentState!.save();
 
     _event!.value = UserEvent.next;
-    await Future.delayed(const Duration(seconds: 3));
+    widget.progress(true);
+    var resp = await NetworkProvider.of().post(
+      kRegisterUser,
+      {
+        'email': _email,
+        'usrid': _userID,
+        'name': _fullName,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var user = resp['result']['usr_id'];
+        if (kDebugMode) {
+          print('[Register] user : $user');
+        }
+        widget.next(user);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.ERROR,
+        );
+      }
+    }
     _event!.value = UserEvent.none;
-    widget.next();
+    widget.progress(false);
   }
 }
 

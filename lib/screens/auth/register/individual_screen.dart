@@ -12,11 +12,13 @@ import 'package:labyrinth/widgets/textfield.dart';
 import 'package:line_icons/line_icons.dart';
 
 class IndividualScreen extends StatefulWidget {
+  final String userid;
   final Function() next;
   final Function() previous;
 
   const IndividualScreen({
     Key? key,
+    required this.userid,
     required this.next,
     required this.previous,
   }) : super(key: key);

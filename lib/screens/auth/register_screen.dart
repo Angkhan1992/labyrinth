@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/dialog_provider.dart';
 import 'package:labyrinth/screens/auth/complete_screen.dart';
 import 'package:labyrinth/screens/auth/individual_screen.dart';
 import 'package:labyrinth/screens/auth/password_screen.dart';
@@ -21,6 +22,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   ValueNotifier<int>? _pageEvent;
 
+  var userid = '';
+  var isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,9 +45,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         builder: (context, value, view) {
           List<Widget> contentWidgets = [
             UserScreen(
-              next: () => _pageEvent!.value = 1,
+              next: (userid) {
+                this.userid = userid;
+                _pageEvent!.value = 1;
+              },
+              progress: (progress) => isLoading = progress,
             ),
             IndividualScreen(
+              userid: userid,
               next: () => _pageEvent!.value = 2,
               previous: () => _pageEvent!.value = 0,
             ),
@@ -74,6 +83,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     size: 16.0,
                   ),
                   onPressed: () {
+                    if (isLoading) {
+                      DialogProvider.of(context).kShowProcessingDialog();
+                      return;
+                    }
                     Navigator.of(context).pop();
                   },
                 ),
