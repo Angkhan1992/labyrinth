@@ -359,6 +359,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Join to Labyrinth`
+  String get join_to_labyrinth {
+    return Intl.message(
+      'Join to Labyrinth',
+      name: 'join_to_labyrinth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This data will be used for app auth`
+  String get join_to_detail {
+    return Intl.message(
+      'This data will be used for app auth',
+      name: 'join_to_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Personal Data`
+  String get add_user_data {
+    return Intl.message(
+      'Add Personal Data',
+      name: 'add_user_data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We will not share that information`
+  String get add_user_detail {
+    return Intl.message(
+      'We will not share that information',
+      name: 'add_user_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purpose`
+  String get Purpose {
+    return Intl.message(
+      'Purpose',
+      name: 'Purpose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Why to Join to Labyrinth?`
+  String get why_to_join_labyrinth {
+    return Intl.message(
+      'Why to Join to Labyrinth?',
+      name: 'why_to_join_labyrinth',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

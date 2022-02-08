@@ -3,6 +3,7 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 
+// ignore: must_be_immutable
 class GenderWidget extends StatelessWidget {
   ValueNotifier<int> notifier;
   Function() event;

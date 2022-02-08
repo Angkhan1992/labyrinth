@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
@@ -9,18 +11,19 @@ import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:line_icons/line_icons.dart';
 
 class IndividualScreen extends StatefulWidget {
   final String userid;
   final Function() next;
   final Function() previous;
+  final Function(bool) progress;
 
   const IndividualScreen({
     Key? key,
     required this.userid,
     required this.next,
     required this.previous,
+    required this.progress,
   }) : super(key: key);
 
   @override
@@ -88,6 +91,14 @@ class _IndividualScreenState extends State<IndividualScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    S.current.add_user_data.semiBoldText(fontSize: fontXMd),
+                    const SizedBox(
+                      height: offsetSm,
+                    ),
+                    S.current.add_user_detail.thinText(fontSize: fontXSm),
+                    const SizedBox(
+                      height: offsetBase,
+                    ),
                     S.current.gender.thinText(),
                     const SizedBox(
                       height: offsetSm,
@@ -325,9 +336,11 @@ class _IndividualScreenState extends State<IndividualScreen> {
     _formKey.currentState!.save();
 
     _event!.value = IndividualEvent.next;
+    widget.progress(true);
     await Future.delayed(const Duration(seconds: 3));
     _event!.value = IndividualEvent.none;
     widget.next();
+    widget.progress(false);
   }
 }
 

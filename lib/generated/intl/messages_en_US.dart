@@ -22,6 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "Purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
+        "add_user_data":
+            MessageLookupByLibrary.simpleMessage("Add Personal Data"),
+        "add_user_detail": MessageLookupByLibrary.simpleMessage(
+            "We will not share that information"),
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
         "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
@@ -40,6 +45,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
         "information": MessageLookupByLibrary.simpleMessage("Information"),
+        "join_to_detail": MessageLookupByLibrary.simpleMessage(
+            "This data will be used for app auth"),
+        "join_to_labyrinth":
+            MessageLookupByLibrary.simpleMessage("Join to Labyrinth"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "male": MessageLookupByLibrary.simpleMessage("Male"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
@@ -61,6 +70,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "success": MessageLookupByLibrary.simpleMessage("Success"),
         "userID": MessageLookupByLibrary.simpleMessage("User ID"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
-        "waring": MessageLookupByLibrary.simpleMessage("Waring")
+        "waring": MessageLookupByLibrary.simpleMessage("Waring"),
+        "why_to_join_labyrinth":
+            MessageLookupByLibrary.simpleMessage("Why to Join to Labyrinth?")
       };
 }

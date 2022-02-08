@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/dialog_provider.dart';
-import 'package:labyrinth/screens/auth/complete_screen.dart';
-import 'package:labyrinth/screens/auth/individual_screen.dart';
-import 'package:labyrinth/screens/auth/password_screen.dart';
-import 'package:labyrinth/screens/auth/user_screen.dart';
 import 'package:line_icons/line_icons.dart';
 
+import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/navigator_provider.dart';
+import 'package:labyrinth/screens/auth/complete_screen.dart';
+import 'package:labyrinth/screens/auth/register/individual_screen.dart';
+import 'package:labyrinth/screens/auth/register/password_screen.dart';
+import 'package:labyrinth/screens/auth/register/purpose_screen.dart';
+import 'package:labyrinth/screens/auth/register/user_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/gradients.dart';
@@ -55,13 +57,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               userid: userid,
               next: () => _pageEvent!.value = 2,
               previous: () => _pageEvent!.value = 0,
+              progress: (progress) => isLoading = progress,
             ),
-            PasswordScreen(
+            PurposeScreen(
+              userid: userid,
               next: () => _pageEvent!.value = 3,
               previous: () => _pageEvent!.value = 1,
+              progress: (progress) => isLoading = progress,
             ),
-            CompleteScreen(
-              complete: () => Navigator.of(context).pop(),
+            PasswordScreen(
+              next: () => NavigatorProvider.of(context).push(
+                screen: const CompleteScreen(),
+                replace: true,
+              ),
+              previous: () => _pageEvent!.value = 2,
             ),
           ];
           return Container(

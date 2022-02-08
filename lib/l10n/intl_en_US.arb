@@ -29,5 +29,11 @@
   "choose_gender" : "Choose Gender",
   "next" : "Next",
   "previous" : "Previous",
-  "not_complete_field" : "Please fill all fields"
+  "not_complete_field" : "Please fill all fields",
+  "join_to_labyrinth" : "Join to Labyrinth",
+  "join_to_detail" : "This data will be used for app auth",
+  "add_user_data" : "Add Personal Data",
+  "add_user_detail" : "We will not share that information",
+  "Purpose" : "Purpose",
+  "why_to_join_labyrinth" : "Why to Join to Labyrinth?"
 }

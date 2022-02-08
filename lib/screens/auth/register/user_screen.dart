@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/network_provider.dart';
-import 'package:labyrinth/utils/constants.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/shadows.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 
@@ -81,7 +81,12 @@ class _UserScreenState extends State<UserScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        'Register to Labyrinth'.boldText(fontSize: fontXMd),
+                        S.current.join_to_labyrinth
+                            .semiBoldText(fontSize: fontXMd),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                        S.current.join_to_detail.thinText(fontSize: fontSm),
                         const SizedBox(
                           height: offsetBase,
                         ),
@@ -213,6 +218,5 @@ class _UserScreenState extends State<UserScreen> {
 
 enum UserEvent {
   none,
-  send,
   next,
 }

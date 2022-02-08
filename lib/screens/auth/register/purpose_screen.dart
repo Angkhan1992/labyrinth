@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-class WhyJoinScreen extends StatefulWidget {
+class PurposeScreen extends StatefulWidget {
   final String userid;
   final Function() next;
   final Function() previous;
   final Function(bool) progress;
 
-  const WhyJoinScreen({
+  const PurposeScreen({
     Key? key,
     required this.userid,
+    required this.next,
+    required this.previous,
+    required this.progress,
   }) : super(key: key);
 
   @override
-  _WhyJoinScreenState createState() => _WhyJoinScreenState();
+  _PurposeScreenState createState() => _PurposeScreenState();
 }
 
-class _WhyJoinScreenState extends State<WhyJoinScreen> {
+class _PurposeScreenState extends State<PurposeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container();
