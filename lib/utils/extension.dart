@@ -51,6 +51,46 @@ extension StringExtension on String {
     }
   }
 
+  bool get hasLowercase {
+    var characters = 'abcdefghijklmnopqrstuvwxyz';
+    for (var c in this.characters) {
+      if (characters.contains(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get hasUppercase {
+    var characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
+    for (var c in this.characters) {
+      if (characters.contains(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get hasNumber {
+    var characters = '1234567890';
+    for (var c in this.characters) {
+      if (characters.contains(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get hasSpecial {
+    var characters = '!@#\$&*~';
+    for (var c in this.characters) {
+      if (characters.contains(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Text thinText({
     double fontSize = fontBase,
     Color color = Colors.black,
@@ -141,10 +181,10 @@ extension StringExtension on String {
         decoration: BoxDecoration(
           color: borderWidth == 0.0 ? kAccentColor : Colors.white,
           borderRadius: BorderRadius.circular(offsetSm),
-          border: Border.all(
-            width: borderWidth,
-            color: kAccentColor,
-          ),
+          // border: Border.all(
+          //   width: borderWidth,
+          //   color: kAccentColor,
+          // ),
           boxShadow: [
             kTopLeftShadow,
             kBottomRightShadow,

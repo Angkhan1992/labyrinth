@@ -20,12 +20,21 @@ class NetworkProvider {
       body: param,
     );
     if (response.statusCode == 201 || response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      if (json['ret'] == 9999) {
-        _httpLog(url, param, "Your token was expired");
+      try {
+        var json = jsonDecode(response.body);
+        if (json['ret'] == 9999) {
+          _httpLog(url, param, "Your token was expired");
+          return null;
+        }
+        _httpLog(url, param, json.toString());
+        return json;
+      } catch (e) {
+        _httpLog(url, param, "Json Error");
+        if (kDebugMode) {
+          print('[Network] error : ${e.toString()}');
+        }
         return null;
       }
-      return json;
     } else {
       _httpLog(url, param, response.statusCode);
       return {

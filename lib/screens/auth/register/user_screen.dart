@@ -136,9 +136,8 @@ class _UserScreenState extends State<UserScreen> {
                           validator: (email) {
                             return email!.validateEmail;
                           },
-                          onSaved: (email) {
-                            _email = email!;
-                          },
+                          onSaved: (email) => _email = email!,
+                          textInputAction: TextInputAction.done,
                         ),
                         const SizedBox(
                           height: offsetBase,
@@ -203,7 +202,7 @@ class _UserScreenState extends State<UserScreen> {
         if (kDebugMode) {
           print('[Register] user : $user');
         }
-        widget.next(user);
+        widget.next(user.toString());
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],

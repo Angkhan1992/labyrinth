@@ -10,6 +10,10 @@ const kBaseUrl = 'https://labyrinth.laodev.info/';
 
 const kAuth = kBaseUrl + 'Auth/';
 const kRegisterUser = kAuth + 'register_user';
+const kAddIndividual = kAuth + 'add_individual';
+const kAddPurpose = kAuth + 'add_purpose';
+const kAddPassword = kAuth + 'add_password';
+const kNormalLogin = kAuth + 'login_normal';
 
 class Constants {
   static dynamic getCountryList(BuildContext context) async {

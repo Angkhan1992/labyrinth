@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:labyrinth/providers/network_provider.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -61,6 +63,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
     _genderController.dispose();
     _dobController.dispose();
     _countryController.dispose();
+
     super.dispose();
   }
 
@@ -72,128 +75,133 @@ class _IndividualScreenState extends State<IndividualScreen> {
         _autoValidate = AutovalidateMode.always;
       },
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              autovalidateMode: _autoValidate,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: offsetBase),
-                padding: const EdgeInsets.all(offsetBase),
-                decoration: BoxDecoration(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.circular(offsetBase),
-                  boxShadow: [
-                    kTopLeftShadow,
-                    kBottomRightShadow,
-                  ],
+        child: ValueListenableBuilder(
+          valueListenable: _event!,
+          builder: (context, value, view) {
+            return Column(
+              children: [
+                Form(
+                  key: _formKey,
+                  autovalidateMode: _autoValidate,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: offsetBase),
+                    padding: const EdgeInsets.all(offsetBase),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(offsetBase),
+                      boxShadow: [
+                        kTopLeftShadow,
+                        kBottomRightShadow,
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        S.current.add_user_data.semiBoldText(fontSize: fontXMd),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                        S.current.add_user_detail.thinText(fontSize: fontSm),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        S.current.gender.thinText(),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                        CustomTextField(
+                          hintText: S.current.gender,
+                          controller: _genderController,
+                          prefixIcon: const Icon(LineIcons.genderless),
+                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          readOnly: true,
+                          validator: (gender) {
+                            return gender!.validateValue;
+                          },
+                          onSaved: (gender) {
+                            _gender = gender!;
+                          },
+                          onTap: () => _showGenderDialog(
+                            value: _genderValue,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        S.current.birth.thinText(),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                        CustomTextField(
+                          hintText: S.current.birth,
+                          controller: _dobController,
+                          prefixIcon: const Icon(LineIcons.birthdayCake),
+                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          readOnly: true,
+                          validator: (birth) {
+                            return birth!.validateValue;
+                          },
+                          onSaved: (birth) {
+                            _birth = birth!;
+                          },
+                          onTap: () => _showCalendarPicker(),
+                        ),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        S.current.country.thinText(),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                        CustomTextField(
+                          hintText: S.current.country,
+                          controller: _countryController,
+                          prefixIcon: const Icon(LineIcons.language),
+                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          readOnly: true,
+                          validator: (country) {
+                            return country!.validateValue;
+                          },
+                          onSaved: (country) {
+                            _country = country!;
+                          },
+                          onTap: () => _showCountryPicker(),
+                        ),
+                        const SizedBox(
+                          height: offsetSm,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    S.current.add_user_data.semiBoldText(fontSize: fontXMd),
-                    const SizedBox(
-                      height: offsetSm,
-                    ),
-                    S.current.add_user_detail.thinText(fontSize: fontXSm),
-                    const SizedBox(
-                      height: offsetBase,
-                    ),
-                    S.current.gender.thinText(),
-                    const SizedBox(
-                      height: offsetSm,
-                    ),
-                    CustomTextField(
-                      hintText: S.current.gender,
-                      controller: _genderController,
-                      prefixIcon: const Icon(LineIcons.genderless),
-                      suffixIcon: const Icon(Icons.arrow_drop_down),
-                      readOnly: true,
-                      validator: (gender) {
-                        return gender!.validateValue;
-                      },
-                      onSaved: (gender) {
-                        _gender = gender!;
-                      },
-                      onTap: () => _showGenderDialog(
-                        value: _genderValue,
+                const SizedBox(
+                  height: offsetBase,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: offsetBase),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: S.current.previous.button(
+                          borderWidth: 2.0,
+                          onPressed: () => _previous(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: offsetBase,
-                    ),
-                    S.current.birth.thinText(),
-                    const SizedBox(
-                      height: offsetSm,
-                    ),
-                    CustomTextField(
-                      hintText: S.current.birth,
-                      controller: _dobController,
-                      prefixIcon: const Icon(LineIcons.birthdayCake),
-                      suffixIcon: const Icon(Icons.arrow_drop_down),
-                      readOnly: true,
-                      validator: (birth) {
-                        return birth!.validateValue;
-                      },
-                      onSaved: (birth) {
-                        _birth = birth!;
-                      },
-                      onTap: () => _showCalendarPicker(),
-                    ),
-                    const SizedBox(
-                      height: offsetBase,
-                    ),
-                    S.current.country.thinText(),
-                    const SizedBox(
-                      height: offsetSm,
-                    ),
-                    CustomTextField(
-                      hintText: S.current.country,
-                      controller: _countryController,
-                      prefixIcon: const Icon(LineIcons.language),
-                      suffixIcon: const Icon(Icons.arrow_drop_down),
-                      readOnly: true,
-                      validator: (country) {
-                        return country!.validateValue;
-                      },
-                      onSaved: (country) {
-                        _country = country!;
-                      },
-                      onTap: () => _showCountryPicker(),
-                    ),
-                    const SizedBox(
-                      height: offsetSm,
-                    ),
-                  ],
+                      Expanded(
+                        child: S.current.next.button(
+                          isLoading: _event!.value == IndividualEvent.next,
+                          onPressed: () => _next(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: offsetBase,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: offsetBase),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: S.current.previous.button(
-                      borderWidth: 2.0,
-                      onPressed: () => _previous(),
-                    ),
-                  ),
-                  Expanded(
-                    child: S.current.next.button(
-                      isLoading: _event!.value == IndividualEvent.next,
-                      onPressed: () => _next(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: offsetXMd,
-            ),
-          ],
+                const SizedBox(
+                  height: offsetXMd,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -279,7 +287,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
     DialogProvider.of(context).showBottomSheet(
       Column(
         children: [
-          'Choose Country'.semiBoldText(fontSize: fontXMd),
+          S.current.choose_country.semiBoldText(fontSize: fontXMd),
           const SizedBox(
             height: offsetBase,
           ),
@@ -337,9 +345,30 @@ class _IndividualScreenState extends State<IndividualScreen> {
 
     _event!.value = IndividualEvent.next;
     widget.progress(true);
-    await Future.delayed(const Duration(seconds: 3));
+    var resp = await NetworkProvider.of().post(
+      kAddIndividual,
+      {
+        'gender': _gender == S.current.male ? '0' : '1',
+        'birth': DateFormat('yyyy-MM-dd').format(_currentDate),
+        'country': _country,
+        'userid': widget.userid,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var user = resp['result']['updated'];
+        if (kDebugMode) {
+          print('[Individual] user : $user');
+        }
+        widget.next();
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.ERROR,
+        );
+      }
+    }
     _event!.value = IndividualEvent.none;
-    widget.next();
     widget.progress(false);
   }
 }

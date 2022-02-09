@@ -401,10 +401,10 @@ class S {
   }
 
   /// `Purpose`
-  String get Purpose {
+  String get purpose {
     return Intl.message(
       'Purpose',
-      name: 'Purpose',
+      name: 'purpose',
       desc: '',
       args: [],
     );
@@ -415,6 +415,256 @@ class S {
     return Intl.message(
       'Why to Join to Labyrinth?',
       name: 'why_to_join_labyrinth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose Country`
+  String get choose_country {
+    return Intl.message(
+      'Choose Country',
+      name: 'choose_country',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Intelligence`
+  String get intelligence {
+    return Intl.message(
+      'Intelligence',
+      name: 'intelligence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interesting`
+  String get interesting {
+    return Intl.message(
+      'Interesting',
+      name: 'interesting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gaming`
+  String get gaming {
+    return Intl.message(
+      'Gaming',
+      name: 'gaming',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Meet Friend`
+  String get meet_friend {
+    return Intl.message(
+      'Meet Friend',
+      name: 'meet_friend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience of Labyrinth?`
+  String get what_level {
+    return Intl.message(
+      'Experience of Labyrinth?',
+      name: 'what_level',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beginner`
+  String get beginner {
+    return Intl.message(
+      'Beginner',
+      name: 'beginner',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medium`
+  String get medium {
+    return Intl.message(
+      'Medium',
+      name: 'medium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Senior`
+  String get senior {
+    return Intl.message(
+      'Senior',
+      name: 'senior',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expert`
+  String get expert {
+    return Intl.message(
+      'Expert',
+      name: 'expert',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Almost Done`
+  String get almost_done {
+    return Intl.message(
+      'Almost Done',
+      name: 'almost_done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can choose Labyrinth Password`
+  String get password_detail {
+    return Intl.message(
+      'You can choose Labyrinth Password',
+      name: 'password_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `· Lowercase at least one`
+  String get has_lowcase {
+    return Intl.message(
+      '· Lowercase at least one',
+      name: 'has_lowcase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `· Uppercase at least one`
+  String get has_upcase {
+    return Intl.message(
+      '· Uppercase at least one',
+      name: 'has_upcase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `· Special char at least one`
+  String get has_special {
+    return Intl.message(
+      '· Special char at least one',
+      name: 'has_special',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `· Number at least one`
+  String get has_number {
+    return Intl.message(
+      '· Number at least one',
+      name: 'has_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `· At least 8 characters`
+  String get has_length {
+    return Intl.message(
+      '· At least 8 characters',
+      name: 'has_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password`
+  String get repass {
+    return Intl.message(
+      'Confirm Password',
+      name: 'repass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not match password`
+  String get not_match_pwd {
+    return Intl.message(
+      'Not match password',
+      name: 'not_match_pwd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Successfully register to Labyrinth`
+  String get success_register {
+    return Intl.message(
+      'Successfully register to Labyrinth',
+      name: 'success_register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can try to login and join to Labyrinth`
+  String get success_register_detail {
+    return Intl.message(
+      'You can try to login and join to Labyrinth',
+      name: 'success_register_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We just sent a verification code to your email`
+  String get verify_detail {
+    return Intl.message(
+      'We just sent a verification code to your email',
+      name: 'verify_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you have not got a code?`
+  String get not_get_code {
+    return Intl.message(
+      'If you have not got a code?',
+      name: 'not_get_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend Code`
+  String get resend_code {
+    return Intl.message(
+      'Resend Code',
+      name: 'resend_code',
       desc: '',
       args: [],
     );

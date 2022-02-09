@@ -1,4 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/network_provider.dart';
+import 'package:labyrinth/screens/auth/login/verify_screen.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -24,7 +29,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   ValueNotifier<LoginEvent>? _event;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autoValidate = AutovalidateMode.disabled;
 
   var _isSecurity = true;
@@ -35,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _event = ValueNotifier(LoginEvent.NONE);
+    _event = ValueNotifier(LoginEvent.none);
   }
 
   @override
@@ -115,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextField(
                             hintText: S.current.password,
                             keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
                             obscureText: _isSecurity,
                             prefixIcon: const Icon(LineIcons.lock),
                             suffixIcon: InkWell(
@@ -161,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomButton(
                     width: 280.0,
                     btnText: S.current.login,
-                    isLoading: _event!.value == LoginEvent.LOGIN,
+                    isLoading: _event!.value == LoginEvent.login,
                     onPressed: () => _login(),
                   ),
                   const Spacer(),
@@ -171,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: () => _googleLogin(),
                         child: GoogleButton(
-                          isLoading: _event!.value == LoginEvent.GOOGLE,
+                          isLoading: _event!.value == LoginEvent.google,
                         ),
                       ),
                       const SizedBox(
@@ -180,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: () => _appleLogin(),
                         child: AppleButton(
-                          isLoading: _event!.value == LoginEvent.APPLE,
+                          isLoading: _event!.value == LoginEvent.apple,
                         ),
                       ),
                       const SizedBox(
@@ -189,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: () => _facebookLogin(),
                         child: FacebookButton(
-                          isLoading: _event!.value == LoginEvent.FACEBOOK,
+                          isLoading: _event!.value == LoginEvent.facebook,
                         ),
                       ),
                     ],
@@ -233,50 +240,79 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _googleLogin() async {
-    if (_event!.value != LoginEvent.NONE) {
+    if (_event!.value != LoginEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
     }
-    _event!.value = LoginEvent.GOOGLE;
+    _event!.value = LoginEvent.google;
     await Future.delayed(const Duration(seconds: 3));
-    _event!.value = LoginEvent.NONE;
+    _event!.value = LoginEvent.none;
   }
 
   void _appleLogin() async {
-    if (_event!.value != LoginEvent.NONE) {
+    if (_event!.value != LoginEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
     }
-    _event!.value = LoginEvent.APPLE;
+    _event!.value = LoginEvent.apple;
     await Future.delayed(const Duration(seconds: 3));
-    _event!.value = LoginEvent.NONE;
+    _event!.value = LoginEvent.none;
   }
 
   void _facebookLogin() async {
-    if (_event!.value != LoginEvent.NONE) {
+    if (_event!.value != LoginEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
     }
-    _event!.value = LoginEvent.FACEBOOK;
+    _event!.value = LoginEvent.facebook;
     await Future.delayed(const Duration(seconds: 3));
-    _event!.value = LoginEvent.NONE;
+    _event!.value = LoginEvent.none;
   }
 
   void _login() async {
-    if (_event!.value != LoginEvent.NONE) {
+    if (_event!.value != LoginEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
     }
-    _event!.value = LoginEvent.LOGIN;
-    await Future.delayed(const Duration(seconds: 3));
-    _event!.value = LoginEvent.NONE;
+
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+
+    _event!.value = LoginEvent.login;
+    var resp = await NetworkProvider.of().post(
+      kNormalLogin,
+      {
+        'email': _email,
+        'pass': _pass,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var userJson = resp['result'];
+        var usrModel = UserModel.fromJson(userJson);
+        if (kDebugMode) {
+          print('[Login] user : ${usrModel.toJson()}');
+        }
+        NavigatorProvider.of(context).push(
+          screen: VerifyScreen(userModel: usrModel),
+        );
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.ERROR,
+        );
+      }
+    }
+    _event!.value = LoginEvent.none;
   }
 }
 
 enum LoginEvent {
-  NONE,
-  LOGIN,
-  GOOGLE,
-  APPLE,
-  FACEBOOK,
+  none,
+  login,
+  google,
+  apple,
+  facebook,
 }

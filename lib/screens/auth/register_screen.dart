@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -66,11 +67,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               progress: (progress) => isLoading = progress,
             ),
             PasswordScreen(
+              userid: userid,
               next: () => NavigatorProvider.of(context).push(
                 screen: const CompleteScreen(),
                 replace: true,
               ),
               previous: () => _pageEvent!.value = 2,
+              progress: (progress) => isLoading = progress,
             ),
           ];
           return Container(
@@ -80,24 +83,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomButton(
-                  margin: const EdgeInsets.only(
-                    left: offsetBase,
-                    top: offsetBase,
-                  ),
-                  width: kButtonHeight,
-                  child: const Icon(
-                    LineIcons.backward,
-                    color: kPrimaryColor,
-                    size: 16.0,
-                  ),
-                  onPressed: () {
-                    if (isLoading) {
-                      DialogProvider.of(context).kShowProcessingDialog();
-                      return;
-                    }
-                    Navigator.of(context).pop();
-                  },
+                const SizedBox(
+                  height: offsetBase,
+                ),
+                Row(
+                  children: [
+                    CustomButton(
+                      margin: const EdgeInsets.only(
+                        left: offsetBase,
+                      ),
+                      width: kButtonHeight,
+                      child: const Icon(
+                        LineIcons.backward,
+                        color: kPrimaryColor,
+                        size: offsetBase,
+                      ),
+                      onPressed: () {
+                        if (isLoading) {
+                          DialogProvider.of(context).kShowProcessingDialog();
+                          return;
+                        }
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const SizedBox(width: offsetSm),
+                    Expanded(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: offsetBase),
+                        child: RegisterStepWidget(
+                          step: _pageEvent!.value,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: offsetBase),
+                  ],
                 ),
                 const SizedBox(
                   height: offsetBase,
