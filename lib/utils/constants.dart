@@ -7,6 +7,7 @@ String kAppName = S.current.appName;
 const kFontFamily = 'Poppins';
 
 const kBaseUrl = 'https://labyrinth.laodev.info/';
+const kPackageName = 'com.laodev.labyrinth';
 
 const kAuth = kBaseUrl + 'Auth/';
 const kRegisterUser = kAuth + 'register_user';
@@ -14,6 +15,9 @@ const kAddIndividual = kAuth + 'add_individual';
 const kAddPurpose = kAuth + 'add_purpose';
 const kAddPassword = kAuth + 'add_password';
 const kNormalLogin = kAuth + 'login_normal';
+const kResendCode = kAuth + 'resend_code';
+const kSubmitCode = kAuth + 'submit_code';
+const kLoginBio = kAuth + 'login_bio';
 
 class Constants {
   static dynamic getCountryList(BuildContext context) async {

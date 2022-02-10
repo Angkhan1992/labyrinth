@@ -33,6 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "choose_country":
             MessageLookupByLibrary.simpleMessage("Choose Country"),
         "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
+        "complete_profile":
+            MessageLookupByLibrary.simpleMessage("Complete Profile"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "emailEmpty":
@@ -41,6 +43,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("The email is not match"),
         "emptyValue":
             MessageLookupByLibrary.simpleMessage("The content is empty"),
+        "enableFaceID": MessageLookupByLibrary.simpleMessage("Enable Face ID"),
+        "enableTouchID":
+            MessageLookupByLibrary.simpleMessage("Enable Touch ID"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "expert": MessageLookupByLibrary.simpleMessage("Expert"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
@@ -73,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "notAccount": MessageLookupByLibrary.simpleMessage(
             "If you have not account yet?"),
+        "notNow": MessageLookupByLibrary.simpleMessage("Not now"),
         "not_complete_field":
             MessageLookupByLibrary.simpleMessage("Please fill all fields"),
         "not_get_code":
@@ -97,6 +103,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "resend_code": MessageLookupByLibrary.simpleMessage("Resend Code"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "senior": MessageLookupByLibrary.simpleMessage("Senior"),
+        "server_error": MessageLookupByLibrary.simpleMessage("Server Error!"),
+        "setFaceID": MessageLookupByLibrary.simpleMessage("Set Face ID"),
+        "setTouchID": MessageLookupByLibrary.simpleMessage("Set Touch ID"),
+        "signEasyFace": MessageLookupByLibrary.simpleMessage(
+            "SignIn more easily after Face ID register"),
+        "signEasyTouch": MessageLookupByLibrary.simpleMessage(
+            "SignIn more easily after Touch ID register"),
         "success": MessageLookupByLibrary.simpleMessage("Success"),
         "success_register": MessageLookupByLibrary.simpleMessage(
             "Successfully register to Labyrinth"),

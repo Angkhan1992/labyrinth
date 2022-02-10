@@ -14,6 +14,8 @@ class Assets {
   static const String fontsPoppinsSemiBold =
       'assets/fonts/poppins_semi_bold.ttf';
   static const String fontsPoppinsThin = 'assets/fonts/poppins_thin.ttf';
+  static const String iconsIcFaceId = 'assets/icons/ic_face_id.svg';
+  static const String iconsIcTouchId = 'assets/icons/ic_touch_id.svg';
   static const String imagesBrick01 = 'assets/images/brick_01.png';
   static const String imagesBrick02 = 'assets/images/brick_02.png';
   static const String imagesBrick03 = 'assets/images/brick_03.png';

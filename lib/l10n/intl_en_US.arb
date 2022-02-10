@@ -60,5 +60,14 @@
   "success_register_detail" : "You can try to login and join to Labyrinth",
   "verify_detail" : "We just sent a verification code to your email",
   "not_get_code" : "If you have not got a code?",
-  "resend_code" : "Resend Code"
+  "resend_code" : "Resend Code",
+  "server_error" : "Server Error!",
+  "enableFaceID" : "Enable Face ID",
+  "enableTouchID" : "Enable Touch ID",
+  "signEasyFace" : "SignIn more easily after Face ID register",
+  "signEasyTouch" : "SignIn more easily after Touch ID register",
+  "setFaceID" : "Set Face ID",
+  "setTouchID" : "Set Touch ID",
+  "notNow" : "Not now",
+  "complete_profile" : "Complete Profile"
 }

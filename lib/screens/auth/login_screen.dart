@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/biometric_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
+import 'package:labyrinth/providers/shared_provider.dart';
+import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:labyrinth/screens/auth/login/verify_screen.dart';
+import 'package:labyrinth/screens/main_screen.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -38,10 +44,29 @@ class _LoginScreenState extends State<LoginScreen> {
   var _email = '';
   var _pass = '';
 
+  BiometricProvider? _biometricProvider;
+
   @override
   void initState() {
     super.initState();
     _event = ValueNotifier(LoginEvent.none);
+
+    Timer.run(() => _initData());
+  }
+
+  void _initData() async {
+    _biometricProvider = BiometricProvider.of(
+      init: () => _initBiometric(),
+    );
+  }
+
+  void _initBiometric() async {
+    var bioAuth = await _biometricProvider!.getState();
+    if (bioAuth == LocalAuthState.auth) {
+      _email = (await SharedProvider().getEmail())!;
+      _pass = (await SharedProvider().getPass())!;
+      _loginBiometric();
+    }
   }
 
   @override
@@ -295,8 +320,71 @@ class _LoginScreenState extends State<LoginScreen> {
         if (kDebugMode) {
           print('[Login] user : ${usrModel.toJson()}');
         }
+        _nextScreen(usrModel);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.ERROR,
+        );
+      }
+    }
+    _event!.value = LoginEvent.none;
+  }
+
+  void _nextScreen(UserModel usrModel) async {
+    if (usrModel.usrCountry == null) {
+      NavigatorProvider.of(context).push(
+        screen: VerifyScreen(
+          userModel: usrModel,
+        ),
+      );
+      return;
+    }
+    var _bioStatus = await _biometricProvider!.getState();
+    if (_bioStatus == LocalAuthState.none) {
+      NavigatorProvider.of(context).push(
+        screen: BiometricScreen(
+          localProvider: _biometricProvider!,
+          password: _pass,
+          userModel: usrModel,
+        ),
+      );
+      return;
+    }
+    if (_bioStatus == LocalAuthState.noauth) {
+      var savedTime = await SharedProvider().getBioTime();
+      var currentTime = DateTime.now();
+      if (currentTime.isAfter(savedTime.add(const Duration(days: 3)))) {
         NavigatorProvider.of(context).push(
-          screen: VerifyScreen(userModel: usrModel),
+          screen: BiometricScreen(
+            localProvider: _biometricProvider!,
+            password: _pass,
+            userModel: usrModel,
+          ),
+        );
+        return;
+      }
+    }
+    NavigatorProvider.of(context).push(
+      screen: MainScreen(userModel: usrModel),
+    );
+  }
+
+  void _loginBiometric() async {
+    _event!.value = LoginEvent.login;
+    var resp = await NetworkProvider.of().post(
+      kLoginBio,
+      {
+        'email': _email,
+        'pass': _pass,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var userJson = resp['result'];
+        var usrModel = UserModel.fromJson(userJson);
+        NavigatorProvider.of(context).push(
+          screen: MainScreen(userModel: usrModel),
         );
       } else {
         DialogProvider.of(context).showSnackBar(

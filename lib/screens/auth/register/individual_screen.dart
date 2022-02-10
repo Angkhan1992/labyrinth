@@ -17,14 +17,14 @@ import 'package:labyrinth/widgets/textfield.dart';
 class IndividualScreen extends StatefulWidget {
   final String userid;
   final Function() next;
-  final Function() previous;
+  final Function()? previous;
   final Function(bool) progress;
 
   const IndividualScreen({
     Key? key,
     required this.userid,
     required this.next,
-    required this.previous,
+    this.previous,
     required this.progress,
   }) : super(key: key);
 
@@ -181,12 +181,13 @@ class _IndividualScreenState extends State<IndividualScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: offsetBase),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: S.current.previous.button(
-                          borderWidth: 2.0,
-                          onPressed: () => _previous(),
+                      if (widget.previous != null)
+                        Expanded(
+                          child: S.current.previous.button(
+                            borderWidth: 2.0,
+                            onPressed: () => _previous(),
+                          ),
                         ),
-                      ),
                       Expanded(
                         child: S.current.next.button(
                           isLoading: _event!.value == IndividualEvent.next,
@@ -324,7 +325,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
     }
-    widget.previous();
+    widget.previous!();
   }
 
   void _next() async {

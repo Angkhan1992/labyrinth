@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             PasswordScreen(
               userid: userid,
-              next: () => NavigatorProvider.of(context).push(
+              next: (_) => NavigatorProvider.of(context).push(
                 screen: const CompleteScreen(),
                 replace: true,
               ),

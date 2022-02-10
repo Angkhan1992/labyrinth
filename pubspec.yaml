@@ -18,6 +18,11 @@ dependencies:
   http: any
   flutter_vibrate: any
   cached_network_image: any
+  local_auth: any
+  permission_handler: any
+  share: any
+  flutter_svg: any
+  shared_preferences: any
 
   in_app_purchase: any
 

@@ -13,7 +13,7 @@ import 'package:line_icons/line_icons.dart';
 
 class PasswordScreen extends StatefulWidget {
   final String userid;
-  final Function() next;
+  final Function(String) next;
   final Function() previous;
   final Function(bool) progress;
 
@@ -275,7 +275,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
         if (kDebugMode) {
           print('[Individual] user : $user');
         }
-        widget.next();
+        widget.next(_pass);
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],

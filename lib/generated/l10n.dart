@@ -669,6 +669,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Server Error!`
+  String get server_error {
+    return Intl.message(
+      'Server Error!',
+      name: 'server_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable Face ID`
+  String get enableFaceID {
+    return Intl.message(
+      'Enable Face ID',
+      name: 'enableFaceID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable Touch ID`
+  String get enableTouchID {
+    return Intl.message(
+      'Enable Touch ID',
+      name: 'enableTouchID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SignIn more easily after Face ID register`
+  String get signEasyFace {
+    return Intl.message(
+      'SignIn more easily after Face ID register',
+      name: 'signEasyFace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SignIn more easily after Touch ID register`
+  String get signEasyTouch {
+    return Intl.message(
+      'SignIn more easily after Touch ID register',
+      name: 'signEasyTouch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Face ID`
+  String get setFaceID {
+    return Intl.message(
+      'Set Face ID',
+      name: 'setFaceID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Touch ID`
+  String get setTouchID {
+    return Intl.message(
+      'Set Touch ID',
+      name: 'setTouchID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not now`
+  String get notNow {
+    return Intl.message(
+      'Not now',
+      name: 'notNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete Profile`
+  String get complete_profile {
+    return Intl.message(
+      'Complete Profile',
+      name: 'complete_profile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

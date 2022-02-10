@@ -21,7 +21,7 @@ extension StringExtension on String {
 
   String? get validatePassword => trim().isEmpty
       ? S.current.passwordEmpty
-      : trim().length < 6
+      : trim().length < 8
           ? S.current.passwordLess
           : null;
 
@@ -203,4 +203,10 @@ extension StringExtension on String {
       ),
     );
   }
+}
+
+extension DateTimeExtension on DateTime {
+  String get getUTCFullTime =>
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(toUtc());
+  String get getFullTime => DateFormat('yyyy-MM-dd HH:mm:ss').format(this);
 }
