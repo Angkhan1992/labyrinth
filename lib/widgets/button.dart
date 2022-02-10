@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/themes/textstyles.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:labyrinth/themes/shadows.dart';
 
 class CustomButton extends StatelessWidget {
   final Color btnColor;

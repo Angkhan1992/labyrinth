@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -13,6 +12,7 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/gradients.dart';
 import 'package:labyrinth/widgets/appbar.dart';
+import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:labyrinth/widgets/button.dart';
 
 class RegisterScreen extends StatefulWidget {

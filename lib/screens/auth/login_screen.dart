@@ -2,25 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+
+import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/biometric_provider.dart';
+import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:labyrinth/screens/auth/login/verify_screen.dart';
-import 'package:labyrinth/screens/main_screen.dart';
-import 'package:labyrinth/utils/constants.dart';
-import 'package:line_icons/line_icons.dart';
-
-import 'package:labyrinth/generated/l10n.dart';
-import 'package:labyrinth/providers/dialog_provider.dart';
-import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/screens/auth/register_screen.dart';
+import 'package:labyrinth/screens/main_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/gradients.dart';
 import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/themes/textstyles.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/widgets/button.dart';

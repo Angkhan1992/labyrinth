@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:local_auth/local_auth.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/biometric_provider.dart';
@@ -8,9 +10,8 @@ import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:labyrinth/screens/main_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
-import 'package:labyrinth/widgets/appbar.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/appbar.dart';
 
 class BiometricScreen extends StatefulWidget {
   final BiometricProvider localProvider;

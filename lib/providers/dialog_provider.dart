@@ -2,11 +2,12 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/textstyles.dart';
-import 'package:line_icons/line_icons.dart';
 
 class DialogProvider {
   final BuildContext context;

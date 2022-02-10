@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:local_auth/local_auth.dart';
+
+import 'package:labyrinth/providers/shared_provider.dart';
 
 class BiometricProvider {
   LocalAuthentication? auth;

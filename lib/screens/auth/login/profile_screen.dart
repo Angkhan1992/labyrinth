@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/biometric_provider.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/providers/shared_provider.dart';
+import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:labyrinth/screens/auth/register/individual_screen.dart';
 import 'package:labyrinth/screens/auth/register/password_screen.dart';
 import 'package:labyrinth/screens/auth/register/purpose_screen.dart';
@@ -13,10 +15,8 @@ import 'package:labyrinth/screens/main_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/gradients.dart';
-import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/utils/extension.dart';
-
-import 'biometric_screen.dart';
+import 'package:labyrinth/widgets/appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserModel userModel;
