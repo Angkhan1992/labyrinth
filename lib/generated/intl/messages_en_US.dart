@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "beginner": MessageLookupByLibrary.simpleMessage("Beginner"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
+        "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "choose_country":
             MessageLookupByLibrary.simpleMessage("Choose Country"),
         "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
@@ -64,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("· Special char at least one"),
         "has_upcase":
             MessageLookupByLibrary.simpleMessage("· Uppercase at least one"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "information": MessageLookupByLibrary.simpleMessage("Information"),
         "intelligence": MessageLookupByLibrary.simpleMessage("Intelligence"),
         "interesting": MessageLookupByLibrary.simpleMessage("Interesting"),
@@ -96,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
         "rePassword": MessageLookupByLibrary.simpleMessage("Re-Password"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
@@ -123,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "what_level":
             MessageLookupByLibrary.simpleMessage("Experience of Labyrinth?"),
         "why_to_join_labyrinth":
-            MessageLookupByLibrary.simpleMessage("Why to Join to Labyrinth?")
+            MessageLookupByLibrary.simpleMessage("Why to Join to Labyrinth?"),
+        "world": MessageLookupByLibrary.simpleMessage("World")
       };
 }

@@ -35,67 +35,62 @@ class _BiometricScreenState extends State<BiometricScreen> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: NoAppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 120.0,
-                    height: 120.0,
-                    padding: const EdgeInsets.all(offsetLg),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                      color: Colors.white30,
-                    ),
-                    child: SvgPicture.asset(
+      body: Padding(
+        padding: const EdgeInsets.all(offsetXMd),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
                       widget.localProvider.availableType() == BiometricType.face
                           ? 'assets/icons/ic_face_id.svg'
                           : 'assets/icons/ic_touch_id.svg',
-                      color: Colors.white,
+                      width: 90.0,
+                      height: 90.0,
+                      color: Colors.black,
                     ),
-                  ),
-                  const SizedBox(
-                    height: offsetXLg,
-                  ),
-                  (widget.localProvider.availableType() == BiometricType.face
-                          ? S.current.enableFaceID
-                          : S.current.enableTouchID)
-                      .semiBoldText(),
-                  const SizedBox(
-                    height: offsetSm,
-                  ),
-                  (widget.localProvider.availableType() == BiometricType.face
-                          ? S.current.signEasyFace
-                          : S.current.signEasyTouch)
-                      .mediumText(),
-                  const SizedBox(
-                    height: offsetXLg,
-                  ),
-                  (widget.localProvider.availableType() == BiometricType.face
-                          ? S.current.setFaceID
-                          : S.current.setTouchID)
-                      .button(
-                    onPressed: () => _onClickEnable(),
-                  ),
-                ],
+                    const SizedBox(
+                      height: offsetXLg,
+                    ),
+                    (widget.localProvider.availableType() == BiometricType.face
+                            ? S.current.enableFaceID
+                            : S.current.enableTouchID)
+                        .semiBoldText(fontSize: fontMd),
+                    const SizedBox(
+                      height: offsetSm,
+                    ),
+                    (widget.localProvider.availableType() == BiometricType.face
+                            ? S.current.signEasyFace
+                            : S.current.signEasyTouch)
+                        .regularText(fontSize: fontSm),
+                    const SizedBox(
+                      height: offsetXLg,
+                    ),
+                    (widget.localProvider.availableType() == BiometricType.face
+                            ? S.current.setFaceID
+                            : S.current.setTouchID)
+                        .button(
+                      onPressed: () => _onClickEnable(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: offsetXLg,
-          ),
-          InkWell(
-            onTap: () => _onClickNotNow(),
-            child: S.current.notNow.mediumText(),
-          ),
-          const SizedBox(
-            height: offsetXLg,
-          ),
-        ],
+            const SizedBox(
+              height: offsetXLg,
+            ),
+            InkWell(
+              onTap: () => _onClickNotNow(),
+              child: S.current.notNow.mediumText(),
+            ),
+            const SizedBox(
+              height: offsetXLg,
+            ),
+          ],
+        ),
       ),
     );
   }

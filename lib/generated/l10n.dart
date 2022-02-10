@@ -750,6 +750,46 @@ class S {
     );
   }
 
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `World`
+  String get world {
+    return Intl.message(
+      'World',
+      name: 'world',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blog`
+  String get blog {
+    return Intl.message(
+      'Blog',
+      name: 'blog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Complete Profile`
   String get complete_profile {
     return Intl.message(

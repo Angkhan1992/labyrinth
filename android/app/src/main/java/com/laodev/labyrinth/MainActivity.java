@@ -1,6 +1,16 @@
 package com.laodev.labyrinth;
 
-import io.flutter.embedding.android.FlutterActivity;
+import android.os.Bundle;
 
-public class MainActivity extends FlutterActivity {
+import androidx.annotation.Nullable;
+
+import io.flutter.embedding.android.FlutterFragmentActivity;
+
+public class MainActivity extends FlutterFragmentActivity {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 }

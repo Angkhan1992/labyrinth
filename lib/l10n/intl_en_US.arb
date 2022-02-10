@@ -69,5 +69,9 @@
   "setFaceID" : "Set Face ID",
   "setTouchID" : "Set Touch ID",
   "notNow" : "Not now",
+  "home" : "Home",
+  "world" : "World",
+  "blog" : "Blog",
+  "profile" : "Profile",
   "complete_profile" : "Complete Profile"
 }

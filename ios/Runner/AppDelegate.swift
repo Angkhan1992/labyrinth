@@ -10,6 +10,7 @@ import AuthenticationServices
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let channelApple = FlutterMethodChannel(name: "com.laodev.labyrinth/apple_sign",  binaryMessenger: controller.binaryMessenger)
         channelApple.setMethodCallHandler({
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in

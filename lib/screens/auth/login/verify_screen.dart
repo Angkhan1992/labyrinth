@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/biometric_provider.dart';
+import 'package:labyrinth/providers/shared_provider.dart';
+import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -19,11 +22,15 @@ import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 
 class VerifyScreen extends StatefulWidget {
+  final BiometricProvider biometricProvider;
   final UserModel userModel;
+  final String password;
 
   const VerifyScreen({
     Key? key,
+    required this.biometricProvider,
     required this.userModel,
+    required this.password,
   }) : super(key: key);
 
   @override
@@ -94,6 +101,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       ),
                       CustomTextField(
                         hintText: S.current.verifyCode,
+                        textInputAction: TextInputAction.done,
                         prefixIcon: const Icon(LineIcons.code),
                         validator: (code) {
                           return code!.validateValue;
@@ -179,11 +187,33 @@ class _VerifyScreenState extends State<VerifyScreen> {
             replace: true,
           );
         } else {
+          var _bioStatus = await widget.biometricProvider.getState();
+          if (_bioStatus == LocalAuthState.none) {
+            NavigatorProvider.of(context).push(
+              screen: BiometricScreen(
+                localProvider: widget.biometricProvider,
+                password: widget.password,
+                userModel: widget.userModel,
+              ),
+            );
+            return;
+          }
+          if (_bioStatus == LocalAuthState.noauth) {
+            var savedTime = await SharedProvider().getBioTime();
+            var currentTime = DateTime.now();
+            if (currentTime.isAfter(savedTime.add(const Duration(days: 3)))) {
+              NavigatorProvider.of(context).push(
+                screen: BiometricScreen(
+                  localProvider: widget.biometricProvider,
+                  password: widget.password,
+                  userModel: widget.userModel,
+                ),
+              );
+              return;
+            }
+          }
           NavigatorProvider.of(context).push(
-            screen: MainScreen(
-              userModel: widget.userModel,
-            ),
-            replace: true,
+            screen: MainScreen(userModel: widget.userModel),
           );
         }
       } else {
