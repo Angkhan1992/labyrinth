@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/screens/blog/blog_screen.dart';
+import 'package:labyrinth/screens/home/home_screen.dart';
+import 'package:labyrinth/screens/setting/setting_screen.dart';
+import 'package:labyrinth/screens/world/world_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/widgets/appbar.dart';
@@ -22,9 +26,31 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: NoAppBar(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    var screens = [
+      HomeScreen(
+        userModel: widget.userModel,
+      ),
+      WorldScreen(
+        userModel: widget.userModel,
+      ),
+      BlogScreen(
+        userModel: widget.userModel,
+      ),
+      SettingScreen(
+        userModel: widget.userModel,
+      ),
+    ];
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: ValueListenableBuilder(
+        valueListenable: _event,
+        builder: (context, value, view) {
+          return Scaffold(
+            bottomNavigationBar: _buildBottomNavigationBar(),
+            body: screens[_event.value],
+          );
+        },
+      ),
     );
   }
 
@@ -33,26 +59,30 @@ class _MainScreenState extends State<MainScreen> {
       S.current.home,
       S.current.world,
       S.current.blog,
-      S.current.profile,
+      S.current.setting,
     ];
     var bottomItemImages = [
-      Icons.home_outlined,
-      Icons.language_outlined,
-      Icons.category_outlined,
-      Icons.account_circle_outlined,
+      Icons.home,
+      Icons.language,
+      Icons.category,
+      Icons.settings,
     ];
     return CustomBottomBar(
       backgroundColor: Colors.white,
+      currentIndex: _event.value,
+      onChange: (index) {
+        _event.value = index;
+      },
       children: [
         for (var i = 0; i < bottomItemImages.length; i++)
           CustomBottomNavigationItem(
             icon: Icon(
               bottomItemImages[i],
               color: _event.value == i ? Colors.white : kAccentColor,
-              size: 22.0,
+              size: offsetXMd,
             ),
-            label: bottomBarTitles[i].mediumText(
-              fontSize: fontSm,
+            label: bottomBarTitles[i].regularText(
+              fontSize: fontXSm,
               color: _event.value == i ? Colors.white : kAccentColor,
             ),
           ),

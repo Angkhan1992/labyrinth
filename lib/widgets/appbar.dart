@@ -52,7 +52,7 @@ class CustomBottomBar extends StatelessWidget {
       color: backgroundColor,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: offsetXSm),
+          padding: const EdgeInsets.symmetric(horizontal: offsetSm),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: children!.map((item) {

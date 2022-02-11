@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        iconTheme: IconThemeData(color: kSecondaryColor),
+        iconTheme: IconThemeData(color: kAccentColor),
         backgroundColor: kPrimaryColor,
         centerTitle: true,
       ),

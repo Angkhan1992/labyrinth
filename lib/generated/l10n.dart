@@ -780,11 +780,51 @@ class S {
     );
   }
 
-  /// `Profile`
-  String get profile {
+  /// `Settings`
+  String get setting {
     return Intl.message(
-      'Profile',
-      name: 'profile',
+      'Settings',
+      name: 'setting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Face ID`
+  String get loginFaceID {
+    return Intl.message(
+      'Login with Face ID',
+      name: 'loginFaceID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Touch ID`
+  String get loginTouchID {
+    return Intl.message(
+      'Login with Touch ID',
+      name: 'loginTouchID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message(
+      'Account',
+      name: 'account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get notification {
+    return Intl.message(
+      'Notification',
+      name: 'notification',
       desc: '',
       args: [],
     );

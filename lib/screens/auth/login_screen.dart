@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -24,6 +25,7 @@ import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/textfield.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -65,10 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
       print('[Biometric] status : $bioAuth');
     }
     if (bioAuth == LocalAuthState.auth) {
-      _email = (await SharedProvider().getEmail())!;
-      _pass = (await SharedProvider().getPass())!;
-      _loginBiometric();
+      await Future.delayed(const Duration(milliseconds: 300));
+      var bioResult = await _biometricProvider!.authenticateWithBiometrics();
+      if (bioResult != null && bioResult) {
+        _email = (await SharedProvider().getEmail())!;
+        _pass = (await SharedProvider().getPass())!;
+        _loginBiometric();
+      }
     }
+    setState(() {});
   }
 
   @override
@@ -198,6 +205,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     isLoading: _event!.value == LoginEvent.login,
                     onPressed: () => _login(),
                   ),
+                  if (_biometricProvider != null &&
+                      _biometricProvider!.isEnabled()) ...{
+                    const SizedBox(
+                      height: offsetBase,
+                    ),
+                    InkWell(
+                      onTap: () => _initBiometric(),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            _biometricProvider!.availableType() ==
+                                    BiometricType.face
+                                ? 'assets/icons/ic_face_id.svg'
+                                : 'assets/icons/ic_touch_id.svg',
+                            color: Colors.white,
+                            width: 18.0,
+                            height: 18.0,
+                          ),
+                          const SizedBox(
+                            width: offsetBase,
+                          ),
+                          (_biometricProvider!.availableType() ==
+                                      BiometricType.face
+                                  ? S.current.loginFaceID
+                                  : S.current.loginTouchID)
+                              .mediumText(
+                            fontSize: fontSm,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  },
                   const Spacer(),
                   Row(
                     mainAxisSize: MainAxisSize.min,

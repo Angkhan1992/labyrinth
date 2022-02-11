@@ -72,6 +72,10 @@
   "home" : "Home",
   "world" : "World",
   "blog" : "Blog",
-  "profile" : "Profile",
+  "setting" : "Settings",
+  "loginFaceID" : "Login with Face ID",
+  "loginTouchID" : "Login with Touch ID",
+  "account" : "Account",
+  "notification" : "Notification",
   "complete_profile" : "Complete Profile"
 }

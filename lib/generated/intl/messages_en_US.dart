@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "account": MessageLookupByLibrary.simpleMessage("Account"),
         "add_user_data":
             MessageLookupByLibrary.simpleMessage("Add Personal Data"),
         "add_user_detail": MessageLookupByLibrary.simpleMessage(
@@ -74,6 +75,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "join_to_labyrinth":
             MessageLookupByLibrary.simpleMessage("Join to Labyrinth"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "loginFaceID":
+            MessageLookupByLibrary.simpleMessage("Login with Face ID"),
+        "loginTouchID":
+            MessageLookupByLibrary.simpleMessage("Login with Touch ID"),
         "male": MessageLookupByLibrary.simpleMessage("Male"),
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
         "meet_friend": MessageLookupByLibrary.simpleMessage("Meet Friend"),
@@ -87,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("If you have not got a code?"),
         "not_match_pwd":
             MessageLookupByLibrary.simpleMessage("Not match password"),
+        "notification": MessageLookupByLibrary.simpleMessage("Notification"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordEmpty":
@@ -98,7 +104,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
-        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
         "rePassword": MessageLookupByLibrary.simpleMessage("Re-Password"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
@@ -109,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_error": MessageLookupByLibrary.simpleMessage("Server Error!"),
         "setFaceID": MessageLookupByLibrary.simpleMessage("Set Face ID"),
         "setTouchID": MessageLookupByLibrary.simpleMessage("Set Touch ID"),
+        "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "signEasyFace": MessageLookupByLibrary.simpleMessage(
             "SignIn more easily after Face ID register"),
         "signEasyTouch": MessageLookupByLibrary.simpleMessage(
