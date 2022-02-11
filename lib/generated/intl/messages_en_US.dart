@@ -31,13 +31,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "beginner": MessageLookupByLibrary.simpleMessage("Beginner"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
+        "birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
         "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "choose_country":
             MessageLookupByLibrary.simpleMessage("Choose Country"),
         "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
+        "coins": MessageLookupByLibrary.simpleMessage("Coins"),
         "complete_profile":
             MessageLookupByLibrary.simpleMessage("Complete Profile"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
+        "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "emailEmpty":
             MessageLookupByLibrary.simpleMessage("The email is empty"),
@@ -49,10 +52,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "enableTouchID":
             MessageLookupByLibrary.simpleMessage("Enable Touch ID"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "experiences_of_labyrinth":
+            MessageLookupByLibrary.simpleMessage("Experiences of Labyrinth"),
         "expert": MessageLookupByLibrary.simpleMessage("Expert"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+        "friends": MessageLookupByLibrary.simpleMessage("Friends"),
         "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
         "gaming": MessageLookupByLibrary.simpleMessage("Gaming"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
@@ -67,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "has_upcase":
             MessageLookupByLibrary.simpleMessage("· Uppercase at least one"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "identifier": MessageLookupByLibrary.simpleMessage("Identifier"),
         "information": MessageLookupByLibrary.simpleMessage("Information"),
         "intelligence": MessageLookupByLibrary.simpleMessage("Intelligence"),
         "interesting": MessageLookupByLibrary.simpleMessage("Interesting"),
@@ -82,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "male": MessageLookupByLibrary.simpleMessage("Male"),
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
         "meet_friend": MessageLookupByLibrary.simpleMessage("Meet Friend"),
+        "my_qr_code": MessageLookupByLibrary.simpleMessage("My QR Code"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "notAccount": MessageLookupByLibrary.simpleMessage(
             "If you have not account yet?"),
@@ -105,6 +113,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
         "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
+        "purpose_of_labyrinth":
+            MessageLookupByLibrary.simpleMessage("Purpose of Labyrinth"),
+        "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
         "rePassword": MessageLookupByLibrary.simpleMessage("Re-Password"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
         "repass": MessageLookupByLibrary.simpleMessage("Confirm Password"),
@@ -124,7 +135,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Successfully register to Labyrinth"),
         "success_register_detail": MessageLookupByLibrary.simpleMessage(
             "You can try to login and join to Labyrinth"),
+        "update": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_user_id":
+            MessageLookupByLibrary.simpleMessage("Update User ID"),
+        "update_user_name":
+            MessageLookupByLibrary.simpleMessage("Update User Name"),
         "userID": MessageLookupByLibrary.simpleMessage("User ID"),
+        "user_information":
+            MessageLookupByLibrary.simpleMessage("User Information"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
         "verify_detail": MessageLookupByLibrary.simpleMessage(
             "We just sent a verification code to your email"),

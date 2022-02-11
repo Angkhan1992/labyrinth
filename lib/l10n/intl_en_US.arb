@@ -77,5 +77,18 @@
   "loginTouchID" : "Login with Touch ID",
   "account" : "Account",
   "notification" : "Notification",
+  "qr_code" : "QR Code",
+  "friends" : "Friends",
+  "coins" : "Coins",
+  "user_information" : "User Information",
+  "identifier" : "Identifier",
+  "birthday" : "Birthday",
+  "purpose_of_labyrinth" : "Purpose of Labyrinth",
+  "experiences_of_labyrinth" : "Experiences of Labyrinth",
+  "my_qr_code" : "My QR Code",
+  "update" : "Update",
+  "dismiss" : "Dismiss",
+  "update_user_id" : "Update User ID",
+  "update_user_name" : "Update User Name",
   "complete_profile" : "Complete Profile"
 }

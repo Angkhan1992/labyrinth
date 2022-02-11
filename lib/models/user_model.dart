@@ -3,6 +3,7 @@ class UserModel {
   String? usrID;
   String? usrName;
   String? usrEmail;
+  String? usrAvatar;
   String? usrGender;
   String? usrDOB;
   String? usrCountry;
@@ -13,6 +14,7 @@ class UserModel {
   String? usrMember;
   String? usrPurpose;
   String? usrExperience;
+  String? usrCoin;
   String? usrToken;
   String? usrOther;
 
@@ -20,6 +22,7 @@ class UserModel {
     this.id,
     this.usrID,
     this.usrName,
+    this.usrAvatar,
     this.usrEmail,
     this.usrGender,
     this.usrDOB,
@@ -31,6 +34,7 @@ class UserModel {
     this.usrMember,
     this.usrPurpose,
     this.usrExperience,
+    this.usrCoin,
     this.usrToken,
     this.usrOther,
   });
@@ -41,6 +45,7 @@ class UserModel {
       usrID: json["usr_userid"],
       usrName: json["usr_name"],
       usrEmail: json["usr_email"],
+      usrAvatar: json["usr_avatar"],
       usrGender: json["usr_gender"],
       usrDOB: json["usr_dob"],
       usrCountry: json["usr_country"],
@@ -51,6 +56,7 @@ class UserModel {
       usrMember: json["usr_member"],
       usrPurpose: json["usr_purpose"],
       usrExperience: json["usr_experience"],
+      usrCoin: json["usr_coin"],
       usrToken: json["token"],
       usrOther: json["other"],
     );
@@ -58,22 +64,40 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "usr_id": this.id,
-      "usr_userid": this.usrID,
-      "usr_name": this.usrName,
-      "usr_email": this.usrEmail,
-      "usr_gender": this.usrGender ?? '',
-      "usr_dob": this.usrDOB ?? '',
-      "usr_country": this.usrCountry ?? '',
-      "reg_date": this.usrRegdate ?? '',
-      "update_date": this.usrUpdate ?? '',
-      "usr_type": this.usrType ?? '',
-      "usr_level": this.usrLevel ?? '',
-      "usr_member": this.usrMember ?? '',
-      "usr_purpose": this.usrPurpose ?? '',
-      "usr_experience": this.usrExperience ?? '',
-      "token": this.usrToken ?? '',
-      "other": this.usrOther ?? '',
+      "usr_id": id,
+      "usr_userid": usrID,
+      "usr_name": usrName,
+      "usr_email": usrEmail,
+      "usr_avatar": usrAvatar,
+      "usr_gender": usrGender ?? '',
+      "usr_dob": usrDOB ?? '',
+      "usr_country": usrCountry ?? '',
+      "reg_date": usrRegdate ?? '',
+      "update_date": usrUpdate ?? '',
+      "usr_type": usrType ?? '',
+      "usr_level": usrLevel ?? '',
+      "usr_member": usrMember ?? '',
+      "usr_purpose": usrPurpose ?? '',
+      "usr_experience": usrExperience ?? '',
+      "usr_coin": usrCoin ?? '0',
+      "token": usrToken ?? '',
+      "other": usrOther ?? '',
+    };
+  }
+
+  Map<String, dynamic> toQRJson() {
+    return {
+      "usr_userid": usrID,
+      "usr_name": usrName,
+      "usr_email": usrEmail,
+      "usr_avatar": usrAvatar,
+      "usr_gender": usrGender ?? '',
+      "usr_dob": usrDOB ?? '',
+      "usr_country": usrCountry ?? '',
+      "usr_type": usrType ?? '',
+      "usr_level": usrLevel ?? '',
+      "usr_member": usrMember ?? '',
+      "usr_purpose": usrPurpose ?? '',
     };
   }
 }

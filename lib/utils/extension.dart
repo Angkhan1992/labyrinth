@@ -7,8 +7,11 @@ import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/themes/textstyles.dart';
 import 'package:labyrinth/widgets/button.dart';
 
+const encryptKey = '';
+
 extension StringExtension on String {
   DateTime get getFullDate => DateFormat('yyyy-MM-dd HH:mm:ss').parse(this);
+  DateTime get getBirthDate => DateFormat('yyyy-MM-dd').parse(this);
 
   static const String emailRegx =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -209,4 +212,5 @@ extension DateTimeExtension on DateTime {
   String get getUTCFullTime =>
       DateFormat('yyyy-MM-dd HH:mm:ss').format(toUtc());
   String get getFullTime => DateFormat('yyyy-MM-dd HH:mm:ss').format(this);
+  String get getBirthDate => DateFormat('yyyy-MM-dd').format(this);
 }

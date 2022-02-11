@@ -24,20 +24,33 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final _event = ValueNotifier(0);
 
+  UserModel? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.userModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     var screens = [
       HomeScreen(
-        userModel: widget.userModel,
+        userModel: _user!,
       ),
       WorldScreen(
-        userModel: widget.userModel,
+        userModel: _user!,
       ),
       BlogScreen(
-        userModel: widget.userModel,
+        userModel: _user!,
       ),
       SettingScreen(
-        userModel: widget.userModel,
+        userModel: _user!,
+        update: (user) {
+          setState(() {
+            _user = user;
+          });
+        },
       ),
     ];
     return WillPopScope(

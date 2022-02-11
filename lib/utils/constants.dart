@@ -19,6 +19,10 @@ const kResendCode = kAuth + 'resend_code';
 const kSubmitCode = kAuth + 'submit_code';
 const kLoginBio = kAuth + 'login_bio';
 
+const kSetting = kBaseUrl + 'Setting/';
+const kUpdateUser = kSetting + 'update_user';
+const kGetCoins = kSetting + 'get_coins';
+
 class Constants {
   static dynamic getCountryList(BuildContext context) async {
     String data = await DefaultAssetBundle.of(context)

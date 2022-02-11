@@ -3,16 +3,18 @@ import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/screens/setting/notification_screen.dart';
-import 'package:labyrinth/screens/setting/profile_screen.dart';
+import 'package:labyrinth/screens/setting/account_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class SettingScreen extends StatefulWidget {
   final UserModel userModel;
+  final Function(UserModel)? update;
   const SettingScreen({
     Key? key,
     required this.userModel,
+    required this.update,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,14 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  UserModel? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.userModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +45,13 @@ class _SettingScreenState extends State<SettingScreen> {
             color: kAccentColor,
           ),
           onPressed: () => NavigatorProvider.of(context).push(
-            screen: ProfileScreen(
-              userModel: widget.userModel,
+            screen: AccountScreen(
+              userModel: _user!,
+              update: (updatedUser) {
+                setState(() {
+                  _user = updatedUser;
+                });
+              },
             ),
           ),
         ),
@@ -48,7 +63,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             onPressed: () => NavigatorProvider.of(context).push(
               screen: NotificationScreen(
-                userModel: widget.userModel,
+                userModel: _user!,
               ),
             ),
           ),

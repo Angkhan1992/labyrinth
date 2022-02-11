@@ -23,6 +23,9 @@ dependencies:
   share: any
   flutter_svg: any
   shared_preferences: any
+  qr_flutter: ^4.0.0
+  flutter_inapp_purchase: any
+#  encrypt: any
 
   in_app_purchase: any
 

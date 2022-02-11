@@ -830,6 +830,136 @@ class S {
     );
   }
 
+  /// `QR Code`
+  String get qr_code {
+    return Intl.message(
+      'QR Code',
+      name: 'qr_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Friends`
+  String get friends {
+    return Intl.message(
+      'Friends',
+      name: 'friends',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coins`
+  String get coins {
+    return Intl.message(
+      'Coins',
+      name: 'coins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Information`
+  String get user_information {
+    return Intl.message(
+      'User Information',
+      name: 'user_information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Identifier`
+  String get identifier {
+    return Intl.message(
+      'Identifier',
+      name: 'identifier',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Birthday`
+  String get birthday {
+    return Intl.message(
+      'Birthday',
+      name: 'birthday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purpose of Labyrinth`
+  String get purpose_of_labyrinth {
+    return Intl.message(
+      'Purpose of Labyrinth',
+      name: 'purpose_of_labyrinth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experiences of Labyrinth`
+  String get experiences_of_labyrinth {
+    return Intl.message(
+      'Experiences of Labyrinth',
+      name: 'experiences_of_labyrinth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My QR Code`
+  String get my_qr_code {
+    return Intl.message(
+      'My QR Code',
+      name: 'my_qr_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dismiss`
+  String get dismiss {
+    return Intl.message(
+      'Dismiss',
+      name: 'dismiss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update User ID`
+  String get update_user_id {
+    return Intl.message(
+      'Update User ID',
+      name: 'update_user_id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update User Name`
+  String get update_user_name {
+    return Intl.message(
+      'Update User Name',
+      name: 'update_user_name',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Complete Profile`
   String get complete_profile {
     return Intl.message(
