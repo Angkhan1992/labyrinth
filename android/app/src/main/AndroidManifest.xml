@@ -6,10 +6,15 @@
         android:name="android.permission.INTERNET"
         tools:ignore="ManifestOrder" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="Labyrinth"
+        android:label="Eabyrinth"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:allowBackup="false">
@@ -46,9 +51,20 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <uses-library android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
     <uses-permission

@@ -67,6 +67,12 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _passController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

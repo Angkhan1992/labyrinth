@@ -25,6 +25,7 @@ dependencies:
   shared_preferences: any
   qr_flutter: ^4.0.0
   flutter_inapp_purchase: any
+  image_picker: any
 #  encrypt: any
 
   in_app_purchase: any

@@ -29,13 +29,21 @@ class MessageLookup extends MessageLookupByLibrary {
             "We will not share that information"),
         "almost_done": MessageLookupByLibrary.simpleMessage("Almost Done"),
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
+        "apple_user": MessageLookupByLibrary.simpleMessage("Apple User"),
         "beginner": MessageLookupByLibrary.simpleMessage("Beginner"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
         "birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
         "blog": MessageLookupByLibrary.simpleMessage("Blog"),
+        "by_camera": MessageLookupByLibrary.simpleMessage("By Camera"),
+        "by_gallery": MessageLookupByLibrary.simpleMessage("By Gallery"),
+        "change_email": MessageLookupByLibrary.simpleMessage("Change Email"),
+        "change_password":
+            MessageLookupByLibrary.simpleMessage("Change Password"),
         "choose_country":
             MessageLookupByLibrary.simpleMessage("Choose Country"),
         "choose_gender": MessageLookupByLibrary.simpleMessage("Choose Gender"),
+        "choose_image_source":
+            MessageLookupByLibrary.simpleMessage("Choose Source"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
         "complete_profile":
             MessageLookupByLibrary.simpleMessage("Complete Profile"),
@@ -55,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "experiences_of_labyrinth":
             MessageLookupByLibrary.simpleMessage("Experiences of Labyrinth"),
         "expert": MessageLookupByLibrary.simpleMessage("Expert"),
+        "facebook_user": MessageLookupByLibrary.simpleMessage("Facebook User"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
@@ -62,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
         "gaming": MessageLookupByLibrary.simpleMessage("Gaming"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
+        "google_user": MessageLookupByLibrary.simpleMessage("Google User"),
         "has_length":
             MessageLookupByLibrary.simpleMessage("· At least 8 characters"),
         "has_lowcase":
@@ -81,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "This data will be used for app auth"),
         "join_to_labyrinth":
             MessageLookupByLibrary.simpleMessage("Join to Labyrinth"),
+        "last_updated": MessageLookupByLibrary.simpleMessage("Last Updated"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginFaceID":
             MessageLookupByLibrary.simpleMessage("Login with Face ID"),
@@ -90,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
         "meet_friend": MessageLookupByLibrary.simpleMessage("Meet Friend"),
         "my_qr_code": MessageLookupByLibrary.simpleMessage("My QR Code"),
+        "new_email": MessageLookupByLibrary.simpleMessage("New Email"),
+        "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "notAccount": MessageLookupByLibrary.simpleMessage(
             "If you have not account yet?"),
@@ -106,10 +119,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordEmpty":
             MessageLookupByLibrary.simpleMessage("The password is empty"),
         "passwordLess": MessageLookupByLibrary.simpleMessage(
-            "The password length should be over 6 characters"),
+            "The password length should be over 8 characters"),
         "password_detail": MessageLookupByLibrary.simpleMessage(
             "You can choose Labyrinth Password"),
+        "permission_denied":
+            MessageLookupByLibrary.simpleMessage("Permission Denied"),
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),
+        "price": MessageLookupByLibrary.simpleMessage("Price"),
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
         "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
@@ -119,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rePassword": MessageLookupByLibrary.simpleMessage("Re-Password"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
         "repass": MessageLookupByLibrary.simpleMessage("Confirm Password"),
+        "request": MessageLookupByLibrary.simpleMessage("Request"),
         "resend_code": MessageLookupByLibrary.simpleMessage("Resend Code"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "senior": MessageLookupByLibrary.simpleMessage("Senior"),
@@ -126,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setFaceID": MessageLookupByLibrary.simpleMessage("Set Face ID"),
         "setTouchID": MessageLookupByLibrary.simpleMessage("Set Touch ID"),
         "setting": MessageLookupByLibrary.simpleMessage("Settings"),
+        "shop_of_coin": MessageLookupByLibrary.simpleMessage("Shop of Coins"),
         "signEasyFace": MessageLookupByLibrary.simpleMessage(
             "SignIn more easily after Face ID register"),
         "signEasyTouch": MessageLookupByLibrary.simpleMessage(
@@ -135,7 +153,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "Successfully register to Labyrinth"),
         "success_register_detail": MessageLookupByLibrary.simpleMessage(
             "You can try to login and join to Labyrinth"),
+        "unknown_user": MessageLookupByLibrary.simpleMessage("Unknown User"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_email": MessageLookupByLibrary.simpleMessage("Update Email"),
+        "update_password":
+            MessageLookupByLibrary.simpleMessage("Update Password"),
         "update_user_id":
             MessageLookupByLibrary.simpleMessage("Update User ID"),
         "update_user_name":
@@ -143,9 +165,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "userID": MessageLookupByLibrary.simpleMessage("User ID"),
         "user_information":
             MessageLookupByLibrary.simpleMessage("User Information"),
+        "user_type": MessageLookupByLibrary.simpleMessage("User Type"),
         "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
         "verify_detail": MessageLookupByLibrary.simpleMessage(
-            "We just sent a verification code to your email"),
+            "We just sent a verification code\nto your email"),
         "waring": MessageLookupByLibrary.simpleMessage("Waring"),
         "what_level":
             MessageLookupByLibrary.simpleMessage("Experience of Labyrinth?"),

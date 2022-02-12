@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/coin_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/loading_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
@@ -34,13 +38,94 @@ class _CoinScreenState extends State<CoinScreen> {
 
   UserModel? _user;
 
+  List<String> _productLists = [];
+  final List<IAPItem> _items = [];
+  LoadingProvider? _loadingProvider;
+
   @override
   void initState() {
     super.initState();
     _user = widget.userModel;
 
-    Timer.run(() => _getCoinData());
+    Timer.run(() {
+      _getCoinData();
+    });
   }
+
+  Future<void> _initialize() async {
+    _productLists = _coins.map((e) => e.purchaseKey!).toList();
+    // prepare
+    var result = await FlutterInappPurchase.instance.initConnection;
+    if (kDebugMode) {
+      print('[Coin Screen] result: $result');
+    }
+    if (!mounted) return;
+
+    // refresh items for android
+    try {
+      String msg = await FlutterInappPurchase.instance.consumeAllItems;
+      if (kDebugMode) {
+        print('[Coin Screen] consumeAllItems: $msg');
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print('[Coin Screen] consumeAllItems error: $err');
+      }
+    }
+
+    await _getProduct();
+
+    FlutterInappPurchase.connectionUpdated.listen((connected) {
+      if (kDebugMode) {
+        print('[Coin Screen] connected: $connected');
+      }
+    });
+
+    FlutterInappPurchase.purchaseUpdated.listen((productItem) {
+      if (kDebugMode) {
+        print('[Coin Screen] purchase-updated: $productItem');
+      }
+      _loadingProvider!.hide();
+      if (Platform.isIOS) {
+        if (productItem!.transactionStateIOS == TransactionState.purchased) {
+          _buyCoins(productItem);
+        }
+      }
+    });
+
+    FlutterInappPurchase.purchaseError.listen((purchaseError) {
+      if (kDebugMode) {
+        print('[Coin Screen] purchase-error: $purchaseError');
+      }
+      _loadingProvider!.hide();
+      DialogProvider.of(context).showSnackBar(
+        'Purchase ${purchaseError!.message!}',
+        type: SnackBarType.ERROR,
+      );
+    });
+
+    _loadingProvider = LoadingProvider.of(context);
+
+    setState(() {});
+  }
+
+  void _requestPurchase(String productID) {
+    _loadingProvider!.show();
+    FlutterInappPurchase.instance.requestPurchase(productID);
+  }
+
+  Future _getProduct() async {
+    List<IAPItem> items =
+        await FlutterInappPurchase.instance.getProducts(_productLists);
+    for (var item in items) {
+      if (kDebugMode) {
+        print(item.toString());
+      }
+      _items.add(item);
+    }
+  }
+
+  void _buyCoins(PurchasedItem purchaseItem) async {}
 
   void _getCoinData() async {
     _event.value = CoinEvent.init;
@@ -57,10 +142,11 @@ class _CoinScreenState extends State<CoinScreen> {
       }
     } else {
       DialogProvider.of(context).showSnackBar(
-        'Server Error!',
+        S.current.server_error,
         type: SnackBarType.ERROR,
       );
     }
+    await _initialize();
     _event.value = CoinEvent.none;
   }
 
@@ -89,13 +175,13 @@ class _CoinScreenState extends State<CoinScreen> {
                     children: [
                       const Icon(
                         Icons.account_balance_wallet_outlined,
-                        size: 80.0,
+                        size: 60.0,
                         color: kAccentColor,
                       ),
                       const SizedBox(
                         height: offsetSm,
                       ),
-                      'My Coins : ${_user!.usrCoin!}'.mediumText(
+                      '${S.current.coins} : ${_user!.usrCoin!}'.mediumText(
                         color: kAccentColor,
                       ),
                     ],
@@ -107,7 +193,7 @@ class _CoinScreenState extends State<CoinScreen> {
                     children: [
                       Expanded(
                         child: ProfileCard(
-                          title: 'Send',
+                          title: S.current.send,
                           icon: const Icon(
                             LineIcons.coins,
                             color: kAccentColor,
@@ -118,7 +204,7 @@ class _CoinScreenState extends State<CoinScreen> {
                       ),
                       Expanded(
                         child: ProfileCard(
-                          title: 'Request',
+                          title: S.current.request,
                           icon: const Icon(
                             LineIcons.wallet,
                             color: kAccentColor,
@@ -132,14 +218,17 @@ class _CoinScreenState extends State<CoinScreen> {
                   const SizedBox(
                     height: offsetBase,
                   ),
-                  'Shop of Coins'.mediumText(),
-                  const SizedBox(
-                    height: offsetSm,
-                  ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      S.current.shop_of_coin.mediumText(),
+                      const SizedBox(
+                        height: offsetSm,
+                      ),
                       for (var coin in _coins) ...{
-                        coin.inAppWidget(),
+                        coin.inAppWidget(
+                          buy: () => _requestPurchase(coin.purchaseKey!),
+                        ),
                       }
                     ],
                   ),

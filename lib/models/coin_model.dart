@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
@@ -59,7 +60,10 @@ class CoinModel {
         borderRadius: BorderRadius.circular(offsetSm),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(offsetSm),
+        padding: const EdgeInsets.symmetric(
+          horizontal: offsetBase,
+          vertical: offsetSm,
+        ),
         child: InkWell(
           onTap: buy,
           child: Row(
@@ -68,10 +72,7 @@ class CoinModel {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title!.semiBoldText(),
-                    const SizedBox(
-                      height: offsetXSm,
-                    ),
+                    title!.semiBoldText(color: kAccentColor),
                     desc!.thinText(
                       fontSize: fontXSm,
                       textAlign: TextAlign.start,
@@ -79,7 +80,8 @@ class CoinModel {
                     const SizedBox(
                       height: offsetXSm,
                     ),
-                    'Price : \$${double.parse(price!) / 100}'.boldText(
+                    '${S.current.price} : \$${double.parse(price!) / 100}'
+                        .boldText(
                       color: Colors.red,
                       fontSize: fontSm,
                     ),
@@ -99,7 +101,7 @@ class CoinModel {
                       color: kAccentColor,
                       fontSize: fontSm,
                     ),
-                    'Coins'.thinText(
+                    S.current.coins.thinText(
                       color: kAccentColor,
                       fontSize: fontXSm,
                     ),

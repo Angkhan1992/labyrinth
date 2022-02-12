@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
+import 'package:labyrinth/themes/colors.dart';
 
 String kAppName = S.current.appName;
 const kFontFamily = 'Poppins';
@@ -22,6 +23,10 @@ const kLoginBio = kAuth + 'login_bio';
 const kSetting = kBaseUrl + 'Setting/';
 const kUpdateUser = kSetting + 'update_user';
 const kGetCoins = kSetting + 'get_coins';
+const kUpdateEmail = kSetting + 'update_email';
+const kUpdatePass = kSetting + 'update_pass';
+
+const kRootAvatar = 'avatar';
 
 class Constants {
   static dynamic getCountryList(BuildContext context) async {
@@ -30,3 +35,9 @@ class Constants {
     return jsonDecode(data);
   }
 }
+
+const kEmptyAvatar = Icon(
+  Icons.account_circle,
+  size: 80.0,
+  color: kAccentColor,
+);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
@@ -21,7 +22,7 @@ class _FriendScreenState extends State<FriendScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: 'Friends'.semiBoldText(
+        title: S.current.friends.semiBoldText(
           fontSize: fontXMd,
           color: kAccentColor,
         ),

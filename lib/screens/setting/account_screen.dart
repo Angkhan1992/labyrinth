@@ -1,19 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
 import 'package:labyrinth/providers/loading_provider.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
+import 'package:labyrinth/providers/permission_provider.dart';
+import 'package:labyrinth/providers/shared_provider.dart';
+import 'package:labyrinth/screens/setting/change_identify_screen.dart';
 import 'package:labyrinth/screens/setting/coin_screen.dart';
 import 'package:labyrinth/screens/setting/friend_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:labyrinth/widgets/setting/profile_widget.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -40,6 +47,8 @@ class _AccountScreenState extends State<AccountScreen> {
   final _boundaryKey = GlobalKey();
   var _currentDate = DateTime.now();
 
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +62,85 @@ class _AccountScreenState extends State<AccountScreen> {
       _eventExperience = ValueNotifier(int.parse(_user!.usrExperience!));
       _currentDate = _user!.usrDOB!.getBirthDate;
     });
+  }
+
+  void _imagePicker() async {
+    var permission = await PermissionProvider.checkImagePickerPermission();
+    if (!permission) {
+      DialogProvider.of(context).showSnackBar(
+        S.current.permission_denied,
+        type: SnackBarType.ERROR,
+      );
+      return;
+    }
+    DialogProvider.of(context).showBottomSheet(
+      Column(
+        children: [
+          S.current.choose_image_source.semiBoldText(fontSize: fontXMd),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+              _pickImage(
+                isCamera: true,
+              );
+            },
+            child: S.current.by_camera.regularText(fontSize: fontMd),
+          ),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+              _pickImage(
+                isCamera: false,
+              );
+            },
+            child: S.current.by_gallery.regularText(fontSize: fontMd),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _pickImage({
+    bool isCamera = true,
+  }) async {
+    var _image = await _picker.pickImage(
+      source: isCamera ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 50,
+    );
+
+    if (_image != null) {
+      var filePath = _image.path;
+      LoadingProvider.of(context).show();
+      var respUpload = await NetworkProvider.of().uploadFile(
+        filePath: filePath,
+        header: kRootAvatar,
+      );
+      LoadingProvider.of(context).hide();
+      if (respUpload != null) {
+        if (respUpload['ret'] == 10000) {
+          _updateProfile({
+            'usr_id': _user!.id!,
+            'usr_avatar': respUpload['result'],
+          });
+        } else {
+          DialogProvider.of(context).showSnackBar(
+            respUpload['msg'],
+            type: SnackBarType.ERROR,
+          );
+        }
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          S.current.server_error,
+          type: SnackBarType.ERROR,
+        );
+      }
+    }
   }
 
   @override
@@ -84,16 +172,63 @@ class _AccountScreenState extends State<AccountScreen> {
             children: [
               Column(
                 children: [
-                  const Icon(
-                    Icons.account_circle,
-                    size: 80.0,
-                    color: kAccentColor,
+                  SizedBox(
+                    width: 80.0,
+                    height: 80.0,
+                    child: Stack(
+                      children: [
+                        _user!.usrAvatar!.isEmpty
+                            ? kEmptyAvatar
+                            : CachedNetworkImage(
+                                imageUrl: _user!.usrAvatar!,
+                                height: double.infinity,
+                                placeholder: (context, url) => Stack(
+                                  children: const [
+                                    kEmptyAvatar,
+                                    Center(
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                  ],
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    kEmptyAvatar,
+                                fit: BoxFit.cover,
+                              ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            onTap: () => _imagePicker(),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: offsetXSm,
+                                right: offsetXSm,
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(offsetXSm),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.camera_enhance_rounded,
+                                  color: kAccentColor,
+                                  size: 14.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: offsetSm,
                   ),
                   _user!.usrName!.mediumText(fontSize: fontMd),
-                  'Last Updated : ${_user!.usrUpdate!.split(" ").first}'
+                  '${S.current.last_updated} : ${_user!.usrUpdate!.split(" ").first}'
                       .thinText(fontSize: fontXSm),
                 ],
               ),
@@ -104,7 +239,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   Expanded(
                     child: ProfileCard(
-                      title: 'QR Code',
+                      title: S.current.qr_code,
                       icon: const Icon(
                         Icons.qr_code,
                         color: kAccentColor,
@@ -115,7 +250,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   Expanded(
                     child: ProfileCard(
-                      title: 'Friends',
+                      title: S.current.friends,
                       icon: const Icon(
                         Icons.supervisor_account_outlined,
                         color: kAccentColor,
@@ -130,7 +265,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   Expanded(
                     child: ProfileCard(
-                      title: '${_user!.usrCoin!} Coins',
+                      title: '${_user!.usrCoin!} ${S.current.coins}',
                       icon: const Icon(
                         Icons.account_balance_wallet_outlined,
                         color: kAccentColor,
@@ -201,7 +336,9 @@ class _AccountScreenState extends State<AccountScreen> {
                           ProfileItemWidget(
                             title: S.current.email,
                             content: _user!.usrEmail!,
-                            edit: _user!.usrType! != '0' ? null : () {},
+                            edit: _user!.usrType! != '0'
+                                ? null
+                                : () => _updateIdentify(),
                           ),
                           const SizedBox(
                             height: offsetSm,
@@ -210,6 +347,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               ? ProfileItemWidget(
                                   title: S.current.password,
                                   content: '********',
+                                  edit: () => _updateIdentify(
+                                    isEmail: false,
+                                  ),
                                 )
                               : _getUserType(),
                         ],
@@ -228,12 +368,12 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          'Identifier'.semiBoldText(fontSize: fontMd),
+                          S.current.identifier.semiBoldText(fontSize: fontMd),
                           const SizedBox(
                             height: offsetSm,
                           ),
                           ProfileItemWidget(
-                            title: 'Birthday',
+                            title: S.current.birthday,
                             content: _user!.usrDOB!,
                             edit: () => _showCalendarPicker(),
                           ),
@@ -245,6 +385,9 @@ class _AccountScreenState extends State<AccountScreen> {
                             content: _user!.usrGender! == '0'
                                 ? S.current.male
                                 : S.current.female,
+                            edit: () => _showGenderDialog(
+                              value: int.parse(_user!.usrGender!),
+                            ),
                           ),
                           const SizedBox(
                             height: offsetSm,
@@ -252,6 +395,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ProfileItemWidget(
                             title: S.current.country,
                             content: _user!.usrCountry!,
+                            edit: () => _showCountryPicker(),
                           ),
                         ],
                       ),
@@ -273,7 +417,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           const SizedBox(
                             height: offsetSm,
                           ),
-                          'Purpose of Labyrinth'.thinText(fontSize: fontSm),
+                          S.current.purpose_of_labyrinth
+                              .thinText(fontSize: fontSm),
                           ValueListenableBuilder(
                             valueListenable: _eventPurpose,
                             builder: (context, value, view) {
@@ -325,7 +470,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           const SizedBox(
                             height: offsetSm,
                           ),
-                          'Experiences of Labyrinth'.thinText(fontSize: fontSm),
+                          S.current.experiences_of_labyrinth
+                              .thinText(fontSize: fontSm),
                           ValueListenableBuilder(
                             valueListenable: _eventExperience,
                             builder: (context, value, view) {
@@ -504,7 +650,7 @@ class _AccountScreenState extends State<AccountScreen> {
     }
   }
 
-  void _updateProfile(Map<String, String> param) async {
+  Future<void> _updateProfile(Map<String, String> param) async {
     LoadingProvider.of(context).show();
     var res = await NetworkProvider.of().post(
       kUpdateUser,
@@ -519,30 +665,63 @@ class _AccountScreenState extends State<AccountScreen> {
       _initData();
     } else {
       DialogProvider.of(context).showSnackBar(
-        'Sever Error!',
+        S.current.server_error,
         type: SnackBarType.ERROR,
       );
     }
     LoadingProvider.of(context).hide();
   }
 
+  void _updateIdentify({
+    bool isEmail = true,
+  }) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kResendCode,
+      {
+        'email': _user!.usrEmail!,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null && resp['ret'] == 10000) {
+      NavigatorProvider.of(context).push(
+        screen: ChangeIdentifyScreen(
+          userModel: _user!,
+          isEmail: isEmail,
+          updateUser: (updateUser) async {
+            await SharedProvider().removeBioAuth();
+            setState(() {
+              _user = updateUser;
+              widget.update!(_user!);
+            });
+          },
+        ),
+      );
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.ERROR,
+      );
+    }
+  }
+
   Widget _getUserType() {
-    String userType = 'Unknown User';
+    String userType = S.current.unknown_user;
     switch (_user!.usrType!) {
       case '1':
-        userType = 'Apple User';
+        userType = S.current.apple_user;
         break;
       case '2':
-        userType = 'Google User';
+        userType = S.current.google_user;
         break;
       case '3':
-        userType = 'Facebook User';
+        userType = S.current.facebook_user;
         break;
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        'User Type'.thinText(fontSize: fontSm),
+        S.current.user_type.thinText(fontSize: fontSm),
         Row(
           children: [
             userType.mediumText(),
@@ -550,6 +729,97 @@ class _AccountScreenState extends State<AccountScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  void _showGenderDialog({
+    int value = 0,
+  }) async {
+    var _genderNotifier = ValueNotifier(value);
+    DialogProvider.of(context).bubbleDialog(
+      isCancelable: true,
+      child: Column(
+        children: [
+          S.current.choose_gender.semiBoldText(fontSize: fontMd),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          ValueListenableBuilder<int>(
+            valueListenable: _genderNotifier,
+            builder: (context, value, view) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GenderWidget(
+                    notifier: _genderNotifier,
+                    event: () {
+                      Navigator.of(context).pop();
+                      _updateProfile({
+                        'usr_id': _user!.id!,
+                        'usr_gender': '0',
+                      });
+                    },
+                    title: S.current.male,
+                    isSelected: _genderNotifier.value == 0,
+                  ),
+                  GenderWidget(
+                    notifier: _genderNotifier,
+                    event: () {
+                      Navigator.of(context).pop();
+                      _updateProfile({
+                        'usr_id': _user!.id!,
+                        'usr_gender': '1',
+                      });
+                    },
+                    title: S.current.female,
+                    isSelected: _genderNotifier.value == 1,
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+      actions: [],
+    );
+  }
+
+  void _showCountryPicker() async {
+    var countryList = await Constants.getCountryList(context);
+    DialogProvider.of(context).showBottomSheet(
+      Column(
+        children: [
+          S.current.choose_country.semiBoldText(fontSize: fontXMd),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (var country in countryList) ...{
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _updateProfile({
+                          'usr_id': _user!.id!,
+                          'usr_country': country['country'],
+                        });
+                      },
+                      child:
+                          '${country['country']} (${country['abbreviation']})'
+                              .regularText(),
+                    ),
+                    const SizedBox(
+                      height: offsetSm,
+                    ),
+                  },
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

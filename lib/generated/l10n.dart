@@ -90,10 +90,10 @@ class S {
     );
   }
 
-  /// `The password length should be over 6 characters`
+  /// `The password length should be over 8 characters`
   String get passwordLess {
     return Intl.message(
-      'The password length should be over 6 characters',
+      'The password length should be over 8 characters',
       name: 'passwordLess',
       desc: '',
       args: [],
@@ -640,10 +640,10 @@ class S {
     );
   }
 
-  /// `We just sent a verification code to your email`
+  /// `We just sent a verification code\nto your email`
   String get verify_detail {
     return Intl.message(
-      'We just sent a verification code to your email',
+      'We just sent a verification code\nto your email',
       name: 'verify_detail',
       desc: '',
       args: [],
@@ -955,6 +955,196 @@ class S {
     return Intl.message(
       'Update User Name',
       name: 'update_user_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get price {
+    return Intl.message(
+      'Price',
+      name: 'price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Updated`
+  String get last_updated {
+    return Intl.message(
+      'Last Updated',
+      name: 'last_updated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown User`
+  String get unknown_user {
+    return Intl.message(
+      'Unknown User',
+      name: 'unknown_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apple User`
+  String get apple_user {
+    return Intl.message(
+      'Apple User',
+      name: 'apple_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Google User`
+  String get google_user {
+    return Intl.message(
+      'Google User',
+      name: 'google_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Facebook User`
+  String get facebook_user {
+    return Intl.message(
+      'Facebook User',
+      name: 'facebook_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Type`
+  String get user_type {
+    return Intl.message(
+      'User Type',
+      name: 'user_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request`
+  String get request {
+    return Intl.message(
+      'Request',
+      name: 'request',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shop of Coins`
+  String get shop_of_coin {
+    return Intl.message(
+      'Shop of Coins',
+      name: 'shop_of_coin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Email`
+  String get change_email {
+    return Intl.message(
+      'Change Email',
+      name: 'change_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Password`
+  String get change_password {
+    return Intl.message(
+      'Change Password',
+      name: 'change_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Email`
+  String get update_email {
+    return Intl.message(
+      'Update Email',
+      name: 'update_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Password`
+  String get update_password {
+    return Intl.message(
+      'Update Password',
+      name: 'update_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Email`
+  String get new_email {
+    return Intl.message(
+      'New Email',
+      name: 'new_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get new_password {
+    return Intl.message(
+      'New Password',
+      name: 'new_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission Denied`
+  String get permission_denied {
+    return Intl.message(
+      'Permission Denied',
+      name: 'permission_denied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose Source`
+  String get choose_image_source {
+    return Intl.message(
+      'Choose Source',
+      name: 'choose_image_source',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By Camera`
+  String get by_camera {
+    return Intl.message(
+      'By Camera',
+      name: 'by_camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By Gallery`
+  String get by_gallery {
+    return Intl.message(
+      'By Gallery',
+      name: 'by_gallery',
       desc: '',
       args: [],
     );
