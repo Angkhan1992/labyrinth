@@ -1,14 +1,18 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/game_provider.dart';
+import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:labyrinth/screens/blog/blog_screen.dart';
 import 'package:labyrinth/screens/home/home_screen.dart';
 import 'package:labyrinth/screens/setting/setting_screen.dart';
 import 'package:labyrinth/screens/world/world_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
-import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/appbar.dart';
 
 class MainScreen extends StatefulWidget {
   final UserModel userModel;
@@ -25,11 +29,14 @@ class _MainScreenState extends State<MainScreen> {
   final _event = ValueNotifier(0);
 
   UserModel? _user;
+  GameProvider? _gameProvider;
 
   @override
   void initState() {
     super.initState();
+
     _user = widget.userModel;
+    _gameProvider = GameProvider.instance();
   }
 
   @override
@@ -46,9 +53,11 @@ class _MainScreenState extends State<MainScreen> {
       ),
       SettingScreen(
         userModel: _user!,
-        update: (user) {
+        gameProvider: _gameProvider!,
+        update: (user, game) {
           setState(() {
             _user = user;
+            _gameProvider = game;
           });
         },
       ),
@@ -89,10 +98,33 @@ class _MainScreenState extends State<MainScreen> {
       children: [
         for (var i = 0; i < bottomItemImages.length; i++)
           CustomBottomNavigationItem(
-            icon: Icon(
-              bottomItemImages[i],
-              color: _event.value == i ? Colors.white : kAccentColor,
-              size: offsetXMd,
+            icon: FutureBuilder<int>(
+              future: _getBadge(i),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Icon(
+                    bottomItemImages[i],
+                    color: _event.value == i ? Colors.white : kAccentColor,
+                    size: offsetXMd,
+                  );
+                }
+                return snapshot.data == 0
+                    ? Icon(
+                        bottomItemImages[i],
+                        color: _event.value == i ? Colors.white : kAccentColor,
+                        size: offsetXMd,
+                      )
+                    : Badge(
+                        position: BadgePosition.topEnd(top: 10, end: 10),
+                        badgeContent: null,
+                        child: Icon(
+                          bottomItemImages[i],
+                          color:
+                              _event.value == i ? Colors.white : kAccentColor,
+                          size: offsetXMd,
+                        ),
+                      );
+              },
             ),
             label: bottomBarTitles[i].regularText(
               fontSize: fontXSm,
@@ -101,5 +133,15 @@ class _MainScreenState extends State<MainScreen> {
           ),
       ],
     );
+  }
+
+  Future<int> _getBadge(int index) async {
+    if (index == 3) {
+      return await SharedProvider().getBlogUnread();
+    }
+    if (index == 4) {
+      return await SharedProvider().getNotiUnread();
+    }
+    return 0;
   }
 }

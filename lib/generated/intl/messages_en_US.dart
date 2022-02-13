@@ -30,6 +30,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "almost_done": MessageLookupByLibrary.simpleMessage("Almost Done"),
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "apple_user": MessageLookupByLibrary.simpleMessage("Apple User"),
+        "back_color_desc": MessageLookupByLibrary.simpleMessage(
+            "You choose tile back color of Labyrinth."),
+        "back_color_title":
+            MessageLookupByLibrary.simpleMessage("Background Color"),
         "beginner": MessageLookupByLibrary.simpleMessage("Beginner"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
         "birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
@@ -69,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "friends": MessageLookupByLibrary.simpleMessage("Friends"),
         "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
+        "game_env": MessageLookupByLibrary.simpleMessage("Game Environment"),
         "gaming": MessageLookupByLibrary.simpleMessage("Gaming"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
         "google_user": MessageLookupByLibrary.simpleMessage("Google User"),
@@ -83,6 +88,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "has_upcase":
             MessageLookupByLibrary.simpleMessage("· Uppercase at least one"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "hover_color_desc": MessageLookupByLibrary.simpleMessage(
+            "You choose tile hover color of Labyrinth."),
+        "hover_color_title":
+            MessageLookupByLibrary.simpleMessage("Hover Color"),
         "identifier": MessageLookupByLibrary.simpleMessage("Identifier"),
         "information": MessageLookupByLibrary.simpleMessage("Information"),
         "intelligence": MessageLookupByLibrary.simpleMessage("Intelligence"),
@@ -114,6 +123,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_match_pwd":
             MessageLookupByLibrary.simpleMessage("Not match password"),
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "option_bot_desc":
+            MessageLookupByLibrary.simpleMessage("Random Bot of Labyrinth."),
+        "option_bot_title": MessageLookupByLibrary.simpleMessage("Bot Option"),
+        "option_time_desc": MessageLookupByLibrary.simpleMessage(
+            "Unlimited time of Labyrinth."),
+        "option_time_title":
+            MessageLookupByLibrary.simpleMessage("Time Option"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordEmpty":
@@ -153,6 +169,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Successfully register to Labyrinth"),
         "success_register_detail": MessageLookupByLibrary.simpleMessage(
             "You can try to login and join to Labyrinth"),
+        "type_block_desc": MessageLookupByLibrary.simpleMessage(
+            "You choose block image of Labyrinth."),
+        "type_block_title": MessageLookupByLibrary.simpleMessage("Block Type"),
         "unknown_user": MessageLookupByLibrary.simpleMessage("Unknown User"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "update_email": MessageLookupByLibrary.simpleMessage("Update Email"),

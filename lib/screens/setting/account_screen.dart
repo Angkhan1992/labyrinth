@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -23,7 +25,6 @@ import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/auth/register_widget.dart';
 import 'package:labyrinth/widgets/setting/profile_widget.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountScreen extends StatefulWidget {
   final UserModel userModel;
@@ -75,6 +76,7 @@ class _AccountScreenState extends State<AccountScreen> {
     }
     DialogProvider.of(context).showBottomSheet(
       Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           S.current.choose_image_source.semiBoldText(fontSize: fontXMd),
           const SizedBox(
@@ -100,6 +102,9 @@ class _AccountScreenState extends State<AccountScreen> {
               );
             },
             child: S.current.by_gallery.regularText(fontSize: fontMd),
+          ),
+          const SizedBox(
+            height: offsetBase,
           ),
         ],
       ),
@@ -179,44 +184,42 @@ class _AccountScreenState extends State<AccountScreen> {
                       children: [
                         _user!.usrAvatar!.isEmpty
                             ? kEmptyAvatar
-                            : CachedNetworkImage(
-                                imageUrl: _user!.usrAvatar!,
-                                height: double.infinity,
-                                placeholder: (context, url) => Stack(
-                                  children: const [
-                                    kEmptyAvatar,
-                                    Center(
-                                      child: CupertinoActivityIndicator(),
-                                    ),
-                                  ],
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(40.0),
+                                child: CachedNetworkImage(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  imageUrl: _user!.usrAvatar!,
+                                  placeholder: (context, url) => Stack(
+                                    children: const [
+                                      kEmptyAvatar,
+                                      Center(
+                                        child: CupertinoActivityIndicator(),
+                                      ),
+                                    ],
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      kEmptyAvatar,
+                                  fit: BoxFit.cover,
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    kEmptyAvatar,
-                                fit: BoxFit.cover,
                               ),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: InkWell(
                             onTap: () => _imagePicker(),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: offsetXSm,
-                                right: offsetXSm,
+                            child: Container(
+                              padding: const EdgeInsets.all(offsetXSm),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.black,
+                                ),
                               ),
-                              child: Container(
-                                padding: const EdgeInsets.all(offsetXSm),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                child: const Icon(
-                                  Icons.camera_enhance_rounded,
-                                  color: kAccentColor,
-                                  size: 14.0,
-                                ),
+                              child: const Icon(
+                                Icons.camera_enhance_rounded,
+                                color: kAccentColor,
+                                size: 14.0,
                               ),
                             ),
                           ),

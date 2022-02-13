@@ -46,7 +46,6 @@ class _IndividualScreenState extends State<IndividualScreen> {
   var _currentDate = DateTime(1990, 1, 1);
 
   var _gender = '';
-  var _birth = '';
   var _country = '';
 
   @override
@@ -141,9 +140,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
                           validator: (birth) {
                             return birth!.validateValue;
                           },
-                          onSaved: (birth) {
-                            _birth = birth!;
-                          },
+                          onSaved: (birth) {},
                           onTap: () => _showCalendarPicker(),
                         ),
                         const SizedBox(

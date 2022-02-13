@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/coin_model.dart';
 import 'package:labyrinth/models/user_model.dart';
@@ -15,7 +17,6 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/profile_widget.dart';
-import 'package:line_icons/line_icons.dart';
 
 class CoinScreen extends StatefulWidget {
   final UserModel userModel;

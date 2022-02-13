@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
-import 'package:line_icons/line_icons.dart';
 
 class CoinModel {
   String? id;

@@ -1159,6 +1159,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Game Environment`
+  String get game_env {
+    return Intl.message(
+      'Game Environment',
+      name: 'game_env',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block Type`
+  String get type_block_title {
+    return Intl.message(
+      'Block Type',
+      name: 'type_block_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You choose block image of Labyrinth.`
+  String get type_block_desc {
+    return Intl.message(
+      'You choose block image of Labyrinth.',
+      name: 'type_block_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Background Color`
+  String get back_color_title {
+    return Intl.message(
+      'Background Color',
+      name: 'back_color_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You choose tile back color of Labyrinth.`
+  String get back_color_desc {
+    return Intl.message(
+      'You choose tile back color of Labyrinth.',
+      name: 'back_color_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hover Color`
+  String get hover_color_title {
+    return Intl.message(
+      'Hover Color',
+      name: 'hover_color_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You choose tile hover color of Labyrinth.`
+  String get hover_color_desc {
+    return Intl.message(
+      'You choose tile hover color of Labyrinth.',
+      name: 'hover_color_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time Option`
+  String get option_time_title {
+    return Intl.message(
+      'Time Option',
+      name: 'option_time_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited time of Labyrinth.`
+  String get option_time_desc {
+    return Intl.message(
+      'Unlimited time of Labyrinth.',
+      name: 'option_time_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bot Option`
+  String get option_bot_title {
+    return Intl.message(
+      'Bot Option',
+      name: 'option_bot_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Random Bot of Labyrinth.`
+  String get option_bot_desc {
+    return Intl.message(
+      'Random Bot of Labyrinth.',
+      name: 'option_bot_desc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

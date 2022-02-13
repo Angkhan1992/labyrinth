@@ -51,7 +51,7 @@ class NetworkProvider {
     required String header,
     String type = 'image',
   }) async {
-    String url = kSetting + 'update_media';
+    String url = kSetting + 'upload_media';
     var request = http.MultipartRequest("POST", Uri.parse(url));
 
     request.fields['header'] = header;

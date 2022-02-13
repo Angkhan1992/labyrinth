@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/game_provider.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
-import 'package:labyrinth/screens/setting/notification_screen.dart';
 import 'package:labyrinth/screens/setting/account_screen.dart';
+import 'package:labyrinth/screens/setting/notification_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class SettingScreen extends StatefulWidget {
   final UserModel userModel;
-  final Function(UserModel)? update;
+  final GameProvider gameProvider;
+  final Function(UserModel, GameProvider)? update;
+
   const SettingScreen({
     Key? key,
     required this.userModel,
     required this.update,
+    required this.gameProvider,
   }) : super(key: key);
 
   @override
@@ -23,11 +28,13 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   UserModel? _user;
+  GameProvider? _gameProvider;
 
   @override
   void initState() {
     super.initState();
     _user = widget.userModel;
+    _gameProvider = widget.gameProvider;
   }
 
   @override
@@ -51,6 +58,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 setState(() {
                   _user = updatedUser;
                 });
+                widget.update!(_user!, _gameProvider!);
               },
             ),
           ),
@@ -68,6 +76,20 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           ),
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: offsetSm,
+            vertical: offsetXMd,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _gameProvider!.getSettingWidget(),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -109,5 +109,16 @@
   "choose_image_source" : "Choose Source",
   "by_camera" : "By Camera",
   "by_gallery" : "By Gallery",
-  "complete_profile" : "Complete Profile"
+  "complete_profile" : "Complete Profile",
+  "game_env" : "Game Environment",
+  "type_block_title" : "Block Type",
+  "type_block_desc" : "You choose block image of Labyrinth.",
+  "back_color_title" : "Background Color",
+  "back_color_desc" : "You choose tile back color of Labyrinth.",
+  "hover_color_title" : "Hover Color",
+  "hover_color_desc" : "You choose tile hover color of Labyrinth.",
+  "option_time_title" : "Time Option",
+  "option_time_desc" : "Unlimited time of Labyrinth.",
+  "option_bot_title" : "Bot Option",
+  "option_bot_desc" : "Random Bot of Labyrinth."
 }

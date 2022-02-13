@@ -7,6 +7,11 @@ class SharedProvider {
   final keyBioTime = 'key_bio_time';
   final keyEmail = 'key_email';
   final keyPass = 'key_pass';
+  final keySettingTile = 'key_setting_tile';
+  final keyBackColor = 'key_back_color';
+  final keyHoverColor = 'key_hover_color';
+  final keyNotiUnread = 'key_noti_unread';
+  final keyBlogUnread = 'key_blog_unread';
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -70,5 +75,55 @@ class SharedProvider {
   Future setPass(String pass) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(keyPass, pass);
+  }
+
+  Future<String> getSettingTile() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString(keySettingTile) ?? '0,0';
+  }
+
+  Future setSettingTile(String value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString(keySettingTile, value);
+  }
+
+  Future<int> getBackColor() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt(keyBackColor) ?? 0;
+  }
+
+  Future setBlackColor(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setInt(keyBackColor, value);
+  }
+
+  Future<int> getHoverColor() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt(keyHoverColor) ?? 0;
+  }
+
+  Future setHoverColor(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setInt(keyHoverColor, value);
+  }
+
+  Future<int> getNotiUnread() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt(keyNotiUnread) ?? 0;
+  }
+
+  Future setNotiUnread(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setInt(keyNotiUnread, value);
+  }
+
+  Future<int> getBlogUnread() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt(keyBlogUnread) ?? 0;
+  }
+
+  Future setBlogUnread(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setInt(keyBlogUnread, value);
   }
 }
