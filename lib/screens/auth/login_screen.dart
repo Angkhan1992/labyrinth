@@ -26,6 +26,7 @@ import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -72,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (bioResult != null && bioResult) {
         _email = (await SharedProvider().getEmail())!;
         _pass = (await SharedProvider().getPass())!;
+
         _loginBiometric();
       }
     }
@@ -88,220 +90,222 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: NoAppBar(),
-        body: ValueListenableBuilder<LoginEvent>(
-          valueListenable: _event!,
-          builder: (context, event, view) {
-            return Container(
-              padding: const EdgeInsets.all(offsetXMd),
-              decoration: BoxDecoration(
-                gradient: kMainGradient,
-              ),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(offsetLg),
-                      boxShadow: [
-                        kTopLeftShadow,
-                        kBottomRightShadow,
-                      ],
-                    ),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      width: 120.0,
-                      height: 120.0,
-                    ),
-                  ),
-                  const Spacer(),
-                  Form(
-                    key: _formKey,
-                    autovalidateMode: _autoValidate,
-                    child: Container(
-                      padding: const EdgeInsets.all(offsetBase),
+        body: Consumer<UserModel>(
+          builder: (context, user, child) => ValueListenableBuilder<LoginEvent>(
+            valueListenable: _event!,
+            builder: (context, event, view) {
+              return Container(
+                padding: const EdgeInsets.all(offsetXMd),
+                decoration: BoxDecoration(
+                  gradient: kMainGradient,
+                ),
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    Container(
                       decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(offsetBase),
-                          boxShadow: [
-                            kTopLeftShadow,
-                            kBottomRightShadow,
-                          ]),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          S.current.email.thinText(),
-                          const SizedBox(
-                            height: offsetSm,
-                          ),
-                          CustomTextField(
-                            hintText: S.current.email,
-                            keyboardType: TextInputType.emailAddress,
-                            prefixIcon: const Icon(LineIcons.mailBulk),
-                            validator: (email) {
-                              return email!.validateEmail;
-                            },
-                            onSaved: (email) {
-                              _email = email!;
-                            },
-                          ),
-                          const SizedBox(
-                            height: offsetBase,
-                          ),
-                          S.current.password.thinText(),
-                          const SizedBox(
-                            height: offsetSm,
-                          ),
-                          CustomTextField(
-                            hintText: S.current.password,
-                            keyboardType: TextInputType.visiblePassword,
-                            textInputAction: TextInputAction.done,
-                            obscureText: _isSecurity,
-                            prefixIcon: const Icon(LineIcons.lock),
-                            suffixIcon: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _isSecurity = !_isSecurity;
-                                });
-                              },
-                              child: _isSecurity
-                                  ? const Icon(LineIcons.eye)
-                                  : const Icon(LineIcons.eyeSlash),
-                            ),
-                            validator: (pass) {
-                              return pass!.validatePassword;
-                            },
-                            onSaved: (pass) {
-                              _pass = pass!;
-                            },
-                          ),
-                          const SizedBox(
-                            height: offsetSm,
-                          ),
-                          Row(
-                            children: [
-                              const Spacer(),
-                              Text(
-                                S.current.forgotPassword,
-                                style: CustomText.regular(
-                                  color: kAccentColor,
-                                  fontSize: fontSm,
-                                ).copyWith(
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ],
-                          ),
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(offsetLg),
+                        boxShadow: [
+                          kTopLeftShadow,
+                          kBottomRightShadow,
                         ],
                       ),
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 120.0,
+                        height: 120.0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: offsetXMd,
-                  ),
-                  CustomButton(
-                    width: 280.0,
-                    btnText: S.current.login,
-                    isLoading: _event!.value == LoginEvent.login,
-                    onPressed: () => _login(),
-                  ),
-                  if (_biometricProvider != null &&
-                      _biometricProvider!.isEnabled()) ...{
+                    const Spacer(),
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: _autoValidate,
+                      child: Container(
+                        padding: const EdgeInsets.all(offsetBase),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(offsetBase),
+                            boxShadow: [
+                              kTopLeftShadow,
+                              kBottomRightShadow,
+                            ]),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            S.current.email.thinText(),
+                            const SizedBox(
+                              height: offsetSm,
+                            ),
+                            CustomTextField(
+                              hintText: S.current.email,
+                              keyboardType: TextInputType.emailAddress,
+                              prefixIcon: const Icon(LineIcons.mailBulk),
+                              validator: (email) {
+                                return email!.validateEmail;
+                              },
+                              onSaved: (email) {
+                                _email = email!;
+                              },
+                            ),
+                            const SizedBox(
+                              height: offsetBase,
+                            ),
+                            S.current.password.thinText(),
+                            const SizedBox(
+                              height: offsetSm,
+                            ),
+                            CustomTextField(
+                              hintText: S.current.password,
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                              obscureText: _isSecurity,
+                              prefixIcon: const Icon(LineIcons.lock),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isSecurity = !_isSecurity;
+                                  });
+                                },
+                                child: _isSecurity
+                                    ? const Icon(LineIcons.eye)
+                                    : const Icon(LineIcons.eyeSlash),
+                              ),
+                              validator: (pass) {
+                                return pass!.validatePassword;
+                              },
+                              onSaved: (pass) {
+                                _pass = pass!;
+                              },
+                            ),
+                            const SizedBox(
+                              height: offsetSm,
+                            ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                Text(
+                                  S.current.forgotPassword,
+                                  style: CustomText.regular(
+                                    color: kAccentColor,
+                                    fontSize: fontSm,
+                                  ).copyWith(
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: offsetXMd,
+                    ),
+                    CustomButton(
+                      width: 280.0,
+                      btnText: S.current.login,
+                      isLoading: _event!.value == LoginEvent.login,
+                      onPressed: () => _login(user),
+                    ),
+                    if (_biometricProvider != null &&
+                        _biometricProvider!.isEnabled()) ...{
+                      const SizedBox(
+                        height: offsetBase,
+                      ),
+                      InkWell(
+                        onTap: () => _initBiometric(),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              _biometricProvider!.availableType() ==
+                                      BiometricType.face
+                                  ? 'assets/icons/ic_face_id.svg'
+                                  : 'assets/icons/ic_touch_id.svg',
+                              color: Colors.white,
+                              width: 18.0,
+                              height: 18.0,
+                            ),
+                            const SizedBox(
+                              width: offsetBase,
+                            ),
+                            (_biometricProvider!.availableType() ==
+                                        BiometricType.face
+                                    ? S.current.loginFaceID
+                                    : S.current.loginTouchID)
+                                .mediumText(
+                              fontSize: fontSm,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    },
+                    const Spacer(),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () => _googleLogin(),
+                          child: GoogleButton(
+                            isLoading: _event!.value == LoginEvent.google,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: offsetXMd,
+                        ),
+                        InkWell(
+                          onTap: () => _appleLogin(),
+                          child: AppleButton(
+                            isLoading: _event!.value == LoginEvent.apple,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: offsetXMd,
+                        ),
+                        InkWell(
+                          onTap: () => _facebookLogin(),
+                          child: FacebookButton(
+                            isLoading: _event!.value == LoginEvent.facebook,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          S.current.notAccount,
+                          style: kTextRegular,
+                        ),
+                        const SizedBox(
+                          width: offsetSm,
+                        ),
+                        InkWell(
+                          onTap: () => NavigatorProvider.of(context).push(
+                            screen: const RegisterScreen(),
+                          ),
+                          child: Text(
+                            S.current.register,
+                            style: CustomText.regular(
+                              color: kAccentColor,
+                            ).copyWith(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: offsetBase,
                     ),
-                    InkWell(
-                      onTap: () => _initBiometric(),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            _biometricProvider!.availableType() ==
-                                    BiometricType.face
-                                ? 'assets/icons/ic_face_id.svg'
-                                : 'assets/icons/ic_touch_id.svg',
-                            color: Colors.white,
-                            width: 18.0,
-                            height: 18.0,
-                          ),
-                          const SizedBox(
-                            width: offsetBase,
-                          ),
-                          (_biometricProvider!.availableType() ==
-                                      BiometricType.face
-                                  ? S.current.loginFaceID
-                                  : S.current.loginTouchID)
-                              .mediumText(
-                            fontSize: fontSm,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  },
-                  const Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: () => _googleLogin(),
-                        child: GoogleButton(
-                          isLoading: _event!.value == LoginEvent.google,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: offsetXMd,
-                      ),
-                      InkWell(
-                        onTap: () => _appleLogin(),
-                        child: AppleButton(
-                          isLoading: _event!.value == LoginEvent.apple,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: offsetXMd,
-                      ),
-                      InkWell(
-                        onTap: () => _facebookLogin(),
-                        child: FacebookButton(
-                          isLoading: _event!.value == LoginEvent.facebook,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        S.current.notAccount,
-                        style: kTextRegular,
-                      ),
-                      const SizedBox(
-                        width: offsetSm,
-                      ),
-                      InkWell(
-                        onTap: () => NavigatorProvider.of(context).push(
-                          screen: const RegisterScreen(),
-                        ),
-                        child: Text(
-                          S.current.register,
-                          style: CustomText.regular(
-                            color: kAccentColor,
-                          ).copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: offsetBase,
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -337,7 +341,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _event!.value = LoginEvent.none;
   }
 
-  void _login() async {
+  void _login(UserModel usrModel) async {
     if (_event!.value != LoginEvent.none) {
       DialogProvider.of(context).kShowProcessingDialog();
       return;
@@ -359,7 +363,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (resp != null) {
       if (resp['ret'] == 10000) {
         var userJson = resp['result'];
-        var usrModel = UserModel.fromJson(userJson);
+        usrModel.setFromJson(userJson);
         if (kDebugMode) {
           print('[Login] user : ${usrModel.toJson()}');
         }
@@ -392,9 +396,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (resp != null) {
       if (resp['ret'] == 10000) {
         var userJson = resp['result'];
-        var usrModel = UserModel.fromJson(userJson);
+        Provider.of<UserModel>(context, listen: false).setFromJson(userJson);
         NavigatorProvider.of(context).push(
-          screen: MainScreen(userModel: usrModel),
+          screen: const MainScreen(),
         );
       } else {
         DialogProvider.of(context).showSnackBar(

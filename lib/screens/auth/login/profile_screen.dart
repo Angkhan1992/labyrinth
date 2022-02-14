@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
     NavigatorProvider.of(context).push(
-      screen: MainScreen(userModel: widget.userModel),
+      screen: const MainScreen(),
     );
   }
 }

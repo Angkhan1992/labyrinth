@@ -116,7 +116,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
 
   void _next() {
     NavigatorProvider.of(context).push(
-      screen: MainScreen(userModel: widget.userModel),
+      screen: const MainScreen(),
       replace: true,
     );
   }

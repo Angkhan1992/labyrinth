@@ -6,9 +6,7 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
-class GameProvider {
-  String title = S.current.game_env;
-  List<Map<String, dynamic>> setting = [];
+class GameModel extends ChangeNotifier {
   List<List<String>> blockTypes = [
     [
       'assets/images/brick_01.png',
@@ -36,6 +34,15 @@ class GameProvider {
       'assets/images/wood_03.png',
     ],
   ];
+
+  List<String> blockNames = [
+    'Brick',
+    'Granitic',
+    'Rock',
+    'Stone',
+    'Wood',
+  ];
+
   List<Color> backColors = [
     Colors.white,
     Colors.lightBlueAccent,
@@ -50,17 +57,21 @@ class GameProvider {
     CustomColor.primaryColor(opacity: 0.3),
   ];
 
-  GameProvider();
+  String title = S.current.game_env;
+  List<Map<String, dynamic>> _setting = [];
 
-  factory GameProvider.instance() {
-    return GameProvider()..init();
+  GameModel();
+
+  factory GameModel.instance() {
+    return GameModel()..init();
   }
 
-  void init() async {
+  Future<void> init() async {
     String tileIndex = await SharedProvider().getSettingTile();
     int backIndex = await SharedProvider().getBackColor();
     int hoverIndex = await SharedProvider().getHoverColor();
-    setting = [
+
+    _setting = [
       {
         'title': S.current.type_block_title,
         'desc': S.current.type_block_desc,
@@ -88,7 +99,19 @@ class GameProvider {
     ];
   }
 
-  Widget getSettingWidget() {
+  Future<void> setTileBack(List<int> indexs) async {
+    await SharedProvider().setSettingTile(indexs.join(','));
+    _setting[0] = {
+      'title': S.current.type_block_title,
+      'desc': S.current.type_block_desc,
+      'avatar': blockTypes[indexs[0]][indexs[1]],
+    };
+    notifyListeners();
+  }
+
+  Widget getSettingWidget({
+    Function()? detail,
+  }) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(offsetSm),
@@ -98,46 +121,61 @@ class GameProvider {
           horizontal: offsetBase,
           vertical: offsetSm,
         ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                title.semiBoldText(fontSize: fontMd),
-                const Icon(Icons.arrow_right),
-              ],
-            ),
-            const SizedBox(
-              height: offsetSm,
-            ),
-            for (var item in setting) ...{
-              SettingItem(
-                title: item['title'],
-                desc: item['desc'],
-                avatar: item['avatar'] != null
-                    ? Image.asset(
-                        item['avatar'],
-                        width: offsetXMd,
-                        height: offsetXMd,
-                      )
-                    : item['color'] != null
-                        ? Container(
-                            width: offsetXMd,
-                            height: offsetXMd,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(offsetXSm),
-                              border: Border.all(
-                                color: kAccentColor,
-                              ),
-                              color: item['color'],
-                            ),
-                          )
-                        : null,
+        child: InkWell(
+          onTap: detail,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  title.semiBoldText(fontSize: fontMd),
+                  const Icon(Icons.arrow_right),
+                ],
               ),
-            },
-          ],
+              const SizedBox(
+                height: offsetSm,
+              ),
+              for (var item in _setting) ...{
+                SettingItem(
+                  title: item['title'],
+                  desc: item['desc'],
+                  avatar: item['avatar'] != null
+                      ? Image.asset(
+                          item['avatar'],
+                          width: offsetXMd,
+                          height: offsetXMd,
+                        )
+                      : item['color'] != null
+                          ? Container(
+                              width: offsetXMd,
+                              height: offsetXMd,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(offsetXSm),
+                                border: Border.all(
+                                  color: kAccentColor,
+                                ),
+                                color: item['color'],
+                              ),
+                            )
+                          : null,
+                ),
+              },
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget tileWidget() {
+    return Image.asset(
+      _setting[0]['avatar'],
+      width: offsetXMd,
+      height: offsetXMd,
+    );
+  }
+
+  Color backgroundColor() {
+    return _setting[1]['color'];
   }
 }

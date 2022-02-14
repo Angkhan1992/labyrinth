@@ -1,85 +1,83 @@
 name: labyrinth
 description: A new Flutter project.
-
-publish_to: 'none'
-
+publish_to: none
 version: 1.0.0+1
-
 environment:
-  sdk: ">=2.15.0 <3.0.0"
-
+    sdk: '>=2.15.0 <3.0.0'
 dependencies:
-  flutter:
-    sdk: flutter
+    flutter:
+        sdk: flutter
+    cupertino_icons: ^1.0.4
+    line_icons: any
+    http: any
+    flutter_vibrate: any
+    cached_network_image: any
+    local_auth: any
+    permission_handler: any
+    share: any
+    flutter_svg: any
+    shared_preferences: any
+    qr_flutter: ^4.0.0
+    flutter_inapp_purchase: any
+    image_picker: any
+    badges: any
+    in_app_purchase: any
+    provider: any
+    
+    google_sign_in: any
+    sign_in_with_apple: any
+    jwt_decode: any
+    
+    socket_io_client: any
+    flutter_simple_dependency_injection: any
+    flutter_local_notifications: any
 
-  cupertino_icons: ^1.0.4
-
-  line_icons: any
-  http: any
-  flutter_vibrate: any
-  cached_network_image: any
-  local_auth: any
-  permission_handler: any
-  share: any
-  flutter_svg: any
-  shared_preferences: any
-  qr_flutter: ^4.0.0
-  flutter_inapp_purchase: any
-  image_picker: any
-  badges: any
-#  encrypt: any
-
-  in_app_purchase: any
-
-  google_sign_in: any
-  sign_in_with_apple: any
-  jwt_decode: any
-
-  socket_io_client: any
-  flutter_simple_dependency_injection: any
-  flutter_local_notifications: any
-
-  intl: any
-  flutter_localizations:
-    sdk: flutter
+    intl: any
+    flutter_localizations:
+        sdk: flutter
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  flutter_lints: ^1.0.4
-
+    flutter_test:
+        sdk: flutter
+    flutter_lints: ^1.0.4
 flutter:
-  uses-material-design: true
-
-  assets:
-    - assets/images/
-    - assets/fonts/
-    - assets/icons/
-    - assets/jsons/
-
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/poppins_thin.ttf
-          weight: 100
-        - asset: assets/fonts/poppins_extra_light.ttf
-          weight: 200
-        - asset: assets/fonts/poppins_light.ttf
-          weight: 300
-        - asset: assets/fonts/poppins_regular.ttf
-          weight: 400
-        - asset: assets/fonts/poppins_medium.ttf
-          weight: 500
-        - asset: assets/fonts/poppins_semi_bold.ttf
-          weight: 600
-        - asset: assets/fonts/poppins_bold.ttf
-          weight: 700
-        - asset: assets/fonts/poppins_extra_bold.ttf
-          weight: 800
-        - asset: assets/fonts/poppins_black.ttf
-          weight: 900
-
+    uses-material-design: true
+    assets:
+        - assets/images/
+        - assets/fonts/
+        - assets/icons/
+        - assets/jsons/
+    fonts:
+        -
+            family: Poppins
+            fonts:
+                -
+                    asset: assets/fonts/poppins_thin.ttf
+                    weight: 100
+                -
+                    asset: assets/fonts/poppins_extra_light.ttf
+                    weight: 200
+                -
+                    asset: assets/fonts/poppins_light.ttf
+                    weight: 300
+                -
+                    asset: assets/fonts/poppins_regular.ttf
+                    weight: 400
+                -
+                    asset: assets/fonts/poppins_medium.ttf
+                    weight: 500
+                -
+                    asset: assets/fonts/poppins_semi_bold.ttf
+                    weight: 600
+                -
+                    asset: assets/fonts/poppins_bold.ttf
+                    weight: 700
+                -
+                    asset: assets/fonts/poppins_extra_bold.ttf
+                    weight: 800
+                -
+                    asset: assets/fonts/poppins_black.ttf
+                    weight: 900
 flutter_intl:
-  main_locale: en_US
-  enabled: true
+    main_locale: en_US
+    enabled: true

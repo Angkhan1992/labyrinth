@@ -2,8 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
-import 'package:labyrinth/models/user_model.dart';
-import 'package:labyrinth/providers/game_provider.dart';
 import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:labyrinth/screens/blog/blog_screen.dart';
 import 'package:labyrinth/screens/home/home_screen.dart';
@@ -15,10 +13,8 @@ import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/appbar.dart';
 
 class MainScreen extends StatefulWidget {
-  final UserModel userModel;
   const MainScreen({
     Key? key,
-    required this.userModel,
   }) : super(key: key);
 
   @override
@@ -28,39 +24,18 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final _event = ValueNotifier(0);
 
-  UserModel? _user;
-  GameProvider? _gameProvider;
-
   @override
   void initState() {
     super.initState();
-
-    _user = widget.userModel;
-    _gameProvider = GameProvider.instance();
   }
 
   @override
   Widget build(BuildContext context) {
     var screens = [
-      HomeScreen(
-        userModel: _user!,
-      ),
-      WorldScreen(
-        userModel: _user!,
-      ),
-      BlogScreen(
-        userModel: _user!,
-      ),
-      SettingScreen(
-        userModel: _user!,
-        gameProvider: _gameProvider!,
-        update: (user, game) {
-          setState(() {
-            _user = user;
-            _gameProvider = game;
-          });
-        },
-      ),
+      const HomeScreen(),
+      const WorldScreen(),
+      const BlogScreen(),
+      const SettingScreen(),
     ];
     return WillPopScope(
       onWillPop: () async => false,

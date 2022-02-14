@@ -6,10 +6,8 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class WorldScreen extends StatefulWidget {
-  final UserModel userModel;
   const WorldScreen({
     Key? key,
-    required this.userModel,
   }) : super(key: key);
 
   @override

@@ -6,10 +6,8 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class NotificationScreen extends StatefulWidget {
-  final UserModel userModel;
   const NotificationScreen({
     Key? key,
-    required this.userModel,
   }) : super(key: key);
 
   @override

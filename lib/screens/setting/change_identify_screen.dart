@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -10,17 +12,14 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/textfield.dart';
+import 'package:provider/provider.dart';
 
 class ChangeIdentifyScreen extends StatefulWidget {
-  final UserModel userModel;
-  final Function(UserModel)? updateUser;
   final bool isEmail;
 
   const ChangeIdentifyScreen({
     Key? key,
-    required this.userModel,
     required this.isEmail,
-    required this.updateUser,
   }) : super(key: key);
 
   @override
@@ -51,7 +50,6 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
   void initState() {
     super.initState();
 
-    _user = widget.userModel;
     _passController.addListener(() {
       var pwd = _passController.text;
 
@@ -62,6 +60,10 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
       _hasLength = pwd.length > 7;
 
       setState(() {});
+    });
+
+    Timer.run(() {
+      _user = Provider.of<UserModel>(context, listen: false);
     });
   }
 
@@ -310,8 +312,7 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
     );
     if (resp != null && resp['ret'] == 10000) {
       _event.value = ChangeIdentifyEvent.success;
-      _user = UserModel.fromJson(resp['result']);
-      widget.updateUser!(_user!);
+      _user!.setFromJson(resp['result']);
       Future.delayed(
           const Duration(seconds: 3), () => Navigator.of(context).pop());
     } else {

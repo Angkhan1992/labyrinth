@@ -213,7 +213,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             }
           }
           NavigatorProvider.of(context).push(
-            screen: MainScreen(userModel: widget.userModel),
+            screen: const MainScreen(),
           );
         }
       } else {
