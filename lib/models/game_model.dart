@@ -34,7 +34,6 @@ class GameModel extends ChangeNotifier {
       'assets/images/wood_03.png',
     ],
   ];
-
   List<String> blockNames = [
     'Brick',
     'Granitic',
@@ -42,7 +41,6 @@ class GameModel extends ChangeNotifier {
     'Stone',
     'Wood',
   ];
-
   List<Color> backColors = [
     Colors.white,
     Colors.lightBlueAccent,
@@ -58,35 +56,35 @@ class GameModel extends ChangeNotifier {
   ];
 
   String title = S.current.game_env;
+
   List<Map<String, dynamic>> _setting = [];
+  String _tileIndex = '';
+  int _backIndex = 0;
+  int _hoverIndex = 0;
 
   GameModel();
 
-  factory GameModel.instance() {
-    return GameModel()..init();
-  }
-
   Future<void> init() async {
-    String tileIndex = await SharedProvider().getSettingTile();
-    int backIndex = await SharedProvider().getBackColor();
-    int hoverIndex = await SharedProvider().getHoverColor();
+    _tileIndex = await SharedProvider().getSettingTile();
+    _backIndex = await SharedProvider().getBackColor();
+    _hoverIndex = await SharedProvider().getHoverColor();
 
     _setting = [
       {
         'title': S.current.type_block_title,
         'desc': S.current.type_block_desc,
-        'avatar': blockTypes[int.parse(tileIndex.split(',')[0])]
-            [int.parse(tileIndex.split(',')[1])],
+        'avatar': blockTypes[int.parse(_tileIndex.split(',')[0])]
+            [int.parse(_tileIndex.split(',')[1])],
       },
       {
         'title': S.current.back_color_title,
         'desc': S.current.back_color_desc,
-        'color': backColors[backIndex],
+        'color': backColors[_backIndex],
       },
       {
         'title': S.current.hover_color_title,
         'desc': S.current.hover_color_desc,
-        'color': hoverColors[hoverIndex],
+        'color': hoverColors[_hoverIndex],
       },
       {
         'title': S.current.option_time_title,
@@ -97,16 +95,54 @@ class GameModel extends ChangeNotifier {
         'desc': S.current.option_bot_desc,
       },
     ];
+
+    notifyListeners();
   }
 
-  Future<void> setTileBack(List<int> indexs) async {
-    await SharedProvider().setSettingTile(indexs.join(','));
+  Future<void> setTileBack(List<int> index) async {
+    await SharedProvider().setSettingTile(index.join(','));
+    _tileIndex = index.join(',');
     _setting[0] = {
       'title': S.current.type_block_title,
       'desc': S.current.type_block_desc,
-      'avatar': blockTypes[indexs[0]][indexs[1]],
+      'avatar': blockTypes[index[0]][index[1]],
     };
     notifyListeners();
+  }
+
+  Future<void> setBackColor(int backColor) async {
+    await SharedProvider().setBackColor(backColor);
+    _backIndex = backColor;
+    _setting[1] = {
+      'title': S.current.back_color_title,
+      'desc': S.current.back_color_desc,
+      'color': backColors[_backIndex],
+    };
+    notifyListeners();
+  }
+
+  Future<void> setHoverColor(int hoverColor) async {
+    await SharedProvider().setHoverColor(hoverColor);
+    _hoverIndex = hoverColor;
+    _setting[2] = {
+      'title': S.current.hover_color_title,
+      'desc': S.current.hover_color_desc,
+      'color': hoverColors[_hoverIndex],
+    };
+    notifyListeners();
+  }
+
+  List<int> getTileBack() {
+    if (_tileIndex.isEmpty) return [0, 0];
+    return _tileIndex.split(',').map((e) => int.parse(e)).toList();
+  }
+
+  int getBackIndex() {
+    return _backIndex;
+  }
+
+  int getHoverIndex() {
+    return _hoverIndex;
   }
 
   Widget getSettingWidget({

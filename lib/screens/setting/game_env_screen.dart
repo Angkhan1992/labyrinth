@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/block_model.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:provider/provider.dart';
 
@@ -18,63 +20,66 @@ class GameEnvScreen extends StatefulWidget {
 }
 
 class _GameEnvScreenState extends State<GameEnvScreen> {
-  GameModel? _gameProvider;
-
-  final _tileBack = ValueNotifier([0, 0]);
+  BlockModel? _blockModel;
 
   final List<List<int>> _titleIndex = [
     [1, 0, 1],
     [1, 0, 0],
     [1, 0, 1],
   ];
-  BlockModel? _blockModel;
 
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    Timer.run(() {
-      _gameProvider = Provider.of<GameModel>(context, listen: false);
-      _blockModel = BlockModel.of(_gameProvider!, _titleIndex);
-    });
+    Timer.run(() => _initData());
+  }
+
+  void _initData() async {
+    var gameProvider = Provider.of<GameModel>(context, listen: false);
+    await gameProvider.init();
+    _blockModel = BlockModel.of(gameProvider, _titleIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        title: _gameProvider!.title.semiBoldText(
-          fontSize: fontXMd,
-          color: kAccentColor,
-        ),
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: offsetSm,
-            vertical: offsetXMd,
+    return Consumer<GameModel>(
+      builder: (context, game, child) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            title: game.title.semiBoldText(
+              fontSize: fontXMd,
+              color: kAccentColor,
+            ),
           ),
-          child: Column(
-            children: [
-              ValueListenableBuilder(
-                valueListenable: _tileBack,
-                builder: (context, value, child) {
-                  return Column(
+          body: SingleChildScrollView(
+            controller: _scrollController,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: offsetSm,
+                vertical: offsetXMd,
+              ),
+              child: Column(
+                children: [
+                  Column(
                     children: [
-                      _blockModel!.tileWidget(),
+                      if (_blockModel != null) _blockModel!.tileWidget(),
                       Container(
                         margin: const EdgeInsets.only(top: offsetBase),
                         padding: const EdgeInsets.all(offsetBase),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(offsetSm),
+                          boxShadow: [
+                            kTopLeftShadow,
+                            kBottomRightShadow,
+                          ],
                         ),
                         child: Column(
                           children: [
-                            'Block Image'.mediumText(),
+                            S.current.block_image.mediumText(),
                             const SizedBox(
                               height: offsetBase,
                             ),
@@ -89,26 +94,19 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        for (var image in _gameProvider!
-                                            .blockTypes[index]) ...{
+                                        for (var image
+                                            in game.blockTypes[index]) ...{
                                           ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(offsetSm),
                                             child: InkWell(
-                                              onTap: () async {
+                                              onTap: () {
                                                 if (index > 0) return;
-                                                _gameProvider!.setTileBack([
+                                                game.setTileBack([
                                                   index,
-                                                  _gameProvider!
-                                                      .blockTypes[index]
+                                                  game.blockTypes[index]
                                                       .indexOf(image)
                                                 ]);
-                                                _tileBack.value = [
-                                                  index,
-                                                  _gameProvider!
-                                                      .blockTypes[index]
-                                                      .indexOf(image)
-                                                ];
                                               },
                                               child: Stack(
                                                 children: [
@@ -130,11 +128,11 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
                                                       ),
                                                     ),
                                                   if (index ==
-                                                          _tileBack.value[0] &&
-                                                      _gameProvider!
-                                                              .blockTypes[index]
+                                                          game.getTileBack()[
+                                                              0] &&
+                                                      game.blockTypes[index]
                                                               .indexOf(image) ==
-                                                          _tileBack.value[1])
+                                                          game.getTileBack()[1])
                                                     const Positioned.fill(
                                                       child: Center(
                                                         child: Icon(
@@ -163,110 +161,129 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
                         ),
                       ),
                     ],
-                  );
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                  top: offsetBase,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: offsetBase,
-                  vertical: offsetBase,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(offsetSm),
-                ),
-                child: Column(
-                  children: [
-                    'Background Color'.mediumText(),
-                    const SizedBox(
-                      height: offsetBase,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: offsetBase,
                     ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      controller: _scrollController,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: offsetBase,
+                      vertical: offsetBase,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(offsetSm),
+                      boxShadow: [
+                        kTopLeftShadow,
+                        kBottomRightShadow,
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        S.current.background_color.mediumText(),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          controller: _scrollController,
+                          itemBuilder: (context, index) {
+                            return Column(
                               children: [
-                                for (var i = 0; i < 3; i++) ...{
-                                  ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(offsetSm),
-                                    child: InkWell(
-                                      onTap: () async {},
-                                      child: Container(
-                                        width: 60.0,
-                                        height: 60.0,
-                                        decoration: BoxDecoration(
-                                          color: _gameProvider!
-                                              .backColors[index * 3 + i],
-                                          border:
-                                              Border.all(color: kAccentColor),
-                                          borderRadius:
-                                              BorderRadius.circular(offsetSm),
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.check,
-                                            color: kAccentColor,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    for (var i = 0; i < 3; i++) ...{
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(offsetSm),
+                                        child: InkWell(
+                                          onTap: () =>
+                                              game.setBackColor(index * 3 + i),
+                                          child: Container(
+                                            width: 60.0,
+                                            height: 60.0,
+                                            decoration: BoxDecoration(
+                                              color: game
+                                                  .backColors[index * 3 + i],
+                                              border: Border.all(
+                                                  color: kAccentColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      offsetSm),
+                                            ),
+                                            child: (index * 3 + i ==
+                                                    game.getBackIndex())
+                                                ? const Center(
+                                                    child: Icon(
+                                                      Icons.check,
+                                                      color: Colors.black,
+                                                    ),
+                                                  )
+                                                : null,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                },
+                                    },
+                                  ],
+                                ),
                               ],
-                            ),
-                          ],
-                        );
-                      },
-                      itemCount: 2,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Container(height: offsetSm);
-                      },
-                    ),
-                    const SizedBox(
-                      height: offsetBase,
-                    ),
-                    'Hover Color'.mediumText(),
-                    const SizedBox(
-                      height: offsetBase,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        for (var i = 0; i < 3; i++) ...{
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(offsetSm),
-                            child: InkWell(
-                              onTap: () async {},
-                              child: Container(
-                                width: 60.0,
-                                height: 60.0,
-                                decoration: BoxDecoration(
-                                  color: _gameProvider!.hoverColors[i],
-                                  border: Border.all(color: kAccentColor),
-                                  borderRadius: BorderRadius.circular(offsetSm),
+                            );
+                          },
+                          itemCount: 2,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Container(height: offsetSm);
+                          },
+                        ),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        S.current.hover_color.mediumText(),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            for (var i = 0; i < 3; i++) ...{
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(offsetSm),
+                                child: InkWell(
+                                  onTap: () => game.setHoverColor(i),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: game.hoverColors[i],
+                                      border: Border.all(color: kAccentColor),
+                                      borderRadius:
+                                          BorderRadius.circular(offsetSm),
+                                    ),
+                                    child: (i == game.getHoverIndex())
+                                        ? const Center(
+                                            child: Icon(
+                                              Icons.check,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        : null,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        },
+                            },
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

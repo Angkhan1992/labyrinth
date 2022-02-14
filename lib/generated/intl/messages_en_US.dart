@@ -34,9 +34,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "You choose tile back color of Labyrinth."),
         "back_color_title":
             MessageLookupByLibrary.simpleMessage("Background Color"),
+        "background_color":
+            MessageLookupByLibrary.simpleMessage("Background Color"),
         "beginner": MessageLookupByLibrary.simpleMessage("Beginner"),
         "birth": MessageLookupByLibrary.simpleMessage("DOB"),
         "birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
+        "block_image": MessageLookupByLibrary.simpleMessage("Block Image"),
         "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "by_camera": MessageLookupByLibrary.simpleMessage("By Camera"),
         "by_gallery": MessageLookupByLibrary.simpleMessage("By Gallery"),
@@ -88,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "has_upcase":
             MessageLookupByLibrary.simpleMessage("· Uppercase at least one"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "hover_color": MessageLookupByLibrary.simpleMessage("Hover Color"),
         "hover_color_desc": MessageLookupByLibrary.simpleMessage(
             "You choose tile hover color of Labyrinth."),
         "hover_color_title":

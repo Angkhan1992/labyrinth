@@ -92,7 +92,7 @@ class SharedProvider {
     return prefs.getInt(keyBackColor) ?? 0;
   }
 
-  Future setBlackColor(int value) async {
+  Future setBackColor(int value) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setInt(keyBackColor, value);
   }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
-import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/screens/setting/account_screen.dart';
@@ -24,73 +23,71 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  GameModel? _gameProvider;
-
   @override
   void initState() {
     super.initState();
-    Timer.run(() {
-      _gameProvider = Provider.of<GameModel>(context, listen: false);
-      _gameProvider!.init();
-    });
+
+    Timer.run(() => _initData());
+  }
+
+  void _initData() async {
+    var gameProvider = Provider.of<GameModel>(context, listen: false);
+    await gameProvider.init();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserModel>(
-      builder: (context, user, child) {
-        return Consumer<GameModel>(
-          builder: (context, game, child) {
-            return Scaffold(
-              appBar: AppBar(
-                elevation: 1,
-                title: S.current.setting.semiBoldText(
-                  fontSize: fontXMd,
-                  color: kAccentColor,
-                ),
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.account_circle_outlined,
-                    color: kAccentColor,
-                  ),
-                  onPressed: () => NavigatorProvider.of(context).push(
-                    screen: const AccountScreen(),
-                  ),
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.notifications_active_outlined,
-                      color: kAccentColor,
-                    ),
-                    onPressed: () => NavigatorProvider.of(context).push(
-                      screen: NotificationScreen(),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        title: S.current.setting.semiBoldText(
+          fontSize: fontXMd,
+          color: kAccentColor,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.account_circle_outlined,
+            color: kAccentColor,
+          ),
+          onPressed: () => NavigatorProvider.of(context).push(
+            screen: const AccountScreen(),
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_active_outlined,
+              color: kAccentColor,
+            ),
+            onPressed: () => NavigatorProvider.of(context).push(
+              screen: const NotificationScreen(),
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: offsetSm,
+            vertical: offsetXMd,
+          ),
+          child: Consumer<GameModel>(
+            builder: (context, game, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  game.getSettingWidget(
+                    detail: () => NavigatorProvider.of(context).push(
+                      screen: const GameEnvScreen(),
                     ),
                   ),
                 ],
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: offsetSm,
-                    vertical: offsetXMd,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _gameProvider!.getSettingWidget(
-                        detail: () => NavigatorProvider.of(context).push(
-                          screen: const GameEnvScreen(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

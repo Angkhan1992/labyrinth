@@ -120,5 +120,8 @@
   "option_time_title" : "Time Option",
   "option_time_desc" : "Unlimited time of Labyrinth.",
   "option_bot_title" : "Bot Option",
-  "option_bot_desc" : "Random Bot of Labyrinth."
+  "option_bot_desc" : "Random Bot of Labyrinth.",
+  "block_image" : "Block Image",
+  "background_color" : "Background Color",
+  "hover_color" : "Hover Color"
 }

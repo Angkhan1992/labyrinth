@@ -1269,6 +1269,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Block Image`
+  String get block_image {
+    return Intl.message(
+      'Block Image',
+      name: 'block_image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Background Color`
+  String get background_color {
+    return Intl.message(
+      'Background Color',
+      name: 'background_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hover Color`
+  String get hover_color {
+    return Intl.message(
+      'Hover Color',
+      name: 'hover_color',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

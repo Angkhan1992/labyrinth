@@ -29,7 +29,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserModel()),
-        Provider(create: (context) => GameModel()),
+        ChangeNotifierProvider(create: (context) => GameModel()..init()),
       ],
       child: const MyApp(),
     ),
