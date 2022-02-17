@@ -123,5 +123,17 @@
   "option_bot_desc" : "Random Bot of Labyrinth.",
   "block_image" : "Block Image",
   "background_color" : "Background Color",
-  "hover_color" : "Hover Color"
+  "hover_color" : "Hover Color",
+  "membership_awards" : "Membership & Awards",
+  "membership" : "Membership",
+  "membership_detail" : "You are a free member now.",
+  "upgrade" : "Upgrade",
+  "awards" : "Awards",
+  "award_detail" : "You got some below awards.",
+  "match_game" : "Users Match",
+  "view_all" : "View All",
+  "term_condition" : "Term and Conditions",
+  "privacy_police" : "Privacy and Police",
+  "guide_agreement" : "User Guide and Agreement",
+  "detail" : "Detail"
 }

@@ -7,6 +7,8 @@ import 'package:labyrinth/themes/colors.dart';
 String kAppName = S.current.appName;
 const kFontFamily = 'Poppins';
 
+// const kSocketUrl = 'ws://51.89.17.207:52525';
+const kSocketUrl = 'ws://192.168.1.5:52525';
 const kBaseUrl = 'https://labyrinth.laodev.info/';
 const kPackageName = 'com.laodev.labyrinth';
 

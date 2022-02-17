@@ -155,7 +155,7 @@ class GameModel extends ChangeNotifier {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: offsetBase,
-          vertical: offsetSm,
+          vertical: offsetBase,
         ),
         child: InkWell(
           onTap: detail,
@@ -213,5 +213,9 @@ class GameModel extends ChangeNotifier {
 
   Color backgroundColor() {
     return _setting[1]['color'];
+  }
+
+  Color hoverColor() {
+    return _setting[2]['color'];
   }
 }

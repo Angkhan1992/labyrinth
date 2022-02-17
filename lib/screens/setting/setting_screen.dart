@@ -11,6 +11,7 @@ import 'package:labyrinth/screens/setting/notification_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/setting/setting_widget.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -80,6 +81,107 @@ class _SettingScreenState extends State<SettingScreen> {
                   game.getSettingWidget(
                     detail: () => NavigatorProvider.of(context).push(
                       screen: const GameEnvScreen(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: offsetSm,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(offsetSm),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: offsetBase,
+                        vertical: offsetBase,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              S.current.membership_awards
+                                  .semiBoldText(fontSize: fontMd),
+                              const Spacer(),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: offsetSm,
+                          ),
+                          SettingItem(
+                            title: S.current.membership,
+                            desc: S.current.membership_detail,
+                            avatar: S.current.upgrade.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                          SettingItem(
+                            title: S.current.awards,
+                            desc: S.current.award_detail,
+                            avatar: S.current.view_all.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: offsetSm,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(offsetSm),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: offsetBase,
+                        vertical: offsetBase,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              S.current.term_condition
+                                  .semiBoldText(fontSize: fontMd),
+                              const Spacer(),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: offsetSm,
+                          ),
+                          SettingItem(
+                            title: S.current.term_condition,
+                            desc: S.current.membership_detail,
+                            avatar: S.current.detail.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                          SettingItem(
+                            title: S.current.privacy_police,
+                            desc: S.current.award_detail,
+                            avatar: 'Detail'.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                          SettingItem(
+                            title: S.current.guide_agreement,
+                            desc: S.current.award_detail,
+                            avatar: S.current.detail.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -30,6 +30,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "almost_done": MessageLookupByLibrary.simpleMessage("Almost Done"),
         "appName": MessageLookupByLibrary.simpleMessage("Labyrinth"),
         "apple_user": MessageLookupByLibrary.simpleMessage("Apple User"),
+        "award_detail":
+            MessageLookupByLibrary.simpleMessage("You got some below awards."),
+        "awards": MessageLookupByLibrary.simpleMessage("Awards"),
         "back_color_desc": MessageLookupByLibrary.simpleMessage(
             "You choose tile back color of Labyrinth."),
         "back_color_title":
@@ -55,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "complete_profile":
             MessageLookupByLibrary.simpleMessage("Complete Profile"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
+        "detail": MessageLookupByLibrary.simpleMessage("Detail"),
         "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "emailEmpty":
@@ -80,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "gaming": MessageLookupByLibrary.simpleMessage("Gaming"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
         "google_user": MessageLookupByLibrary.simpleMessage("Google User"),
+        "guide_agreement":
+            MessageLookupByLibrary.simpleMessage("User Guide and Agreement"),
         "has_length":
             MessageLookupByLibrary.simpleMessage("· At least 8 characters"),
         "has_lowcase":
@@ -111,8 +117,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTouchID":
             MessageLookupByLibrary.simpleMessage("Login with Touch ID"),
         "male": MessageLookupByLibrary.simpleMessage("Male"),
+        "match_game": MessageLookupByLibrary.simpleMessage("Users Match"),
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
         "meet_friend": MessageLookupByLibrary.simpleMessage("Meet Friend"),
+        "membership": MessageLookupByLibrary.simpleMessage("Membership"),
+        "membership_awards":
+            MessageLookupByLibrary.simpleMessage("Membership & Awards"),
+        "membership_detail":
+            MessageLookupByLibrary.simpleMessage("You are a free member now."),
         "my_qr_code": MessageLookupByLibrary.simpleMessage("My QR Code"),
         "new_email": MessageLookupByLibrary.simpleMessage("New Email"),
         "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
@@ -146,6 +158,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Permission Denied"),
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),
         "price": MessageLookupByLibrary.simpleMessage("Price"),
+        "privacy_police":
+            MessageLookupByLibrary.simpleMessage("Privacy and Police"),
         "processingWaring":
             MessageLookupByLibrary.simpleMessage("Processing now..."),
         "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
@@ -173,6 +187,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Successfully register to Labyrinth"),
         "success_register_detail": MessageLookupByLibrary.simpleMessage(
             "You can try to login and join to Labyrinth"),
+        "term_condition":
+            MessageLookupByLibrary.simpleMessage("Term and Conditions"),
         "type_block_desc": MessageLookupByLibrary.simpleMessage(
             "You choose block image of Labyrinth."),
         "type_block_title": MessageLookupByLibrary.simpleMessage("Block Type"),
@@ -185,6 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Update User ID"),
         "update_user_name":
             MessageLookupByLibrary.simpleMessage("Update User Name"),
+        "upgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
         "userID": MessageLookupByLibrary.simpleMessage("User ID"),
         "user_information":
             MessageLookupByLibrary.simpleMessage("User Information"),
@@ -192,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyCode": MessageLookupByLibrary.simpleMessage("Verify Code"),
         "verify_detail": MessageLookupByLibrary.simpleMessage(
             "We just sent a verification code\nto your email"),
+        "view_all": MessageLookupByLibrary.simpleMessage("View All"),
         "waring": MessageLookupByLibrary.simpleMessage("Waring"),
         "what_level":
             MessageLookupByLibrary.simpleMessage("Experience of Labyrinth?"),

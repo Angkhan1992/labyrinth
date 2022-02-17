@@ -1299,6 +1299,126 @@ class S {
       args: [],
     );
   }
+
+  /// `Membership & Awards`
+  String get membership_awards {
+    return Intl.message(
+      'Membership & Awards',
+      name: 'membership_awards',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Membership`
+  String get membership {
+    return Intl.message(
+      'Membership',
+      name: 'membership',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are a free member now.`
+  String get membership_detail {
+    return Intl.message(
+      'You are a free member now.',
+      name: 'membership_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upgrade`
+  String get upgrade {
+    return Intl.message(
+      'Upgrade',
+      name: 'upgrade',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Awards`
+  String get awards {
+    return Intl.message(
+      'Awards',
+      name: 'awards',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You got some below awards.`
+  String get award_detail {
+    return Intl.message(
+      'You got some below awards.',
+      name: 'award_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users Match`
+  String get match_game {
+    return Intl.message(
+      'Users Match',
+      name: 'match_game',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View All`
+  String get view_all {
+    return Intl.message(
+      'View All',
+      name: 'view_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Term and Conditions`
+  String get term_condition {
+    return Intl.message(
+      'Term and Conditions',
+      name: 'term_condition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy and Police`
+  String get privacy_police {
+    return Intl.message(
+      'Privacy and Police',
+      name: 'privacy_police',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Guide and Agreement`
+  String get guide_agreement {
+    return Intl.message(
+      'User Guide and Agreement',
+      name: 'guide_agreement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Detail`
+  String get detail {
+    return Intl.message(
+      'Detail',
+      name: 'detail',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

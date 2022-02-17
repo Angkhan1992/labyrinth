@@ -108,40 +108,47 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
                                                       .indexOf(image)
                                                 ]);
                                               },
-                                              child: Stack(
-                                                children: [
-                                                  Image.asset(
-                                                    image,
-                                                    width: 60.0,
-                                                    height: 60.0,
-                                                  ),
-                                                  if (index > 0)
-                                                    Positioned.fill(
-                                                      child: Container(
-                                                        color: Colors.black54,
-                                                        child: const Center(
+                                              child: SizedBox(
+                                                width: 60.0,
+                                                height: 60.0,
+                                                child: Stack(
+                                                  children: [
+                                                    Image.asset(
+                                                      image,
+                                                      width: 60.0,
+                                                      height: 60.0,
+                                                    ),
+                                                    if (index > 0)
+                                                      Positioned.fill(
+                                                        child: Container(
+                                                          color: Colors.black54,
+                                                          child: const Center(
+                                                            child: Icon(
+                                                              Icons.lock,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    if (index ==
+                                                            game.getTileBack()[
+                                                                0] &&
+                                                        game.blockTypes[index]
+                                                                .indexOf(
+                                                                    image) ==
+                                                            game.getTileBack()[
+                                                                1])
+                                                      const Positioned.fill(
+                                                        child: Center(
                                                           child: Icon(
-                                                            Icons.lock,
+                                                            Icons.check,
                                                             color: Colors.white,
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  if (index ==
-                                                          game.getTileBack()[
-                                                              0] &&
-                                                      game.blockTypes[index]
-                                                              .indexOf(image) ==
-                                                          game.getTileBack()[1])
-                                                    const Positioned.fill(
-                                                      child: Center(
-                                                        child: Icon(
-                                                          Icons.check,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -273,6 +280,52 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
                                 ),
                               ),
                             },
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: offsetBase,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: offsetBase,
+                      vertical: offsetBase,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(offsetSm),
+                      boxShadow: [
+                        kTopLeftShadow,
+                        kBottomRightShadow,
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        S.current.option_time_title.mediumText(),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        Row(
+                          children: [
+                            S.current.option_time_desc
+                                .regularText(fontSize: fontSm),
+                            const Spacer(),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        S.current.option_bot_title.mediumText(),
+                        const SizedBox(
+                          height: offsetBase,
+                        ),
+                        Row(
+                          children: [
+                            S.current.option_bot_desc
+                                .regularText(fontSize: fontSm),
+                            const Spacer(),
                           ],
                         ),
                       ],
