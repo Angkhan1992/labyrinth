@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/screens/setting/scan_screen.dart';
+import 'package:provider/provider.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -14,7 +19,6 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/friend_widget.dart';
-import 'package:provider/provider.dart';
 
 class FriendScreen extends StatefulWidget {
   const FriendScreen({
@@ -30,6 +34,9 @@ class _FriendScreenState extends State<FriendScreen>
   List<UserModel> _friends = [];
   List<UserModel> _invitedUsers = [];
 
+  final _friendNotifier = ValueNotifier(0);
+  final _inviteNotifier = ValueNotifier(0);
+
   TabController? _tabController;
 
   @override
@@ -38,6 +45,53 @@ class _FriendScreenState extends State<FriendScreen>
 
     _tabController = TabController(length: 2, vsync: this);
     Timer.run(() => _initData());
+    socketService!.updateFriend(
+      update: _updateFriend,
+    );
+  }
+
+  void _updateFriend(dynamic data) {
+    String userID = data['content'];
+    switch (data['name']) {
+      case 'invite_user':
+        _invitedUser(userID);
+        break;
+      case 'accept_user':
+        _acceptUser(userID);
+        break;
+    }
+  }
+
+  void _invitedUser(String userID) async {
+    var resp = await NetworkProvider.of().post(
+      kGetUser,
+      {
+        'id': userID,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var user = UserModel()..setFromJson(resp['result']);
+        _invitedUsers.insert(0, user);
+        _inviteNotifier.value = _invitedUsers.length;
+      }
+    }
+  }
+
+  void _acceptUser(String userID) async {
+    var resp = await NetworkProvider.of().post(
+      kGetUser,
+      {
+        'id': userID,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var user = UserModel()..setFromJson(resp['result']);
+        _friends.insert(0, user);
+        _friendNotifier.value = _friends.length;
+      }
+    }
   }
 
   void _initData() async {
@@ -54,22 +108,26 @@ class _FriendScreenState extends State<FriendScreen>
         _friends = (resp['result']['friend'] as List)
             .map((e) => UserModel()..setFromJson(e))
             .toList();
+        _friends.sort((b, a) => a.usrRegdate!.compareTo(b.usrRegdate!));
+
         _invitedUsers.clear();
         _invitedUsers = (resp['result']['invite'] as List)
             .map((e) => UserModel()..setFromJson(e))
             .toList();
+        _invitedUsers.sort((b, a) => a.usrRegdate!.compareTo(b.usrRegdate!));
 
-        setState(() {});
+        _friendNotifier.value = _friends.length;
+        _inviteNotifier.value = _invitedUsers.length;
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }
@@ -89,7 +147,17 @@ class _FriendScreenState extends State<FriendScreen>
               Icons.qr_code_scanner,
               color: kAccentColor,
             ),
-            onPressed: () {},
+            onPressed: () => NavigatorProvider.of(context).push(
+              screen: const QrScanScreen(),
+              pop: (data) {
+                if (data != null) {
+                  var decrypted = utf8.decode(base64.decode(data));
+                  if (kDebugMode) {
+                    print('[QR Code] json : $decrypted');
+                  }
+                }
+              },
+            ),
           ),
         ],
       ),
@@ -108,10 +176,15 @@ class _FriendScreenState extends State<FriendScreen>
                   title: 'Friends',
                   count: 0,
                 ),
-                FriendTab(
-                  iconData: Icons.login,
-                  title: 'Invited',
-                  count: _invitedUsers.length,
+                ValueListenableBuilder<int>(
+                  valueListenable: _inviteNotifier,
+                  builder: (context, value, view) {
+                    return FriendTab(
+                      iconData: Icons.login,
+                      title: 'Invited',
+                      count: value,
+                    );
+                  },
                 ),
               ],
             ),
@@ -152,56 +225,83 @@ class _FriendScreenState extends State<FriendScreen>
   }
 
   Widget _friendWidget() {
-    return _friends.isEmpty
-        ? Center(
-            child: 'Not have any friend'.regularText(),
-          )
-        : ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: offsetSm),
-            itemBuilder: (context, index) {
-              var user = _friends[index];
-              return user.friendItem();
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: offsetSm,
+    return ValueListenableBuilder<int>(
+      valueListenable: _friendNotifier,
+      builder: (context, value, view) {
+        return _friends.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    'Not any friends yet'.regularText(),
+                    const SizedBox(
+                      height: offsetXMd,
+                    ),
+                  ],
+                ),
+              )
+            : ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: offsetSm),
+                itemBuilder: (context, index) {
+                  var user = _friends[index];
+                  return user.friendItem();
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _friends.length,
               );
-            },
-            itemCount: _friends.length,
-          );
+      },
+    );
   }
 
   Widget _invitedWidget() {
-    return _invitedUsers.isEmpty
-        ? Center(
-            child: 'Not have any invited'.regularText(),
-          )
-        : ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: offsetSm),
-            itemBuilder: (context, index) {
-              var user = _invitedUsers[index];
-              var currentUser = Provider.of<UserModel>(context, listen: false);
-              return user.inviteItem(
-                accept: () => _accept(currentUser.id!, user.id!),
-                decline: () => _decline(currentUser.id!, user.id!),
+    return ValueListenableBuilder<int>(
+      valueListenable: _inviteNotifier,
+      builder: (context, value, view) {
+        return _invitedUsers.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    'Not any invited users yet'.regularText(),
+                    const SizedBox(
+                      height: offsetXMd,
+                    ),
+                  ],
+                ),
+              )
+            : ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: offsetSm),
+                itemBuilder: (context, index) {
+                  var user = _invitedUsers[index];
+                  var currentUser =
+                      Provider.of<UserModel>(context, listen: false);
+                  return user.inviteItem(
+                    accept: () => _accept(currentUser.id!, user),
+                    decline: () => _decline(currentUser.id!, user),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _invitedUsers.length,
               );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: offsetSm,
-              );
-            },
-            itemCount: _invitedUsers.length,
-          );
+      },
+    );
   }
 
-  void _accept(String senderID, String receiverID) async {
+  void _accept(String senderID, UserModel receiver) async {
     LoadingProvider.of(context).show();
     var resp = await NetworkProvider.of().post(
       kAcceptRequest,
       {
         'senderID': senderID,
-        'receiverID': receiverID,
+        'receiverID': receiver.id!,
       },
     );
     LoadingProvider.of(context).hide();
@@ -210,29 +310,34 @@ class _FriendScreenState extends State<FriendScreen>
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
         );
-        socketService!.acceptFriend(senderID, receiverID);
-        _initData();
+        socketService!.acceptFriend(senderID, receiver.id!);
+
+        _invitedUsers.remove(receiver);
+        _inviteNotifier.value = _invitedUsers.length;
+
+        _friends.add(receiver);
+        _friendNotifier.value = _friends.length;
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }
 
-  void _decline(String senderID, String receiverID) async {
+  void _decline(String senderID, UserModel receiver) async {
     LoadingProvider.of(context).show();
     var resp = await NetworkProvider.of().post(
       kDeclineRequest,
       {
         'senderID': senderID,
-        'receiverID': receiverID,
+        'receiverID': receiver.id!,
       },
     );
     LoadingProvider.of(context).hide();
@@ -241,18 +346,20 @@ class _FriendScreenState extends State<FriendScreen>
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
         );
-        socketService!.declineFriend(senderID, receiverID);
-        _initData();
+        socketService!.declineFriend(senderID, receiver.id!);
+
+        _invitedUsers.remove(receiver);
+        _inviteNotifier.value = _invitedUsers.length;
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }

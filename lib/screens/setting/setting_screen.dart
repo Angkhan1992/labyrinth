@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/game_model.dart';
@@ -12,7 +13,6 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
-import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({

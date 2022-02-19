@@ -67,7 +67,7 @@ class _RoomScreenState extends State<RoomScreen> {
         if (mounted) {
           DialogProvider.of(context).showSnackBar(
             resp['msg'],
-            type: SnackBarType.ERROR,
+            type: SnackBarType.error,
           );
         }
       }
@@ -75,7 +75,7 @@ class _RoomScreenState extends State<RoomScreen> {
       if (mounted) {
         DialogProvider.of(context).showSnackBar(
           S.current.server_error,
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }
@@ -87,7 +87,7 @@ class _RoomScreenState extends State<RoomScreen> {
       Navigator.of(context).pop();
       DialogProvider.of(context).showSnackBar(
         'This room was removed by creator',
-        type: SnackBarType.INFO,
+        type: SnackBarType.info,
       );
     } else {}
   }

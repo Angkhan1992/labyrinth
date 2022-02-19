@@ -32,10 +32,10 @@ const kGetContact = kSetting + 'get_contact';
 const kSendRequest = kSetting + 'send_request';
 const kDeclineRequest = kSetting + 'decline_request';
 const kAcceptRequest = kSetting + 'accept_request';
+const kGetUser = kSetting + 'get_user';
 
 const kHome = kBaseUrl + 'Home/';
 const kCreateRoom = kHome + 'create_room';
-const kGetUser = kHome + 'get_user';
 const kLeaveUser = kHome + 'leave_user';
 
 const kRootAvatar = 'avatar';

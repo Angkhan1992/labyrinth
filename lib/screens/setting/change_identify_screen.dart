@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
@@ -12,7 +13,6 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:provider/provider.dart';
 
 class ChangeIdentifyScreen extends StatefulWidget {
   final bool isEmail;
@@ -282,7 +282,7 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
     _event.value = ChangeIdentifyEvent.none;
@@ -292,7 +292,7 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
     if (!_checkPasswordValid()) {
       DialogProvider.of(context).showSnackBar(
         S.current.not_match_pwd,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -318,7 +318,7 @@ class _ChangeIdentifyScreenState extends State<ChangeIdentifyScreen> {
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       _event.value = ChangeIdentifyEvent.none;
     }

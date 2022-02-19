@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/main.dart';
@@ -18,7 +19,6 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/appbar.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -31,7 +31,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final _event = ValueNotifier(0);
-  SocketProvider? _socketProvider;
 
   @override
   void initState() {

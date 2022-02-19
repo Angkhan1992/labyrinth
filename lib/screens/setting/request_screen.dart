@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -10,7 +12,6 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:provider/provider.dart';
 
 class RequestScreen extends StatefulWidget {
   const RequestScreen({Key? key}) : super(key: key);
@@ -75,7 +76,7 @@ class _RequestScreenState extends State<RequestScreen> {
                   if (value.isEmpty) {
                     DialogProvider.of(context).showSnackBar(
                       'The search word should be not empty.',
-                      type: SnackBarType.INFO,
+                      type: SnackBarType.info,
                     );
                     return;
                   }
@@ -116,13 +117,13 @@ class _RequestScreenState extends State<RequestScreen> {
                                 } else {
                                   DialogProvider.of(context).showSnackBar(
                                     resp['msg'],
-                                    type: SnackBarType.ERROR,
+                                    type: SnackBarType.error,
                                   );
                                 }
                               } else {
                                 DialogProvider.of(context).showSnackBar(
                                   S.current.server_error,
-                                  type: SnackBarType.ERROR,
+                                  type: SnackBarType.error,
                                 );
                               }
                               LoadingProvider.of(context).hide();

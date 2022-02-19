@@ -225,7 +225,7 @@ class _PurposeScreenState extends State<PurposeScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }

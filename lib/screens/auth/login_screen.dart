@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
@@ -25,8 +27,6 @@ import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/appbar.dart';
 import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -377,7 +377,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }
@@ -403,7 +403,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }

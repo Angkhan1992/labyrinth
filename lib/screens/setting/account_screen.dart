@@ -54,7 +54,7 @@ class _AccountScreenState extends State<AccountScreen> {
     if (!permission) {
       DialogProvider.of(context).showSnackBar(
         S.current.permission_denied,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -123,13 +123,13 @@ class _AccountScreenState extends State<AccountScreen> {
         } else {
           DialogProvider.of(context).showSnackBar(
             respUpload['msg'],
-            type: SnackBarType.ERROR,
+            type: SnackBarType.error,
           );
         }
       } else {
         DialogProvider.of(context).showSnackBar(
           S.current.server_error,
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }
@@ -673,7 +673,7 @@ class _AccountScreenState extends State<AccountScreen> {
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
     LoadingProvider.of(context).hide();
@@ -700,7 +700,7 @@ class _AccountScreenState extends State<AccountScreen> {
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }

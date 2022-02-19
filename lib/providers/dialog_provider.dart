@@ -121,28 +121,28 @@ class DialogProvider {
 
   void showSnackBar(
     String content, {
-    SnackBarType type = SnackBarType.SUCCESS,
+    SnackBarType type = SnackBarType.success,
   }) async {
     var backgroundColor = Colors.white;
     var icons = LineIcons.check;
     var title = S.current.success;
     switch (type) {
-      case SnackBarType.SUCCESS:
+      case SnackBarType.success:
         backgroundColor = Colors.green;
         icons = Icons.check_circle_outline;
         title = S.current.success;
         break;
-      case SnackBarType.WARING:
+      case SnackBarType.waring:
         backgroundColor = Colors.orange;
         icons = Icons.warning_amber_outlined;
         title = S.current.waring;
         break;
-      case SnackBarType.INFO:
+      case SnackBarType.info:
         backgroundColor = Colors.blueGrey;
         icons = Icons.info_outline;
         title = S.current.information;
         break;
-      case SnackBarType.ERROR:
+      case SnackBarType.error:
         backgroundColor = Colors.red;
         icons = Icons.cancel_outlined;
         title = S.current.error;
@@ -241,12 +241,17 @@ class DialogProvider {
   void kShowProcessingDialog() {
     showSnackBar(
       S.current.processingWaring,
-      type: SnackBarType.WARING,
+      type: SnackBarType.waring,
     );
   }
 }
 
-enum SnackBarType { SUCCESS, WARING, INFO, ERROR }
+enum SnackBarType {
+  success,
+  waring,
+  info,
+  error,
+}
 
 Path snakeBarPath({
   required Size size,

@@ -335,7 +335,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
     if (!_formKey.currentState!.validate()) {
       DialogProvider.of(context).showSnackBar(
         S.current.not_complete_field,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -362,7 +362,7 @@ class _IndividualScreenState extends State<IndividualScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }

@@ -23,7 +23,7 @@ dependencies:
     badges: any
     in_app_purchase: any
     provider: any
-    
+    qr_code_scanner: any
     google_sign_in: any
     sign_in_with_apple: any
     jwt_decode: any

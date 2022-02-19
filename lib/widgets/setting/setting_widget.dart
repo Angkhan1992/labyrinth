@@ -6,9 +6,9 @@ class SettingItem extends StatelessWidget {
   final String title;
   final String desc;
   final Widget? avatar;
-  Function()? detail;
+  final Function()? detail;
 
-  SettingItem({
+  const SettingItem({
     Key? key,
     required this.title,
     required this.desc,

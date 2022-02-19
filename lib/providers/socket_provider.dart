@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
+
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/notification_provider.dart';
 import 'package:labyrinth/utils/constants.dart';
-import 'package:socket_io_client/socket_io_client.dart' as io;
 
 SocketProvider? socketService;
 
@@ -102,7 +103,7 @@ class SocketProvider {
   }) {
     _socket!.on("friend", (value) async {
       if (kDebugMode) {
-        print("[Friend] invite ===> ${value.toString()}");
+        print("[Friend] update ===> ${value.toString()}");
       }
       update!(value);
     });

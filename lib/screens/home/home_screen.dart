@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
@@ -17,7 +19,6 @@ import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/home/home_widget.dart';
 import 'package:labyrinth/widgets/home/room_screen.dart';
 import 'package:labyrinth/widgets/textfield.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -171,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (name.isEmpty) {
               DialogProvider.of(context).showSnackBar(
                 'Please input room name',
-                type: SnackBarType.WARING,
+                type: SnackBarType.waring,
               );
               return;
             }
@@ -207,13 +208,13 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }

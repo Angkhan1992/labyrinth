@@ -101,7 +101,7 @@ class _CoinScreenState extends State<CoinScreen> {
       _loadingProvider!.hide();
       DialogProvider.of(context).showSnackBar(
         'Purchase ${purchaseError!.message!}',
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     });
 
@@ -138,13 +138,13 @@ class _CoinScreenState extends State<CoinScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
     await _initialize();

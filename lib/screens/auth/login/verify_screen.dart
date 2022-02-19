@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/biometric_provider.dart';
-import 'package:labyrinth/providers/shared_provider.dart';
-import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/biometric_provider.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
+import 'package:labyrinth/providers/shared_provider.dart';
+import 'package:labyrinth/screens/auth/login/biometric_screen.dart';
 import 'package:labyrinth/screens/auth/login/profile_screen.dart';
 import 'package:labyrinth/screens/main_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
@@ -160,7 +160,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     if (!_formKey.currentState!.validate()) {
       DialogProvider.of(context).showSnackBar(
         S.current.not_complete_field,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -219,7 +219,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }
@@ -241,13 +241,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           S.current.server_error,
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     } else {
       DialogProvider.of(context).showSnackBar(
         S.current.server_error,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
     }
   }

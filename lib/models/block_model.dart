@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';

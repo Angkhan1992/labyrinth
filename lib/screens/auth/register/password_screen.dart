@@ -254,7 +254,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (!_checkPasswordValid()) {
       DialogProvider.of(context).showSnackBar(
         S.current.not_complete_field,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -262,7 +262,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (_pass != _repass) {
       DialogProvider.of(context).showSnackBar(
         S.current.not_match_pwd,
-        type: SnackBarType.ERROR,
+        type: SnackBarType.error,
       );
       return;
     }
@@ -286,7 +286,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
-          type: SnackBarType.ERROR,
+          type: SnackBarType.error,
         );
       }
     }
