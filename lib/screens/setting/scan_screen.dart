@@ -82,7 +82,7 @@ class _QrScanScreenState extends State<QrScanScreen> {
         if (kDebugMode) {
           print('scanData ===> ${scanData.code}');
         }
-        Navigator.of(context).pop(scanData.code);
+        Navigator.of(context).pop(scanData.code!);
       });
     });
   }

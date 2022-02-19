@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:labyrinth/providers/encrypt_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -542,7 +543,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   void _showQRCode(UserModel user) {
-    var encryptData = base64.encode(utf8.encode(user.toQRJson().toString()));
+    var encryptData = jsonEncode(user.toQRJson()).encryptString;
     DialogProvider.of(context).bubbleDialog(
       isCancelable: true,
       child: Center(

@@ -27,6 +27,7 @@ dependencies:
     google_sign_in: any
     sign_in_with_apple: any
     jwt_decode: any
+    encrypt: any
     
     socket_io_client: any
     flutter_simple_dependency_injection: any

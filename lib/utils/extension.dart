@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/themes/textstyles.dart';
 import 'package:labyrinth/widgets/button.dart';
-
-const encryptKey = '';
 
 extension StringExtension on String {
   DateTime get getFullDate => DateFormat('yyyy-MM-dd HH:mm:ss').parse(this);

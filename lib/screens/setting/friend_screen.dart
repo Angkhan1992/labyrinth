@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/encrypt_provider.dart';
 import 'package:labyrinth/screens/setting/scan_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -151,7 +152,7 @@ class _FriendScreenState extends State<FriendScreen>
               screen: const QrScanScreen(),
               pop: (data) {
                 if (data != null) {
-                  var decrypted = utf8.decode(base64.decode(data));
+                  var decrypted = jsonDecode(data.toString().decryptString);
                   if (kDebugMode) {
                     print('[QR Code] json : $decrypted');
                   }

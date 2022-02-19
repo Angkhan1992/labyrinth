@@ -160,17 +160,17 @@ class UserModel extends ChangeNotifier {
 
   Map<String, dynamic> toQRJson() {
     return {
-      "userID": usrID,
-      "name": usrName,
-      "email": usrEmail,
-      "avatar": usrAvatar,
-      "gender": usrGender ?? '',
-      "dob": usrDOB ?? '',
-      "country": usrCountry ?? '',
-      "type": usrType ?? '',
-      "level": usrLevel ?? '',
-      "member": usrMember ?? '',
-      "purpose": usrPurpose ?? '',
+      "usr_userid": usrID,
+      "usr_name": usrName,
+      "usr_email": usrEmail,
+      "usr_avatar": usrAvatar ?? '',
+      "usr_gender": usrGender ?? '',
+      "usr_dob": usrDOB ?? '',
+      "usr_country": usrCountry ?? '',
+      "usr_type": usrType ?? '',
+      "usr_level": usrLevel ?? '',
+      "usr_member": usrMember ?? '',
+      "usr_purpose": usrPurpose ?? '',
     };
   }
 
