@@ -10,6 +10,10 @@ import AuthenticationServices
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+        }
+        
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let channelApple = FlutterMethodChannel(name: "com.laodev.labyrinth/apple_sign",  binaryMessenger: controller.binaryMessenger)
         channelApple.setMethodCallHandler({
@@ -44,7 +48,7 @@ extension AppDelegate: ASAuthorizationControllerDelegate {
             appleSignResult!("Not found any auth")
         }
     }
-
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
     }
 }

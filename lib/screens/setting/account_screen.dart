@@ -176,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         child: Stack(
                           children: [
                             user.usrAvatar!.isEmpty
-                                ? kEmptyAvatar
+                                ? kEmptyAvatarLg
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(40.0),
                                     child: CachedNetworkImage(
@@ -185,14 +185,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                       imageUrl: user.usrAvatar!,
                                       placeholder: (context, url) => Stack(
                                         children: const [
-                                          kEmptyAvatar,
+                                          kEmptyAvatarLg,
                                           Center(
                                             child: CupertinoActivityIndicator(),
                                           ),
                                         ],
                                       ),
                                       errorWidget: (context, url, error) =>
-                                          kEmptyAvatar,
+                                          kEmptyAvatarLg,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -253,9 +253,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             size: 28.0,
                           ),
                           onClick: () => NavigatorProvider.of(context).push(
-                            screen: FriendScreen(
-                              userModel: user,
-                            ),
+                            screen: const FriendScreen(),
                           ),
                         ),
                       ),
@@ -615,7 +613,7 @@ class _AccountScreenState extends State<AccountScreen> {
       actions: [
         S.current.dismiss.button(
           onPressed: () => Navigator.of(context).pop(),
-          borderWidth: 2.0,
+          color: Colors.white,
         ),
         S.current.update.button(
           onPressed: () {

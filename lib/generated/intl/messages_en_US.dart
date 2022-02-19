@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "active_room": MessageLookupByLibrary.simpleMessage("Active Rooms"),
         "add_user_data":
             MessageLookupByLibrary.simpleMessage("Add Personal Data"),
         "add_user_detail": MessageLookupByLibrary.simpleMessage(
@@ -46,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "by_camera": MessageLookupByLibrary.simpleMessage("By Camera"),
         "by_gallery": MessageLookupByLibrary.simpleMessage("By Gallery"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "change_email": MessageLookupByLibrary.simpleMessage("Change Email"),
         "change_password":
             MessageLookupByLibrary.simpleMessage("Change Password"),
@@ -58,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "complete_profile":
             MessageLookupByLibrary.simpleMessage("Complete Profile"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
+        "create": MessageLookupByLibrary.simpleMessage("Create"),
+        "create_match": MessageLookupByLibrary.simpleMessage("Create Match"),
         "detail": MessageLookupByLibrary.simpleMessage("Detail"),
         "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
@@ -154,6 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "The password length should be over 8 characters"),
         "password_detail": MessageLookupByLibrary.simpleMessage(
             "You can choose Labyrinth Password"),
+        "pending_room": MessageLookupByLibrary.simpleMessage("Pending Rooms"),
         "permission_denied":
             MessageLookupByLibrary.simpleMessage("Permission Denied"),
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),

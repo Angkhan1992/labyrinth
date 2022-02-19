@@ -70,12 +70,17 @@ class DialogProvider {
                                 padding: childPadding,
                                 child: child,
                               ),
-                              Row(
-                                children: [
-                                  for (var action in actions)
-                                    Expanded(child: action),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: offsetBase),
+                                child: Row(
+                                  children: [
+                                    for (var action in actions)
+                                      Expanded(child: action),
+                                  ],
+                                ),
                               ),
+                              const SizedBox(height: offsetSm),
                             ],
                           ),
                         ),

@@ -175,7 +175,7 @@ class _PurposeScreenState extends State<PurposeScreen> {
               children: [
                 Expanded(
                   child: S.current.previous.button(
-                    borderWidth: 2.0,
+                    color: Colors.white,
                     onPressed: () => _previous(),
                   ),
                 ),

@@ -1419,6 +1419,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Pending Rooms`
+  String get pending_room {
+    return Intl.message(
+      'Pending Rooms',
+      name: 'pending_room',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active Rooms`
+  String get active_room {
+    return Intl.message(
+      'Active Rooms',
+      name: 'active_room',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Match`
+  String get create_match {
+    return Intl.message(
+      'Create Match',
+      name: 'create_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message(
+      'Create',
+      name: 'create',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

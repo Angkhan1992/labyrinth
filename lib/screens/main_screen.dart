@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/main.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/notification_provider.dart';
 import 'package:labyrinth/providers/shared_provider.dart';
 import 'package:labyrinth/providers/socket_provider.dart';
 import 'package:labyrinth/screens/blog/blog_screen.dart';
@@ -42,8 +43,9 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   void _initData() async {
     var user = Provider.of<UserModel>(context, listen: false);
-    _socketProvider = SocketProvider.instance(user);
-    _socketProvider = injector!.get<SocketProvider>();
+    socketService = injector!.get<SocketProvider>();
+    socketService!.init(user);
+    NotificationProvider.of(context).init();
   }
 
   @override

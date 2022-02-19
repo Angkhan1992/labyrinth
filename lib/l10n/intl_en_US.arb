@@ -135,5 +135,10 @@
   "term_condition" : "Term and Conditions",
   "privacy_police" : "Privacy and Police",
   "guide_agreement" : "User Guide and Agreement",
-  "detail" : "Detail"
+  "detail" : "Detail",
+  "pending_room" : "Pending Rooms",
+  "active_room" : "Active Rooms",
+  "create_match" : "Create Match",
+  "cancel" : "Cancel",
+  "create" : "Create"
 }

@@ -1,4 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:labyrinth/generated/l10n.dart';
+import 'package:labyrinth/themes/colors.dart';
+import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/utils/constants.dart';
+import 'package:labyrinth/utils/extension.dart';
 
 class UserModel extends ChangeNotifier {
   String? id;
@@ -165,5 +172,189 @@ class UserModel extends ChangeNotifier {
       "usr_member": usrMember ?? '',
       "usr_purpose": usrPurpose ?? '',
     };
+  }
+
+  Widget requestItem({
+    Function()? request,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: offsetXSm),
+      padding: const EdgeInsets.all(offsetSm),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(offsetSm),
+      ),
+      child: Row(
+        children: [
+          usrAvatar!.isEmpty
+              ? kEmptyAvatarMd
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(40.0),
+                  child: CachedNetworkImage(
+                    width: 44.0,
+                    height: 44.0,
+                    imageUrl: usrAvatar!,
+                    placeholder: (context, url) => Stack(
+                      children: const [
+                        kEmptyAvatarLg,
+                        Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      ],
+                    ),
+                    errorWidget: (context, url, error) => kEmptyAvatarLg,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+          const SizedBox(
+            width: offsetBase,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                usrName!.mediumText(),
+                '${usrCountry!} - ${usrGender! == '1' ? S.current.female : S.current.male}'
+                    .thinText(fontSize: fontSm),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: offsetBase,
+          ),
+          TextButton(
+            onPressed: request,
+            child: 'Request'.mediumText(
+              fontSize: fontXSm,
+              color: kAccentColor,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget inviteItem({
+    Function()? accept,
+    Function()? decline,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      padding: const EdgeInsets.all(offsetSm),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(offsetSm),
+      ),
+      child: Row(
+        children: [
+          usrAvatar!.isEmpty
+              ? kEmptyAvatarMd
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(40.0),
+                  child: CachedNetworkImage(
+                    width: 44.0,
+                    height: 44.0,
+                    imageUrl: usrAvatar!,
+                    placeholder: (context, url) => Stack(
+                      children: const [
+                        kEmptyAvatarLg,
+                        Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      ],
+                    ),
+                    errorWidget: (context, url, error) => kEmptyAvatarLg,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+          const SizedBox(
+            width: offsetBase,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                usrName!.mediumText(),
+                '${usrCountry!} - ${usrGender! == '1' ? S.current.female : S.current.male}'
+                    .thinText(fontSize: fontSm),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: offsetBase,
+          ),
+          TextButton(
+            onPressed: accept,
+            child: 'Accept'.mediumText(
+              fontSize: fontXSm,
+              color: Colors.green,
+            ),
+          ),
+          const SizedBox(
+            width: offsetSm,
+          ),
+          TextButton(
+            onPressed: decline,
+            child: 'Decline'.mediumText(
+              fontSize: fontXSm,
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget friendItem({
+    Function()? detail,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      padding: const EdgeInsets.all(offsetSm),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(offsetSm),
+      ),
+      child: InkWell(
+        onTap: detail,
+        child: Row(
+          children: [
+            usrAvatar!.isEmpty
+                ? kEmptyAvatarMd
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(40.0),
+                    child: CachedNetworkImage(
+                      width: 44.0,
+                      height: 44.0,
+                      imageUrl: usrAvatar!,
+                      placeholder: (context, url) => Stack(
+                        children: const [
+                          kEmptyAvatarLg,
+                          Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        ],
+                      ),
+                      errorWidget: (context, url, error) => kEmptyAvatarLg,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+            const SizedBox(
+              width: offsetBase,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  usrName!.mediumText(),
+                  '${usrCountry!} - ${usrGender! == '1' ? S.current.female : S.current.male}'
+                      .thinText(fontSize: fontSm),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

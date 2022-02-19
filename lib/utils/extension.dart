@@ -171,10 +171,10 @@ extension StringExtension on String {
 
   TextButton button({
     required Function() onPressed,
-    double borderWidth = 0.0,
     double width = double.infinity,
     double height = kButtonHeight,
     bool isLoading = false,
+    Color color = kAccentColor,
   }) {
     return TextButton(
       onPressed: onPressed,
@@ -182,12 +182,8 @@ extension StringExtension on String {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: borderWidth == 0.0 ? kAccentColor : Colors.white,
+          color: color,
           borderRadius: BorderRadius.circular(offsetSm),
-          // border: Border.all(
-          //   width: borderWidth,
-          //   color: kAccentColor,
-          // ),
           boxShadow: [
             kTopLeftShadow,
             kBottomRightShadow,
@@ -196,11 +192,11 @@ extension StringExtension on String {
         child: Center(
           child: isLoading
               ? ProgressWidget(
-                  color: borderWidth == 0 ? Colors.white : kAccentColor,
+                  color: Colors.white,
                 )
               : semiBoldText(
                   fontSize: fontSm,
-                  color: borderWidth > 0.0 ? kAccentColor : Colors.white,
+                  color: color == Colors.white ? Colors.black : Colors.white,
                 ),
         ),
       ),

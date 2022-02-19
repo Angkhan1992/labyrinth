@@ -8,7 +8,7 @@ String kAppName = S.current.appName;
 const kFontFamily = 'Poppins';
 
 // const kSocketUrl = 'ws://51.89.17.207:52525';
-const kSocketUrl = 'ws://192.168.1.5:52525';
+const kSocketUrl = 'ws://192.168.1.201:52525';
 const kBaseUrl = 'https://labyrinth.laodev.info/';
 const kPackageName = 'com.laodev.labyrinth';
 
@@ -27,8 +27,25 @@ const kUpdateUser = kSetting + 'update_user';
 const kGetCoins = kSetting + 'get_coins';
 const kUpdateEmail = kSetting + 'update_email';
 const kUpdatePass = kSetting + 'update_pass';
+const kContactUser = kSetting + 'contact_user';
+const kGetContact = kSetting + 'get_contact';
+const kSendRequest = kSetting + 'send_request';
+const kDeclineRequest = kSetting + 'decline_request';
+const kAcceptRequest = kSetting + 'accept_request';
+
+const kHome = kBaseUrl + 'Home/';
+const kCreateRoom = kHome + 'create_room';
+const kGetUser = kHome + 'get_user';
+const kLeaveUser = kHome + 'leave_user';
 
 const kRootAvatar = 'avatar';
+
+const kUserColors = [
+  Colors.blue,
+  Colors.red,
+  Colors.teal,
+  Colors.deepPurple,
+];
 
 class Constants {
   static dynamic getCountryList(BuildContext context) async {
@@ -38,8 +55,14 @@ class Constants {
   }
 }
 
-const kEmptyAvatar = Icon(
+const kEmptyAvatarLg = Icon(
   Icons.account_circle,
   size: 80.0,
+  color: kAccentColor,
+);
+
+const kEmptyAvatarMd = Icon(
+  Icons.account_circle,
+  size: 44.0,
   color: kAccentColor,
 );

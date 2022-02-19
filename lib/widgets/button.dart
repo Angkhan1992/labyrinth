@@ -178,3 +178,38 @@ class ProgressWidget extends SizedBox {
           ),
         );
 }
+
+class HelpButton extends StatelessWidget {
+  final double size;
+  final Function()? onClick;
+
+  const HelpButton({
+    Key? key,
+    this.size = 24.0,
+    this.onClick,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        width: 24.0,
+        height: 24.0,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [Colors.white, kAccentColor],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: const Icon(
+          Icons.help_outline,
+          color: Colors.white,
+          size: 14.0,
+        ),
+      ),
+    );
+  }
+}
