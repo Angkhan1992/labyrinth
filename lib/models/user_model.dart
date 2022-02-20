@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
-import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
 class UserModel extends ChangeNotifier {
   String? id;
@@ -160,6 +158,7 @@ class UserModel extends ChangeNotifier {
 
   Map<String, dynamic> toQRJson() {
     return {
+      "usr_id": id,
       "usr_userid": usrID,
       "usr_name": usrName,
       "usr_email": usrEmail,
@@ -186,26 +185,10 @@ class UserModel extends ChangeNotifier {
       ),
       child: Row(
         children: [
-          usrAvatar!.isEmpty
-              ? kEmptyAvatarMd
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(40.0),
-                  child: CachedNetworkImage(
-                    width: 44.0,
-                    height: 44.0,
-                    imageUrl: usrAvatar!,
-                    placeholder: (context, url) => Stack(
-                      children: const [
-                        kEmptyAvatarLg,
-                        Center(
-                          child: CupertinoActivityIndicator(),
-                        ),
-                      ],
-                    ),
-                    errorWidget: (context, url, error) => kEmptyAvatarLg,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          LabyrinthAvatar(
+            url: usrAvatar!,
+            avatarSize: AvatarSize.md,
+          ),
           const SizedBox(
             width: offsetBase,
           ),
@@ -247,26 +230,10 @@ class UserModel extends ChangeNotifier {
       ),
       child: Row(
         children: [
-          usrAvatar!.isEmpty
-              ? kEmptyAvatarMd
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(40.0),
-                  child: CachedNetworkImage(
-                    width: 44.0,
-                    height: 44.0,
-                    imageUrl: usrAvatar!,
-                    placeholder: (context, url) => Stack(
-                      children: const [
-                        kEmptyAvatarLg,
-                        Center(
-                          child: CupertinoActivityIndicator(),
-                        ),
-                      ],
-                    ),
-                    errorWidget: (context, url, error) => kEmptyAvatarLg,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          LabyrinthAvatar(
+            url: usrAvatar!,
+            avatarSize: AvatarSize.md,
+          ),
           const SizedBox(
             width: offsetBase,
           ),
@@ -319,26 +286,10 @@ class UserModel extends ChangeNotifier {
         onTap: detail,
         child: Row(
           children: [
-            usrAvatar!.isEmpty
-                ? kEmptyAvatarMd
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(40.0),
-                    child: CachedNetworkImage(
-                      width: 44.0,
-                      height: 44.0,
-                      imageUrl: usrAvatar!,
-                      placeholder: (context, url) => Stack(
-                        children: const [
-                          kEmptyAvatarLg,
-                          Center(
-                            child: CupertinoActivityIndicator(),
-                          ),
-                        ],
-                      ),
-                      errorWidget: (context, url, error) => kEmptyAvatarLg,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            LabyrinthAvatar(
+              url: usrAvatar!,
+              avatarSize: AvatarSize.md,
+            ),
             const SizedBox(
               width: offsetBase,
             ),
