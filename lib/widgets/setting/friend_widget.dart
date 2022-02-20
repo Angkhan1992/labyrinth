@@ -47,3 +47,46 @@ class FriendTab extends Tab {
           ),
         );
 }
+
+class AvatarCardItem extends StatelessWidget {
+  final IconData iconData;
+  final String value;
+
+  const AvatarCardItem({
+    Key? key,
+    required this.iconData,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: offsetBase,
+        ),
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(offsetXSm),
+              decoration: const BoxDecoration(
+                color: Colors.black12,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                iconData,
+                size: 14.0,
+              ),
+            ),
+            const SizedBox(
+              width: offsetSm,
+            ),
+            value.regularText(
+              fontSize: fontSm,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

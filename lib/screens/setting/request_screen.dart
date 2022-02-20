@@ -107,6 +107,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                   'receiverID': user.id!,
                                 },
                               );
+                              LoadingProvider.of(context).hide();
                               if (resp != null) {
                                 if (resp['ret'] == 10000) {
                                   DialogProvider.of(context).showSnackBar(
@@ -126,7 +127,6 @@ class _RequestScreenState extends State<RequestScreen> {
                                   type: SnackBarType.error,
                                 );
                               }
-                              LoadingProvider.of(context).hide();
                             },
                           );
                         },

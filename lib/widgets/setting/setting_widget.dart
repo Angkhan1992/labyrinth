@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class SettingItem extends StatelessWidget {
@@ -50,4 +53,48 @@ class SettingItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class LabyrinthAvatar extends StatelessWidget {
+  final String url;
+  final AvatarSize avatarSize;
+
+  const LabyrinthAvatar({
+    Key? key,
+    required this.url,
+    this.avatarSize = AvatarSize.lg,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var emptyAvatar =
+        avatarSize == AvatarSize.lg ? kEmptyAvatarLg : kEmptyAvatarMd;
+    var size = avatarSize == AvatarSize.lg ? 80.0 : 44.0;
+    return url.isEmpty
+        ? emptyAvatar
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(size / 2.0),
+            child: CachedNetworkImage(
+              width: size,
+              height: size,
+              imageUrl: url,
+              placeholder: (context, url) => Stack(
+                children: [
+                  emptyAvatar,
+                  const Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
+                ],
+              ),
+              errorWidget: (context, url, error) => kEmptyAvatarLg,
+              fit: BoxFit.cover,
+            ),
+          );
+  }
+}
+
+enum AvatarSize {
+  sm,
+  md,
+  lg,
 }

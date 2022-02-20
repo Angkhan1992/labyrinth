@@ -201,6 +201,25 @@ extension StringExtension on String {
       ),
     );
   }
+
+  Widget tag({
+    required Color background,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: offsetSm,
+        vertical: offsetXSm,
+      ),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(offsetBase),
+      ),
+      child: regularText(
+        fontSize: fontXSm,
+        color: Colors.white,
+      ),
+    );
+  }
 }
 
 extension DateTimeExtension on DateTime {

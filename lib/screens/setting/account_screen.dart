@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:labyrinth/providers/encrypt_provider.dart';
+import 'package:labyrinth/widgets/setting/setting_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -176,27 +175,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         height: 80.0,
                         child: Stack(
                           children: [
-                            user.usrAvatar!.isEmpty
-                                ? kEmptyAvatarLg
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(40.0),
-                                    child: CachedNetworkImage(
-                                      width: 80.0,
-                                      height: 80.0,
-                                      imageUrl: user.usrAvatar!,
-                                      placeholder: (context, url) => Stack(
-                                        children: const [
-                                          kEmptyAvatarLg,
-                                          Center(
-                                            child: CupertinoActivityIndicator(),
-                                          ),
-                                        ],
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          kEmptyAvatarLg,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            LabyrinthAvatar(url: user.usrAvatar!),
                             Align(
                               alignment: Alignment.bottomRight,
                               child: InkWell(

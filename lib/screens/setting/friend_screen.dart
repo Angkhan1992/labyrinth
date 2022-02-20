@@ -3,23 +3,26 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/encrypt_provider.dart';
-import 'package:labyrinth/screens/setting/scan_screen.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/encrypt_provider.dart';
 import 'package:labyrinth/providers/loading_provider.dart';
 import 'package:labyrinth/providers/navigator_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/providers/socket_provider.dart';
 import 'package:labyrinth/screens/setting/request_screen.dart';
+import 'package:labyrinth/screens/setting/scan_screen.dart';
+import 'package:labyrinth/screens/setting/user_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/friend_widget.dart';
+import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
 class FriendScreen extends StatefulWidget {
   const FriendScreen({
@@ -34,6 +37,7 @@ class _FriendScreenState extends State<FriendScreen>
     with SingleTickerProviderStateMixin {
   List<UserModel> _friends = [];
   List<UserModel> _invitedUsers = [];
+  List<UserModel> _requestUsers = [];
 
   final _friendNotifier = ValueNotifier(0);
   final _inviteNotifier = ValueNotifier(0);
@@ -88,7 +92,7 @@ class _FriendScreenState extends State<FriendScreen>
     );
     if (resp != null) {
       if (resp['ret'] == 10000) {
-        var user = UserModel()..setFromJson(resp['result']);
+        var user = UserModel()..setFromJson(resp['result'][0]);
         _friends.insert(0, user);
         _friendNotifier.value = _friends.length;
       }
@@ -116,6 +120,12 @@ class _FriendScreenState extends State<FriendScreen>
             .map((e) => UserModel()..setFromJson(e))
             .toList();
         _invitedUsers.sort((b, a) => a.usrRegdate!.compareTo(b.usrRegdate!));
+
+        _requestUsers.clear();
+        _requestUsers = (resp['result']['request'] as List)
+            .map((e) => UserModel()..setFromJson(e))
+            .toList();
+        _requestUsers.sort((b, a) => a.usrRegdate!.compareTo(b.usrRegdate!));
 
         _friendNotifier.value = _friends.length;
         _inviteNotifier.value = _invitedUsers.length;
@@ -152,10 +162,7 @@ class _FriendScreenState extends State<FriendScreen>
               screen: const QrScanScreen(),
               pop: (data) {
                 if (data != null) {
-                  var decrypted = jsonDecode(data.toString().decryptString);
-                  if (kDebugMode) {
-                    print('[QR Code] json : $decrypted');
-                  }
+                  _dialogUserCard(data);
                 }
               },
             ),
@@ -245,7 +252,10 @@ class _FriendScreenState extends State<FriendScreen>
                 padding: const EdgeInsets.symmetric(vertical: offsetSm),
                 itemBuilder: (context, index) {
                   var user = _friends[index];
-                  return user.friendItem();
+                  return user.friendItem(
+                    detail: () => NavigatorProvider.of(context)
+                        .push(screen: UserScreen(user: user)),
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return const SizedBox(
@@ -363,5 +373,136 @@ class _FriendScreenState extends State<FriendScreen>
         type: SnackBarType.error,
       );
     }
+  }
+
+  void _request(UserModel currentUser, String userid) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kSendRequest,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': userid,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+        );
+        socketService!.inviteFriend(currentUser.id!, userid);
+        var user = UserModel()..setFromJson(resp['result']);
+        _requestUsers.add(user);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.error,
+        );
+      }
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.error,
+      );
+    }
+  }
+
+  void _dialogUserCard(dynamic data) {
+    var jsonUser = jsonDecode(data.toString().decryptString);
+    if (kDebugMode) {
+      print('[QR Code] json : $jsonUser');
+    }
+    String id = jsonUser['usr_id'];
+    String userID = jsonUser['usr_userid'];
+
+    String avatar = jsonUser['usr_avatar'] ?? '';
+    String name = jsonUser['usr_name'];
+    String email = jsonUser['usr_email'];
+    String gender = jsonUser['usr_gender'];
+    String country = jsonUser['usr_country'];
+
+    var currentUser = Provider.of<UserModel>(context, listen: false);
+    var tag = currentUser.usrID! == userID
+        ? 'Yours'.tag(background: kAccentColor)
+        : 'Unknown'.tag(background: Colors.grey);
+
+    var requestAvailable = currentUser.usrID! != userID;
+    for (var friend in _friends) {
+      if (friend.usrID! == userID) {
+        tag = 'Friend'.tag(background: Colors.green);
+        requestAvailable = false;
+        break;
+      }
+    }
+    for (var request in _requestUsers) {
+      if (request.usrID! == userID) {
+        tag = 'Requested'.tag(background: kAccentColor);
+        requestAvailable = false;
+        break;
+      }
+    }
+    for (var invited in _invitedUsers) {
+      if (invited.usrID! == userID) {
+        tag = 'Invited'.tag(background: Colors.red);
+        requestAvailable = false;
+        break;
+      }
+    }
+
+    DialogProvider.of(context).bubbleDialog(
+      child: Column(
+        children: [
+          LabyrinthAvatar(url: avatar),
+          const SizedBox(
+            height: offsetSm,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              name.mediumText(),
+              const SizedBox(
+                width: offsetBase,
+              ),
+              tag,
+            ],
+          ),
+          const SizedBox(
+            height: offsetSm,
+          ),
+          AvatarCardItem(
+            iconData: LineIcons.code,
+            value: userID,
+          ),
+          AvatarCardItem(
+            iconData: LineIcons.userAlt,
+            value: email,
+          ),
+          AvatarCardItem(
+            iconData: LineIcons.genderless,
+            value: gender == '1' ? S.current.female : S.current.male,
+          ),
+          AvatarCardItem(
+            iconData: LineIcons.users,
+            value: country,
+          ),
+        ],
+      ),
+      actions: [
+        'Dismiss'.button(
+          color: Colors.red,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        if (requestAvailable)
+          'Request'.button(
+            color: Colors.green,
+            onPressed: () {
+              Navigator.of(context).pop();
+              _request(currentUser, id);
+            },
+          ),
+      ],
+    );
   }
 }
