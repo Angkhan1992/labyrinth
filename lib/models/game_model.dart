@@ -6,6 +6,13 @@ import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
+List<Color> heroColors = [
+  Colors.blue,
+  Colors.red,
+  Colors.brown,
+  Colors.deepPurple,
+];
+
 class GameModel extends ChangeNotifier {
   List<List<String>> blockTypes = [
     [

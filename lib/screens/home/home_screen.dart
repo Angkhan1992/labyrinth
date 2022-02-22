@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -151,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               CustomTextField(
                 controller: _nameController,
+                textInputAction: TextInputAction.done,
                 hintText: 'Room Name',
                 prefixIcon: const Icon(Icons.drive_file_rename_outline_sharp),
               ),
@@ -200,11 +202,22 @@ class _HomeScreenState extends State<HomeScreen> {
         var currentRoom = Provider.of<RoomModel>(context, listen: false);
         currentRoom.setFromJson(resp['result']);
         socketService!.createRoom(currentRoom, currentUser);
+        List<String> ids = (resp['result']['notification'] as List)
+            .map((e) => e.toString())
+            .toList();
+        if (kDebugMode) {
+          print('[Notification] IDS : $ids');
+        }
+        for (var id in ids) {
+          socketService!.notiRoom(currentRoom, id);
+        }
+
         NavigatorProvider.of(context).push(
-            screen: const RoomScreen(),
-            pop: (val) {
-              _leaveRoom(currentRoom, currentUser);
-            });
+          screen: const RoomScreen(),
+          pop: (val) {
+            _leaveRoom(currentRoom, currentUser);
+          },
+        );
       } else {
         DialogProvider.of(context).showSnackBar(
           resp['msg'],
@@ -234,19 +247,28 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(
           height: offsetSm,
         ),
-        ListView.separated(
-          shrinkWrap: true,
-          controller: _scrollController,
-          itemBuilder: (context, index) {
-            return RoomModel().listWidget();
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: offsetSm,
-            );
-          },
-          itemCount: _pendingRooms.length,
-        )
+        _pendingRooms.isEmpty
+            ? SizedBox(
+                height: 90.0,
+                child: Center(
+                  child: 'Have not any room yet'.thinText(
+                    fontSize: fontSm,
+                  ),
+                ),
+              )
+            : ListView.separated(
+                shrinkWrap: true,
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return RoomModel().listWidget();
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _pendingRooms.length,
+              )
       ],
     );
   }
@@ -266,19 +288,28 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(
           height: offsetSm,
         ),
-        ListView.separated(
-          shrinkWrap: true,
-          controller: _scrollController,
-          itemBuilder: (context, index) {
-            return RoomModel().listWidget();
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: offsetSm,
-            );
-          },
-          itemCount: _activeRooms.length,
-        )
+        _activeRooms.isEmpty
+            ? SizedBox(
+                height: 90.0,
+                child: Center(
+                  child: 'Have not any room yet'.thinText(
+                    fontSize: fontSm,
+                  ),
+                ),
+              )
+            : ListView.separated(
+                shrinkWrap: true,
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return RoomModel().listWidget();
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _activeRooms.length,
+              )
       ],
     );
   }

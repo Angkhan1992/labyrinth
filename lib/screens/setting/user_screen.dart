@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/loading_provider.dart';
+import 'package:labyrinth/providers/socket_provider.dart';
+import 'package:labyrinth/widgets/setting/user_widget.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/profile_widget.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
-import 'package:provider/provider.dart';
 
 class UserScreen extends StatefulWidget {
   final UserModel user;
@@ -21,12 +29,28 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   Future<int> _friendShip() async {
-    await Future.delayed(const Duration(seconds: 2), null);
-    return 0;
+    var currentUser = Provider.of<UserModel>(context, listen: false);
+    var resp = await NetworkProvider.of().post(
+      kGetRelation,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': widget.user.id!,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        return resp['result']['type'];
+      } else {
+        return 3;
+      }
+    } else {
+      return 3;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = Provider.of<UserModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -74,16 +98,12 @@ class _UserScreenState extends State<UserScreen> {
                           tag = 'Invited'.tag(background: Colors.red);
                           break;
                       }
-                      return Column(
+                      return Row(
                         children: [
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: offsetBase,
-                              ),
-                              tag,
-                            ],
+                          const SizedBox(
+                            width: offsetBase,
                           ),
+                          tag,
                         ],
                       );
                     },
@@ -96,7 +116,103 @@ class _UserScreenState extends State<UserScreen> {
               '${S.current.last_updated} : ${widget.user.usrUpdate!.split(" ").first}'
                   .thinText(fontSize: fontXSm),
               const SizedBox(
-                height: offsetBase,
+                height: offsetSm,
+              ),
+              FutureBuilder<int>(
+                future: _friendShip(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container();
+                  }
+                  var type = snapshot.data!;
+                  switch (type) {
+                    case 0:
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: UserIntroItem(
+                              title: 'Wins',
+                              value: '156'.roundValue,
+                              iconData: LineIcons.award,
+                            ),
+                          ),
+                          Expanded(
+                            child: UserIntroItem(
+                              title: 'Follows',
+                              value: '102538'.roundValue,
+                              iconData: LineIcons.userFriends,
+                            ),
+                          ),
+                          Expanded(
+                            child: UserIntroItem(
+                              title: 'Friends',
+                              value: '48630'.roundValue,
+                              iconData: LineIcons.addressBook,
+                            ),
+                          ),
+                        ],
+                      );
+                    case 1:
+                      return SizedBox(
+                        width: 160.0,
+                        child: 'Follow'.button(
+                          height: 36.0,
+                          color: kAccentColor,
+                          onPressed: () => _follow(currentUser),
+                        ),
+                      );
+                    case 2:
+                      return Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: offsetBase),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: 'Decline'.button(
+                                color: Colors.red,
+                                height: 36.0,
+                                onPressed: () => _decline(currentUser),
+                              ),
+                            ),
+                            Expanded(
+                              child: 'Accept'.button(
+                                color: Colors.green,
+                                height: 36.0,
+                                onPressed: () => _accept(currentUser),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    case 3:
+                      return Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: offsetBase),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: 'Follow'.button(
+                                color: kAccentColor,
+                                height: 36.0,
+                                onPressed: () => _follow(currentUser),
+                              ),
+                            ),
+                            Expanded(
+                              child: 'Request'.button(
+                                color: Colors.red,
+                                height: 36.0,
+                                onPressed: () => _request(currentUser),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                  }
+                  return Container();
+                },
+              ),
+              const SizedBox(
+                height: offsetSm,
               ),
               Card(
                 shape: RoundedRectangleBorder(
@@ -133,10 +249,146 @@ class _UserScreenState extends State<UserScreen> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(offsetBase),
+                child: 'Report User'.button(
+                  color: Colors.red,
+                  onPressed: () async {
+                    LoadingProvider.of(context).show();
+                    await NetworkProvider.of().post(
+                      kReport,
+                      {
+                        'senderID': currentUser.id!,
+                        'receiverID': widget.user.id!,
+                      },
+                    );
+                    LoadingProvider.of(context).hide();
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _follow(UserModel currentUser) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kAddFollow,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': widget.user.id!,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+        );
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.error,
+        );
+      }
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.error,
+      );
+    }
+  }
+
+  void _request(UserModel currentUser) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kSendRequest,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': widget.user.id!,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+        );
+        socketService!.inviteFriend(currentUser.id!, widget.user.id!);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.error,
+        );
+      }
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.error,
+      );
+    }
+  }
+
+  void _accept(UserModel currentUser) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kAcceptRequest,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': widget.user.id!,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+        );
+        socketService!.acceptFriend(currentUser.id!, widget.user.id!);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.error,
+        );
+      }
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.error,
+      );
+    }
+  }
+
+  void _decline(UserModel currentUser) async {
+    LoadingProvider.of(context).show();
+    var resp = await NetworkProvider.of().post(
+      kDeclineRequest,
+      {
+        'senderID': currentUser.id!,
+        'receiverID': widget.user.id!,
+      },
+    );
+    LoadingProvider.of(context).hide();
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+        );
+        socketService!.declineFriend(currentUser.id!, widget.user.id!);
+      } else {
+        DialogProvider.of(context).showSnackBar(
+          resp['msg'],
+          type: SnackBarType.error,
+        );
+      }
+    } else {
+      DialogProvider.of(context).showSnackBar(
+        S.current.server_error,
+        type: SnackBarType.error,
+      );
+    }
   }
 }

@@ -184,6 +184,51 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: offsetSm,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(offsetSm),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: offsetBase,
+                        vertical: offsetBase,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              'Help Center'.semiBoldText(fontSize: fontMd),
+                              const Spacer(),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: offsetSm,
+                          ),
+                          SettingItem(
+                            title: 'Contact Us',
+                            desc: 'You can send a message.',
+                            avatar: S.current.detail.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                          SettingItem(
+                            title: 'Introduce',
+                            desc: 'How to play Labyrinth?',
+                            avatar: 'Detail'.mediumText(
+                              fontSize: fontXSm,
+                              color: kAccentColor,
+                            ),
+                            detail: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               );
             },

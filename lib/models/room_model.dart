@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/colors.dart';
@@ -51,8 +52,21 @@ class RoomModel extends ChangeNotifier {
   }
 
   void addUser(UserModel user) {
+    for (var listUser in _users) {
+      if (listUser.id! == user.id!) {
+        return;
+      }
+    }
     _users.add(user);
     notifyListeners();
+  }
+
+  UserModel? getUser(int index) {
+    if (kDebugMode) {
+      print('[Room] users : ${_users.length}');
+    }
+    if (index > _users.length - 1) return null;
+    return _users[index];
   }
 
   void removeUser(String userid) {
@@ -70,9 +84,17 @@ class RoomModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  UserModel getInviteUser(int index) {
+    return _invites[index];
+  }
+
   void addTour(UserModel tour) {
     _tours.add(tour);
     notifyListeners();
+  }
+
+  UserModel getTourUser(int index) {
+    return _tours[index];
   }
 
   void setStatus(RoomStatus status) {

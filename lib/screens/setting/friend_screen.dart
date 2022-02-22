@@ -56,7 +56,7 @@ class _FriendScreenState extends State<FriendScreen>
   }
 
   void _updateFriend(dynamic data) {
-    String userID = data['content'];
+    String userID = data['content'].toString().replaceAll('user', '');
     switch (data['name']) {
       case 'invite_user':
         _invitedUser(userID);
@@ -92,7 +92,7 @@ class _FriendScreenState extends State<FriendScreen>
     );
     if (resp != null) {
       if (resp['ret'] == 10000) {
-        var user = UserModel()..setFromJson(resp['result'][0]);
+        var user = UserModel()..setFromJson(resp['result']);
         _friends.insert(0, user);
         _friendNotifier.value = _friends.length;
       }

@@ -25,27 +25,6 @@ class UserModel extends ChangeNotifier {
   String? usrToken;
   String? usrOther;
 
-  UserModel({
-    this.id,
-    this.usrID,
-    this.usrName,
-    this.usrAvatar,
-    this.usrEmail,
-    this.usrGender,
-    this.usrDOB,
-    this.usrCountry,
-    this.usrRegdate,
-    this.usrUpdate,
-    this.usrType,
-    this.usrLevel,
-    this.usrMember,
-    this.usrPurpose,
-    this.usrExperience,
-    this.usrCoin,
-    this.usrToken,
-    this.usrOther,
-  });
-
   void setUsrName(String name) {
     usrName = name;
     notifyListeners();
@@ -130,6 +109,7 @@ class UserModel extends ChangeNotifier {
     usrCoin = json["usr_coin"];
     usrToken = json["token"];
     usrOther = json["other"];
+
     notifyListeners();
   }
 

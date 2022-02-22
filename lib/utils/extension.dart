@@ -220,6 +220,23 @@ extension StringExtension on String {
       ),
     );
   }
+
+  String get roundValue {
+    try {
+      var value = int.parse(this);
+      if (value > 9999999) return '10M+';
+      if (value > 999999) return '1M+';
+      if (value > 99999) return '100K+';
+      if (value > 9999) return '10K+';
+      if (value > 999) return '1K+';
+      if (value > 99) return '100+';
+      if (value > 9) return '10+';
+      if (value > 0) return '1+';
+      return '----';
+    } catch (_) {
+      return '----';
+    }
+  }
 }
 
 extension DateTimeExtension on DateTime {

@@ -33,6 +33,9 @@ const kSendRequest = kSetting + 'send_request';
 const kDeclineRequest = kSetting + 'decline_request';
 const kAcceptRequest = kSetting + 'accept_request';
 const kGetUser = kSetting + 'get_user';
+const kGetRelation = kSetting + 'get_relation';
+const kReport = kSetting + 'report';
+const kAddFollow = kSetting + 'add_follow';
 
 const kHome = kBaseUrl + 'Home/';
 const kCreateRoom = kHome + 'create_room';

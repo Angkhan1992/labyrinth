@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
+import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
@@ -9,8 +10,10 @@ import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/providers/socket_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/setting/setting_widget.dart';
 import 'package:provider/provider.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -109,11 +112,100 @@ class _RoomScreenState extends State<RoomScreen> {
               color: kAccentColor,
             ),
           ),
-          body: Column(
-            children: [],
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: offsetBase,
+                vertical: offsetXMd,
+              ),
+              child: Column(
+                children: [
+                  room.amount == '2'
+                      ? _twoRoom(room)
+                      : _fourRoom(
+                          room,
+                        ),
+                  const SizedBox(
+                    height: offsetBase,
+                  ),
+                  'Description'.mediumText(),
+                ],
+              ),
+            ),
           ),
         );
       },
     );
+  }
+
+  Widget _twoRoom(RoomModel room) {
+    return Stack(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            for (var i = 0; i < 2; i++) ...{
+              Container(
+                width: 144.0,
+                height: 144.0,
+                decoration: BoxDecoration(
+                  color: heroColors[i],
+                  borderRadius: BorderRadius.circular(offsetSm),
+                  boxShadow: [
+                    kTopLeftShadow,
+                    kBottomRightShadow,
+                  ],
+                ),
+                child: Center(
+                  child: room.getUser(i) != null
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LabyrinthAvatar(
+                              url: room.getUser(i)!.usrAvatar!,
+                            ),
+                            const SizedBox(
+                              height: offsetSm,
+                            ),
+                            room.getUser(i)!.usrName!.regularText(
+                                  color: Colors.white,
+                                  fontSize: fontSm,
+                                ),
+                          ],
+                        )
+                      : Container(),
+                ),
+              ),
+            },
+          ],
+        ),
+        Positioned.fill(
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(offsetSm),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Colors.white, kAccentColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  kTopLeftShadow,
+                  kBottomRightShadow,
+                ],
+              ),
+              child: 'VS'.mediumText(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _fourRoom(RoomModel room) {
+    return Container();
   }
 }

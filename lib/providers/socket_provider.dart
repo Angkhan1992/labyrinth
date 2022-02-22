@@ -76,6 +76,10 @@ class SocketProvider {
               title = 'Declined';
               description = '$name just decline your friend request.';
               break;
+            case 'create_room':
+              title = 'Create Room';
+              description = '$name was just created from your friend.';
+              break;
           }
           NotificationProvider.showNotification(
             title: title,
@@ -135,6 +139,19 @@ class SocketProvider {
       {
         'senderid': 'user$senderID',
         'receiverid': 'user$receiverID',
+      },
+    );
+  }
+
+  void notiRoom(RoomModel room, String userid) {
+    _socket!.emit(
+      'notiRoom',
+      {
+        'room': {
+          'id': 'room${room.id}',
+          'name': room.name,
+        },
+        'userid': 'user$userid',
       },
     );
   }
