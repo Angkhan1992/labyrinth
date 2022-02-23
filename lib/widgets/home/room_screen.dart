@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/room_model.dart';
@@ -14,7 +16,6 @@ import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
-import 'package:provider/provider.dart';
 
 class RoomScreen extends StatefulWidget {
   const RoomScreen({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _RoomScreenState extends State<RoomScreen> {
       _room!,
       user,
       update: (data) {
-        var type = data['name'];
+        var type = data['id'];
         if (type == 'join_user') _joinUser(data);
         if (type == 'remove_room') _removeRoom(data);
         if (type == 'leave_user') _leaveUser(data);
@@ -54,7 +55,7 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   void _joinUser(dynamic data) async {
-    var usrID = data['content']['usr_id'] as String;
+    var usrID = data['title'] as String;
     var resp = await NetworkProvider.of().post(
       kGetUser,
       {
@@ -96,7 +97,7 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   void _leaveUser(dynamic data) async {
-    var usrID = data['content'] as String;
+    var usrID = data['title'] as String;
     _room!.removeUser(usrID);
   }
 

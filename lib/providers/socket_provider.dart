@@ -61,9 +61,9 @@ class SocketProvider {
         if (kDebugMode) {
           print("[SOCKET] receive notification ===> ${value.toString()}");
           String title = 'Invited Friend';
-          String name = value['content'];
+          String name = value['title'];
           String description = '$name just sent a friend request.';
-          switch (value['name']) {
+          switch (value['id']) {
             case 'invite_user':
               title = 'Invited';
               description = '$name just sent a friend request.';
@@ -94,7 +94,7 @@ class SocketProvider {
   void updateRoomList({
     Function(dynamic)? update,
   }) {
-    _socket!.on("update_room", (value) async {
+    _socket!.on("room_list", (value) async {
       if (kDebugMode) {
         print("[Room List] update ===> ${value.toString()}");
       }
@@ -145,12 +145,9 @@ class SocketProvider {
 
   void notiRoom(RoomModel room, String userid) {
     _socket!.emit(
-      'notiRoom',
+      'noti_room',
       {
-        'room': {
-          'id': 'room${room.id}',
-          'name': room.name,
-        },
+        'roomid': 'room${room.id}',
         'userid': 'user$userid',
       },
     );
@@ -158,7 +155,7 @@ class SocketProvider {
 
   void createRoom(RoomModel room, UserModel user) {
     _socket!.emit(
-      'createRoom',
+      'create_room',
       {
         'room': {
           'id': 'room${room.id}',
@@ -175,13 +172,13 @@ class SocketProvider {
     Function(dynamic)? update,
   }) {
     _socket!.emit(
-      'joinRoom',
+      'join_room',
       {
         'roomid': 'room${room.id}',
         'userid': 'user${user.id}',
       },
     );
-    _socket!.on("update", (value) async {
+    _socket!.on('update_room', (value) async {
       if (kDebugMode) {
         print("[Join Room] update ===> ${value.toString()}");
       }
@@ -191,7 +188,7 @@ class SocketProvider {
 
   void leaveRoom(RoomModel room, UserModel user) {
     _socket!.emit(
-      'leaveRoom',
+      'leave_room',
       {
         'roomid': 'room${room.id}',
         'userid': 'user${user.id}',

@@ -38,15 +38,22 @@ class RoomModel extends ChangeNotifier {
         _status = RoomStatus.result;
         break;
     }
-    _users = (json['users'] as List)
-        .map((e) => UserModel()..setFromJson(e))
-        .toList();
-    _invites = (json['invites'] as List)
-        .map((e) => UserModel()..setFromJson(e))
-        .toList();
-    _tours = (json['tours'] as List)
-        .map((e) => UserModel()..setFromJson(e))
-        .toList();
+
+    if (json['users'] != null) {
+      _users = (json['users'] as List)
+          .map((e) => UserModel()..setFromJson(e))
+          .toList();
+    }
+    if (json['invites'] != null) {
+      _invites = (json['invites'] as List)
+          .map((e) => UserModel()..setFromJson(e))
+          .toList();
+    }
+    if (json['tours'] != null) {
+      _tours = (json['tours'] as List)
+          .map((e) => UserModel()..setFromJson(e))
+          .toList();
+    }
 
     notifyListeners();
   }
@@ -108,7 +115,10 @@ class RoomModel extends ChangeNotifier {
 
   Widget listWidget() {
     return Container(
-      padding: const EdgeInsets.all(offsetSm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: offsetBase,
+        vertical: offsetSm,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(offsetSm),
@@ -120,19 +130,41 @@ class RoomModel extends ChangeNotifier {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          name.mediumText(
-            color: kAccentColor,
+          Row(
+            children: [
+              amount == '2'
+                  ? const Icon(
+                      Icons.looks_two_outlined,
+                      color: Colors.green,
+                      size: 18.0,
+                    )
+                  : const Icon(
+                      Icons.looks_4_outlined,
+                      color: Colors.red,
+                      size: 18.0,
+                    ),
+              const SizedBox(
+                width: offsetSm,
+              ),
+              name.thinText(
+                color: kAccentColor,
+                fontSize: fontSm,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: offsetSm,
           ),
           Row(
             children: [
-              'User Amount : '.thinText(fontSize: fontSm),
-              '$amount Users Room'.mediumText(fontSize: fontSm),
+              'Amount : '.thinText(fontSize: fontXSm),
+              '$amount Users'.mediumText(fontSize: fontXSm),
             ],
           ),
           Row(
             children: [
-              'Created Date : '.thinText(fontSize: fontSm),
-              regDate.mediumText(fontSize: fontSm),
+              'Created : '.thinText(fontSize: fontXSm),
+              regDate.mediumText(fontSize: fontXSm),
             ],
           ),
         ],

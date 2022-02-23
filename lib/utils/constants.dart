@@ -9,7 +9,8 @@ const kFontFamily = 'Poppins';
 
 // const kSocketUrl = 'ws://51.89.17.207:52525';
 const kSocketUrl = 'ws://192.168.1.201:52525';
-const kBaseUrl = 'https://labyrinth.laodev.info/';
+// const kBaseUrl = 'https://labyrinth.laodev.info/';
+const kBaseUrl = 'http://192.168.1.201/';
 const kPackageName = 'com.laodev.labyrinth';
 
 const kAuth = kBaseUrl + 'Auth/';
@@ -40,6 +41,8 @@ const kAddFollow = kSetting + 'add_follow';
 const kHome = kBaseUrl + 'Home/';
 const kCreateRoom = kHome + 'create_room';
 const kLeaveUser = kHome + 'leave_user';
+const kGetRooms = kHome + 'get_rooms';
+const kGetRoom = kHome + 'get_room';
 
 const kRootAvatar = 'avatar';
 

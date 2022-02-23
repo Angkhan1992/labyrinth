@@ -39,16 +39,69 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     Timer.run(() => _initData());
   }
 
-  void _initData() {
+  void _initData() async {
+    var currentUser = Provider.of<UserModel>(context, listen: false);
+    var resp = await NetworkProvider.of().post(
+      kGetRooms,
+      {
+        'id': currentUser.id!,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var rooms = (resp['result'] as List)
+            .map((e) => RoomModel()..setFromJson(e))
+            .toList();
+        for (var room in rooms) {
+          if (room.getStatus().isWaiting) {
+            _pendingRooms.add(room);
+          } else {
+            _activeRooms.add(room);
+          }
+        }
+        if (kDebugMode) {
+          print('[Home] rooms : ${rooms.length}');
+        }
+        setState(() {});
+      }
+    }
     socketService!.updateRoomList(
       update: _updateRoom,
     );
   }
 
-  void _updateRoom(dynamic data) async {}
+  void _updateRoom(dynamic data) {
+    var type = data['id'] as String;
+    switch (type) {
+      case 'create_room':
+        _socketCreateRoom(data);
+        break;
+    }
+  }
+
+  void _socketCreateRoom(dynamic data) async {
+    var currentUser = Provider.of<UserModel>(context, listen: false);
+
+    var roomid = data['title'] as String;
+    var resp = await NetworkProvider.of().post(
+      kGetRoom,
+      {
+        'roomid': roomid.replaceAll('room', ''),
+        'userid': currentUser.id!,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var room = RoomModel()..setFromJson(resp['result']);
+        _pendingRooms.add(room);
+        setState(() {});
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -260,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 controller: _scrollController,
                 itemBuilder: (context, index) {
-                  return RoomModel().listWidget();
+                  return _pendingRooms[index].listWidget();
                 },
                 separatorBuilder: (context, index) {
                   return const SizedBox(
