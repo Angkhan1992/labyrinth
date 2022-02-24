@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
@@ -150,6 +151,29 @@ class RoomModel extends ChangeNotifier {
                 color: kAccentColor,
                 fontSize: fontSm,
               ),
+              const SizedBox(
+                width: offsetBase,
+              ),
+              for (var index = 0; index < int.parse(amount); index++) ...{
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                  width: 24.0,
+                  height: 24.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: heroColors[index],
+                  ),
+                  child: Center(
+                    child: (index < _users.length
+                            ? _users[index].getAvatarName()
+                            : '?')
+                        .boldText(
+                      fontSize: fontXSm,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              },
             ],
           ),
           const SizedBox(
@@ -157,14 +181,15 @@ class RoomModel extends ChangeNotifier {
           ),
           Row(
             children: [
-              'Amount : '.thinText(fontSize: fontXSm),
-              '$amount Users'.mediumText(fontSize: fontXSm),
+              'Amount   :   '.regularText(fontSize: fontXSm),
+              '${_users.length}/$amount'.mediumText(fontSize: fontXSm),
             ],
           ),
           Row(
             children: [
-              'Created : '.thinText(fontSize: fontXSm),
-              regDate.mediumText(fontSize: fontXSm),
+              'Created   :   '.regularText(fontSize: fontXSm),
+              regDate.getFullDate.getUTCFullTime.formatDay
+                  .mediumText(fontSize: fontXSm),
             ],
           ),
         ],

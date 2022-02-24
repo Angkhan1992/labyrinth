@@ -237,6 +237,21 @@ extension StringExtension on String {
       return '----';
     }
   }
+
+  String get formatDay {
+    var dateFormatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    var date = dateFormatter.parse(this);
+    var currentDate = DateTime.now();
+    var diff = currentDate.difference(date).inSeconds;
+    if (diff < 60) {
+      return 'Less a min';
+    } else if (diff < 60 * 60) {
+      return 'Less an hr';
+    } else if (diff < 60 * 60 * 24) {
+      return 'In a day';
+    }
+    return 'Some days';
+  }
 }
 
 extension DateTimeExtension on DateTime {

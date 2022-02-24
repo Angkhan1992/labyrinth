@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 itemCount: _pendingRooms.length,
-              )
+              ),
       ],
     );
   }
@@ -362,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 itemCount: _activeRooms.length,
-              )
+              ),
       ],
     );
   }

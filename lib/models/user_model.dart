@@ -288,4 +288,8 @@ class UserModel extends ChangeNotifier {
       ),
     );
   }
+
+  String getAvatarName() {
+    return 'A';
+  }
 }

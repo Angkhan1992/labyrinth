@@ -88,11 +88,11 @@ class _RoomScreenState extends State<RoomScreen> {
 
   void _removeRoom(dynamic data) async {
     if (_room!.getStatus().isWaiting) {
-      Navigator.of(context).pop();
       DialogProvider.of(context).showSnackBar(
         'This room was removed by creator',
         type: SnackBarType.info,
       );
+      Navigator.of(context).pop();
     } else {}
   }
 
