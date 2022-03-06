@@ -55,4 +55,25 @@ class BlockModel {
       ),
     );
   }
+
+  static Widget getFillModel(
+    double size,
+  ) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(offsetXSm),
+      child: GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: (size - 2) / 3,
+          childAspectRatio: 1,
+          crossAxisSpacing: 1,
+          mainAxisSpacing: 1,
+        ),
+        itemBuilder: (context, index) {
+          return Image.asset('assets/images/brick_01.png');
+        },
+        itemCount: 9,
+      ),
+    );
+  }
 }

@@ -114,7 +114,9 @@ class RoomModel extends ChangeNotifier {
     return _status;
   }
 
-  Widget listWidget() {
+  Widget listWidget({
+    Function()? detail,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: offsetBase,

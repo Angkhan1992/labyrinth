@@ -18,7 +18,7 @@ import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/home/home_widget.dart';
-import 'package:labyrinth/widgets/home/room_screen.dart';
+import 'package:labyrinth/screens/home/room_create_widget.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -315,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         NavigatorProvider.of(context).push(
-          screen: const RoomScreen(),
+          screen: const RoomCreateWidget(),
           pop: (val) {
             _leaveRoom(currentRoom, currentUser);
           },
@@ -362,7 +362,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 controller: _scrollController,
                 itemBuilder: (context, index) {
-                  return _pendingRooms[index].listWidget();
+                  return _pendingRooms[index].listWidget(
+                    detail: () {},
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return const SizedBox(

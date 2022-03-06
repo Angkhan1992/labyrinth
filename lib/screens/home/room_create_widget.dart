@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:labyrinth/models/block_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -17,14 +18,14 @@ import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
-class RoomScreen extends StatefulWidget {
-  const RoomScreen({Key? key}) : super(key: key);
+class RoomCreateWidget extends StatefulWidget {
+  const RoomCreateWidget({Key? key}) : super(key: key);
 
   @override
-  _RoomScreenState createState() => _RoomScreenState();
+  _RoomCreateWidgetState createState() => _RoomCreateWidgetState();
 }
 
-class _RoomScreenState extends State<RoomScreen> {
+class _RoomCreateWidgetState extends State<RoomCreateWidget> {
   RoomModel? _room;
 
   @override
@@ -130,6 +131,52 @@ class _RoomScreenState extends State<RoomScreen> {
                     height: offsetBase,
                   ),
                   'Description'.mediumText(),
+                  const SizedBox(
+                    height: offsetBase,
+                  ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: (MediaQuery.of(context).size.width -
+                              offsetBase * 2 -
+                              6) /
+                          7,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 1,
+                      mainAxisSpacing: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      var width = (MediaQuery.of(context).size.width -
+                              offsetBase * 2 -
+                              6) /
+                          7;
+                      if (index == 0) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(offsetXSm),
+                            color: Colors.blue,
+                          ),
+                        );
+                      }
+                      if (index == 48) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(offsetXSm),
+                            color: Colors.red,
+                          ),
+                        );
+                      }
+                      return index % 2 == 0
+                          ? BlockModel.getFillModel(width)
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(offsetXSm),
+                                color: Colors.white,
+                              ),
+                            );
+                    },
+                    itemCount: 49,
+                  ),
                 ],
               ),
             ),
