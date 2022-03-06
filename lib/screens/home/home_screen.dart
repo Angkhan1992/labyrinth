@@ -75,23 +75,52 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _updateRoom(dynamic data) {
+    var currentUser = Provider.of<UserModel>(context, listen: false);
     var type = data['id'] as String;
     switch (type) {
       case 'create_room':
-        _socketCreateRoom(data);
+        _socketCreateRoom(
+          user: currentUser,
+          data: data,
+        );
+        break;
+      case 'join_room':
+        _socketJoinRoom(
+          user: currentUser,
+          data: data,
+        );
+        break;
+      case 'remove_room':
+        _socketRemoveRoom(
+          user: currentUser,
+          data: data,
+        );
+        break;
+      case 'leave_user':
+        _socketLeaveUser(
+          user: currentUser,
+          data: data,
+        );
+        break;
+      case 'leave_tour':
+        _socketLeaveTour(
+          user: currentUser,
+          data: data,
+        );
         break;
     }
   }
 
-  void _socketCreateRoom(dynamic data) async {
-    var currentUser = Provider.of<UserModel>(context, listen: false);
-
+  void _socketCreateRoom({
+    UserModel? user,
+    dynamic data,
+  }) async {
     var roomid = data['title'] as String;
     var resp = await NetworkProvider.of().post(
       kGetRoom,
       {
         'roomid': roomid.replaceAll('room', ''),
-        'userid': currentUser.id!,
+        'userid': user!.id!,
       },
     );
     if (resp != null) {
@@ -102,6 +131,26 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+
+  void _socketJoinRoom({
+    UserModel? user,
+    dynamic data,
+  }) async {}
+
+  void _socketRemoveRoom({
+    UserModel? user,
+    dynamic data,
+  }) async {}
+
+  void _socketLeaveUser({
+    UserModel? user,
+    dynamic data,
+  }) async {}
+
+  void _socketLeaveTour({
+    UserModel? user,
+    dynamic data,
+  }) async {}
 
   @override
   void dispose() {

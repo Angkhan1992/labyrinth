@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/setting/setting_widget.dart';
 
@@ -95,7 +96,8 @@ class UserModel extends ChangeNotifier {
     usrID = json["usr_userid"];
     usrName = json["usr_name"];
     usrEmail = json["usr_email"];
-    usrAvatar = json["usr_avatar"];
+    usrAvatar = (json["usr_avatar"] as String)
+        .replaceAll('https://labyrinth.laodev.info/', kBaseUrl);
     usrGender = json["usr_gender"];
     usrDOB = json["usr_dob"];
     usrCountry = json["usr_country"];

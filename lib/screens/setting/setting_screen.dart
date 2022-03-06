@@ -164,7 +164,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           SettingItem(
                             title: S.current.privacy_police,
-                            desc: S.current.award_detail,
+                            desc: 'To see Privacy and Police.',
                             avatar: 'Detail'.mediumText(
                               fontSize: fontXSm,
                               color: kAccentColor,

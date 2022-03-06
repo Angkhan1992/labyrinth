@@ -49,7 +49,17 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: backgroundColor,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black38,
+            offset: Offset(0, 1),
+            blurRadius: 1.0,
+            spreadRadius: 1.0,
+          )
+        ],
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: offsetSm),

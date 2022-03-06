@@ -393,7 +393,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               S.current.purpose.semiBoldText(fontSize: fontMd),
                               const SizedBox(
-                                height: offsetSm,
+                                height: offsetBase,
                               ),
                               S.current.purpose_of_labyrinth
                                   .thinText(fontSize: fontSm),
@@ -418,8 +418,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                             'usr_purpose': i.toString(),
                                           }),
                                           child: Container(
-                                            margin:
-                                                const EdgeInsets.all(offsetXSm),
+                                            margin: const EdgeInsets.only(
+                                              right: offsetXSm,
+                                              top: offsetXSm,
+                                            ),
                                             padding: const EdgeInsets.symmetric(
                                               vertical: offsetSm,
                                               horizontal: offsetBase,
@@ -450,7 +452,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 },
                               ),
                               const SizedBox(
-                                height: offsetSm,
+                                width: double.infinity,
+                                height: offsetBase,
                               ),
                               S.current.experiences_of_labyrinth
                                   .thinText(fontSize: fontSm),
@@ -475,8 +478,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                             'usr_experience': i.toString(),
                                           }),
                                           child: Container(
-                                            margin:
-                                                const EdgeInsets.all(offsetXSm),
+                                            margin: const EdgeInsets.only(
+                                              right: offsetXSm,
+                                              top: offsetXSm,
+                                            ),
                                             padding: const EdgeInsets.symmetric(
                                               vertical: offsetSm,
                                               horizontal: offsetBase,
