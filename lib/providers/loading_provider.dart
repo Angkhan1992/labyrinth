@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labyrinth/themes/colors.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 bool isShowing = false;
 
@@ -29,11 +30,10 @@ class LoadingProvider {
     showDialog<dynamic>(
         context: context!,
         builder: (BuildContext context) {
-          return const Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                kAccentColor,
-              ),
+          return Center(
+            child: LoadingAnimationWidget.fourRotatingDots(
+              color: Colors.white,
+              size: 48.0,
             ),
           );
         },

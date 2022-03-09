@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/loading_provider.dart';
 import 'package:labyrinth/widgets/home/room_wait_widget.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,11 @@ import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class RoomScreen extends StatefulWidget {
-  const RoomScreen({Key? key}) : super(key: key);
+  final bool isCreator;
+  const RoomScreen({
+    Key? key,
+    this.isCreator = false,
+  }) : super(key: key);
 
   @override
   _RoomScreenState createState() => _RoomScreenState();
@@ -27,6 +30,8 @@ class RoomScreen extends StatefulWidget {
 class _RoomScreenState extends State<RoomScreen> {
   RoomModel? _room;
   UserModel? _currentUser;
+
+  final _valueEvent = ValueNotifier(RoomScreenStatus.none);
 
   @override
   void initState() {
@@ -53,6 +58,9 @@ class _RoomScreenState extends State<RoomScreen> {
         if (type == 'leave_user') _leaveUser(data);
       },
     );
+    if (widget.isCreator) {
+      socketService!.joinRoom(_room!, _currentUser!);
+    }
   }
 
   void _joinUser(dynamic data) async {
@@ -122,20 +130,29 @@ class _RoomScreenState extends State<RoomScreen> {
               ),
             ],
           ),
-          body: room.getStatus().isWaiting
-              ? RoomWaitWidget(
-                  currentUser: _currentUser,
-                  room: room,
-                  joinUser: () => _joinToUser(),
-                )
-              : Container(),
+          body: ValueListenableBuilder(
+            builder: (context, value, child) {
+              return room.getStatus().isWaiting
+                  ? RoomWaitWidget(
+                      currentUser: _currentUser,
+                      status: _valueEvent.value,
+                      room: room,
+                      joinUser: () => _joinToUser(),
+                    )
+                  : Container();
+            },
+            valueListenable: _valueEvent,
+          ),
         );
       },
     );
   }
 
   void _joinToUser() async {
-    LoadingProvider.of(context).show();
+    if (_valueEvent.value != RoomScreenStatus.none) {
+      return;
+    }
+    _valueEvent.value = RoomScreenStatus.joinUser;
     var resp = await NetworkProvider.of().post(
       kJoinRoom,
       {
@@ -143,11 +160,17 @@ class _RoomScreenState extends State<RoomScreen> {
         'userid': _currentUser!.id!,
       },
     );
-    LoadingProvider.of(context).hide();
+    _valueEvent.value = RoomScreenStatus.none;
     if (resp != null) {
       if (resp['ret'] == 10000) {
         socketService!.joinRoom(_room!, _currentUser!);
       }
     }
   }
+}
+
+enum RoomScreenStatus {
+  none,
+  joinUser,
+  joinTour,
 }

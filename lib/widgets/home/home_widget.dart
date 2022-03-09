@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
@@ -22,20 +23,22 @@ class CreateRoomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 7.0, top: 7.0),
-            child: CustomPaint(
-              painter: RoomShadowPainter(),
-              child: ClipPath(
-                clipper: RoomClipper(),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(offsetBase),
-                  color: Colors.white,
-                  child: InkWell(
-                    onTap: onClick,
+      child: Bounceable(
+        onTap: onClick,
+        scaleFactor: 0.7,
+        duration: const Duration(milliseconds: 100),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 7.0, top: 7.0),
+              child: CustomPaint(
+                painter: RoomShadowPainter(),
+                child: ClipPath(
+                  clipper: RoomClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(offsetBase),
+                    color: Colors.white,
                     child: Column(
                       children: [
                         // icon,
@@ -51,23 +54,23 @@ class CreateRoomWidget extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Container(
-            width: 44.0,
-            height: 44.0,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.white, color],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+            Container(
+              width: 44.0,
+              height: 44.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white, color],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                shape: BoxShape.circle,
               ),
-              shape: BoxShape.circle,
+              child: Center(
+                child: icon,
+              ),
             ),
-            child: Center(
-              child: icon,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

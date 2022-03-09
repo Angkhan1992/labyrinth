@@ -166,11 +166,20 @@ class SocketProvider {
     );
   }
 
-  void joinRoom(
+  void updateRoom(
     RoomModel room,
     UserModel user, {
     Function(dynamic)? update,
   }) {
+    _socket!.on('update_room', (value) async {
+      if (kDebugMode) {
+        print("[Join Room] update ===> ${value.toString()}");
+      }
+      update!(value);
+    });
+  }
+
+  void joinRoom(RoomModel room, UserModel user) {
     _socket!.emit(
       'join_room',
       {
@@ -178,12 +187,6 @@ class SocketProvider {
         'userid': 'user${user.id}',
       },
     );
-    _socket!.on('update_room', (value) async {
-      if (kDebugMode) {
-        print("[Join Room] update ===> ${value.toString()}");
-      }
-      update!(value);
-    });
   }
 
   void leaveRoom(RoomModel room, UserModel user) {

@@ -3,6 +3,7 @@ import 'package:labyrinth/models/block_model.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
+import 'package:labyrinth/screens/home/room_screen.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
@@ -11,12 +12,14 @@ import 'package:provider/provider.dart';
 class RoomWaitWidget extends StatelessWidget {
   final UserModel currentUser;
   final RoomModel room;
+  final RoomScreenStatus status;
   final Function()? joinUser;
 
   const RoomWaitWidget({
     Key? key,
     required this.currentUser,
     required this.room,
+    required this.status,
     this.joinUser,
   }) : super(key: key);
 
@@ -144,6 +147,7 @@ class RoomWaitWidget extends StatelessWidget {
                     ),
                     Expanded(
                       child: 'Join to Player'.button(
+                        isLoading: status == RoomScreenStatus.joinUser,
                         onPressed: joinUser!,
                       ),
                     ),
@@ -154,6 +158,7 @@ class RoomWaitWidget extends StatelessWidget {
                   if (!room.isContainedByTour(currentUser)) ...{
                     Expanded(
                       child: 'Join to Tour'.button(
+                        isLoading: status == RoomScreenStatus.joinTour,
                         color: Colors.deepPurpleAccent,
                         onPressed: () {},
                       ),

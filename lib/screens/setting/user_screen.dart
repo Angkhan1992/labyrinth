@@ -156,8 +156,8 @@ class _UserScreenState extends State<UserScreen> {
                       return SizedBox(
                         width: 160.0,
                         child: 'Follow'.button(
-                          height: 36.0,
                           color: kAccentColor,
+                          padding: const EdgeInsets.all(offsetSm),
                           onPressed: () => _follow(currentUser),
                         ),
                       );
@@ -170,14 +170,14 @@ class _UserScreenState extends State<UserScreen> {
                             Expanded(
                               child: 'Decline'.button(
                                 color: Colors.red,
-                                height: 36.0,
+                                padding: const EdgeInsets.all(offsetSm),
                                 onPressed: () => _decline(currentUser),
                               ),
                             ),
                             Expanded(
                               child: 'Accept'.button(
                                 color: Colors.green,
-                                height: 36.0,
+                                padding: const EdgeInsets.all(offsetSm),
                                 onPressed: () => _accept(currentUser),
                               ),
                             ),
@@ -193,14 +193,14 @@ class _UserScreenState extends State<UserScreen> {
                             Expanded(
                               child: 'Follow'.button(
                                 color: kAccentColor,
-                                height: 36.0,
+                                padding: const EdgeInsets.all(offsetSm),
                                 onPressed: () => _follow(currentUser),
                               ),
                             ),
                             Expanded(
                               child: 'Request'.button(
                                 color: Colors.red,
-                                height: 36.0,
+                                padding: const EdgeInsets.all(offsetSm),
                                 onPressed: () => _request(currentUser),
                               ),
                             ),

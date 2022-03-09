@@ -171,33 +171,34 @@ extension StringExtension on String {
   TextButton button({
     required Function() onPressed,
     double width = double.infinity,
-    double height = kButtonHeight,
     bool isLoading = false,
     Color color = kAccentColor,
+    double radius = offsetSm,
+    EdgeInsets? padding,
   }) {
     return TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          padding ?? const EdgeInsets.all(offsetSm + offsetXSm),
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+            side: BorderSide(color: color),
+          ),
+        ),
+      ),
       onPressed: onPressed,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(offsetSm),
-          boxShadow: [
-            kTopLeftShadow,
-            kBottomRightShadow,
-          ],
-        ),
-        child: Center(
-          child: isLoading
-              ? ProgressWidget(
-                  color: Colors.white,
-                )
-              : semiBoldText(
-                  fontSize: fontSm,
-                  color: color == Colors.white ? Colors.black : Colors.white,
-                ),
-        ),
+      child: Center(
+        child: isLoading
+            ? ProgressWidget(
+                color: Colors.white,
+              )
+            : semiBoldText(
+                fontSize: fontSm,
+                color: color == Colors.white ? Colors.black : Colors.white,
+              ),
       ),
     );
   }

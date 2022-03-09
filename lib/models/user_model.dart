@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/themes/colors.dart';
@@ -292,6 +294,42 @@ class UserModel extends ChangeNotifier {
   }
 
   String getAvatarName() {
-    return 'A';
+    return usrName!.substring(0, 1);
+  }
+
+  Widget circleAvatar({
+    double size = 24.0,
+  }) {
+    if (usrAvatar != null) {
+      var emptyAvatar = Icon(
+        Icons.account_circle,
+        size: size,
+        color: kAccentColor,
+      );
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(size / 2.0),
+        child: CachedNetworkImage(
+          width: size,
+          height: size,
+          imageUrl: usrAvatar!,
+          placeholder: (context, url) => Stack(
+            children: [
+              emptyAvatar,
+              const Center(
+                child: CupertinoActivityIndicator(),
+              ),
+            ],
+          ),
+          errorWidget: (context, url, error) => emptyAvatar,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(size / 2.0),
+      child: Center(
+        child: getAvatarName().mediumText(),
+      ),
+    );
   }
 }

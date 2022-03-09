@@ -40,6 +40,7 @@ const kAddFollow = kSetting + 'add_follow';
 
 const kHome = kBaseUrl + 'Home/';
 const kCreateRoom = kHome + 'create_room';
+const kJoinRoom = kHome + 'join_room';
 const kLeaveUser = kHome + 'leave_user';
 const kGetRooms = kHome + 'get_rooms';
 const kGetRoom = kHome + 'get_room';

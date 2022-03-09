@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:labyrinth/themes/colors.dart';
@@ -165,7 +166,7 @@ class FacebookButton extends Container {
 class ProgressWidget extends SizedBox {
   ProgressWidget({
     Key? key,
-    double size = 24.0,
+    double size = 14.0,
     double strokeWidth = 2.0,
     Color color = kPrimaryColor,
   }) : super(
@@ -191,7 +192,7 @@ class HelpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Bounceable(
       onTap: onClick,
       child: Container(
         width: 24.0,

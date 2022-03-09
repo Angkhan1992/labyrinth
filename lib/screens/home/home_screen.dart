@@ -18,7 +18,7 @@ import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/button.dart';
 import 'package:labyrinth/widgets/home/home_widget.dart';
-import 'package:labyrinth/screens/home/room_create_widget.dart';
+import 'package:labyrinth/screens/home/room_screen.dart';
 import 'package:labyrinth/widgets/textfield.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,8 +33,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
 
-  final List<RoomModel> _pendingRooms = [];
-  final List<RoomModel> _activeRooms = [];
+  var _notifyPendingRooms = ValueNotifier<List<RoomModel>>([]);
+  var _notifyActiveRooms = ValueNotifier<List<RoomModel>>([]);
 
   @override
   void initState() {
@@ -53,20 +53,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (resp != null) {
       if (resp['ret'] == 10000) {
+        List<RoomModel> pendingRooms = [];
+        List<RoomModel> activeRooms = [];
         var rooms = (resp['result'] as List)
             .map((e) => RoomModel()..setFromJson(e))
             .toList();
         for (var room in rooms) {
           if (room.getStatus().isWaiting) {
-            _pendingRooms.add(room);
+            pendingRooms.add(room);
           } else {
-            _activeRooms.add(room);
+            activeRooms.add(room);
           }
         }
         if (kDebugMode) {
           print('[Home] rooms : ${rooms.length}');
         }
-        setState(() {});
+        _notifyPendingRooms.value = pendingRooms;
+        _notifyActiveRooms.value = activeRooms;
       }
     }
     socketService!.updateRoomList(
@@ -75,6 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _updateRoom(dynamic data) {
+    if (!mounted) {
+      return;
+    }
     var currentUser = Provider.of<UserModel>(context, listen: false);
     var type = data['id'] as String;
     switch (type) {
@@ -126,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (resp != null) {
       if (resp['ret'] == 10000) {
         var room = RoomModel()..setFromJson(resp['result']);
-        _pendingRooms.add(room);
-        setState(() {});
+        var _pendingRooms = _notifyPendingRooms.value;
+        _notifyPendingRooms.value = _pendingRooms..add(room);
       }
     }
   }
@@ -135,7 +141,36 @@ class _HomeScreenState extends State<HomeScreen> {
   void _socketJoinRoom({
     UserModel? user,
     dynamic data,
-  }) async {}
+  }) async {
+    var roomid = (data['title'] as String).replaceAll('room', '');
+    var userid = (data['content'] as String).replaceAll('user', '');
+    var resp = await NetworkProvider.of().post(
+      kGetUser,
+      {
+        'id': userid,
+      },
+    );
+    if (resp != null) {
+      if (resp['ret'] == 10000) {
+        var user = UserModel()..setFromJson(resp['result']);
+        var _pendingRoom = _notifyPendingRooms.value;
+        for (var room in _pendingRoom) {
+          if (roomid == room.id) {
+            room.addUser(user);
+          }
+        }
+        _notifyPendingRooms.value = _pendingRoom;
+
+        var _activeRoom = _notifyActiveRooms.value;
+        for (var room in _activeRoom) {
+          if (roomid == room.id) {
+            room.addUser(user);
+          }
+        }
+        _notifyActiveRooms.value = _activeRoom;
+      }
+    }
+  }
 
   void _socketRemoveRoom({
     UserModel? user,
@@ -201,7 +236,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             S.current.create_match.thinText(),
             const Spacer(),
-            const HelpButton(),
+            HelpButton(
+              onClick: () {},
+            ),
           ],
         ),
         const SizedBox(
@@ -263,25 +300,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       actions: [
-        S.current.cancel.button(
-          color: Colors.red,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: offsetSm),
+          child: S.current.cancel.button(
+            color: Colors.red,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
-        S.current.create.button(
-          onPressed: () {
-            Navigator.of(context).pop();
-            var name = _nameController.text;
-            if (name.isEmpty) {
-              DialogProvider.of(context).showSnackBar(
-                'Please input room name',
-                type: SnackBarType.waring,
-              );
-              return;
-            }
-            _createRoom(name, amount);
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: offsetSm),
+          child: S.current.create.button(
+            onPressed: () {
+              Navigator.of(context).pop();
+              var name = _nameController.text;
+              if (name.isEmpty) {
+                DialogProvider.of(context).showSnackBar(
+                  'Please input room name',
+                  type: SnackBarType.waring,
+                );
+                return;
+              }
+              _createRoom(name, amount);
+            },
+          ),
         ),
       ],
     );
@@ -315,9 +358,13 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         NavigatorProvider.of(context).push(
-          screen: const RoomCreateWidget(),
+          screen: const RoomScreen(
+            isCreator: true,
+          ),
           pop: (val) {
-            _leaveRoom(currentRoom, currentUser);
+            if (val != null) {
+              _leaveRoom(currentRoom, currentUser);
+            }
           },
         );
       } else {
@@ -335,86 +382,118 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _pendingWidget() {
-    return Column(
-      children: [
-        Row(
+    return ValueListenableBuilder(
+      valueListenable: _notifyPendingRooms,
+      builder: (context, value, child) {
+        var _rooms = _notifyPendingRooms.value;
+        return Column(
           children: [
-            S.current.pending_room.thinText(
-              color: Colors.red,
-            ),
-            const Spacer(),
-            const HelpButton(),
-          ],
-        ),
-        const SizedBox(
-          height: offsetSm,
-        ),
-        _pendingRooms.isEmpty
-            ? SizedBox(
-                height: 90.0,
-                child: Center(
-                  child: 'Have not any room yet'.thinText(
-                    fontSize: fontSm,
-                  ),
+            Row(
+              children: [
+                S.current.pending_room.thinText(
+                  color: Colors.red,
                 ),
-              )
-            : ListView.separated(
-                shrinkWrap: true,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return _pendingRooms[index].listWidget(
-                    detail: () {},
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: offsetSm,
-                  );
-                },
-                itemCount: _pendingRooms.length,
-              ),
-      ],
+                const Spacer(),
+                HelpButton(
+                  onClick: () {},
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: offsetSm,
+            ),
+            _rooms.isEmpty
+                ? SizedBox(
+                    height: 90.0,
+                    child: Center(
+                      child: 'Have not any room yet'.thinText(
+                        fontSize: fontSm,
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      return _rooms[index].listWidget(
+                        detail: () {
+                          var currentRoom =
+                              Provider.of<RoomModel>(context, listen: false);
+                          currentRoom.setFromJson(_rooms[index].toJson());
+
+                          NavigatorProvider.of(context).push(
+                            screen: const RoomScreen(),
+                            pop: (val) {
+                              if (val != null) {
+                                var currentUser = Provider.of<UserModel>(
+                                    context,
+                                    listen: false);
+                                _leaveRoom(currentRoom, currentUser);
+                              }
+                            },
+                          );
+                        },
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: offsetSm,
+                      );
+                    },
+                    itemCount: _rooms.length,
+                  ),
+          ],
+        );
+      },
     );
   }
 
   Widget _activeWidget() {
-    return Column(
-      children: [
-        Row(
+    return ValueListenableBuilder(
+      valueListenable: _notifyActiveRooms,
+      builder: (context, value, child) {
+        var _rooms = _notifyActiveRooms.value;
+        return Column(
           children: [
-            S.current.active_room.thinText(
-              color: Colors.green,
-            ),
-            const Spacer(),
-            const HelpButton(),
-          ],
-        ),
-        const SizedBox(
-          height: offsetSm,
-        ),
-        _activeRooms.isEmpty
-            ? SizedBox(
-                height: 90.0,
-                child: Center(
-                  child: 'Have not any room yet'.thinText(
-                    fontSize: fontSm,
-                  ),
+            Row(
+              children: [
+                S.current.active_room.thinText(
+                  color: Colors.green,
                 ),
-              )
-            : ListView.separated(
-                shrinkWrap: true,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return RoomModel().listWidget();
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: offsetSm,
-                  );
-                },
-                itemCount: _activeRooms.length,
-              ),
-      ],
+                const Spacer(),
+                HelpButton(
+                  onClick: () {},
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: offsetSm,
+            ),
+            _rooms.isEmpty
+                ? SizedBox(
+                    height: 90.0,
+                    child: Center(
+                      child: 'Have not any room yet'.thinText(
+                        fontSize: fontSm,
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      return RoomModel().listWidget();
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: offsetSm,
+                      );
+                    },
+                    itemCount: _rooms.length,
+                  ),
+          ],
+        );
+      },
     );
   }
 

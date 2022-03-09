@@ -58,6 +58,7 @@ class BlockModel {
 
   static Widget getFillModel(
     double size,
+    GameModel provider,
   ) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(offsetXSm),
@@ -70,7 +71,7 @@ class BlockModel {
           mainAxisSpacing: 1,
         ),
         itemBuilder: (context, index) {
-          return Image.asset('assets/images/brick_01.png');
+          return provider.tileWidget();
         },
         itemCount: 9,
       ),
