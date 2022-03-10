@@ -33,8 +33,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
 
-  var _notifyPendingRooms = ValueNotifier<List<RoomModel>>([]);
-  var _notifyActiveRooms = ValueNotifier<List<RoomModel>>([]);
+  final List<RoomModel> _pendingRooms = [];
+  final List<RoomModel> _activeRooms = [];
 
   @override
   void initState() {
@@ -53,23 +53,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (resp != null) {
       if (resp['ret'] == 10000) {
-        List<RoomModel> pendingRooms = [];
-        List<RoomModel> activeRooms = [];
+        _pendingRooms.clear();
+        _activeRooms.clear();
         var rooms = (resp['result'] as List)
             .map((e) => RoomModel()..setFromJson(e))
             .toList();
         for (var room in rooms) {
           if (room.getStatus().isWaiting) {
-            pendingRooms.add(room);
+            _pendingRooms.add(room);
           } else {
-            activeRooms.add(room);
+            _activeRooms.add(room);
           }
         }
+        setState(() {});
         if (kDebugMode) {
           print('[Home] rooms : ${rooms.length}');
         }
-        _notifyPendingRooms.value = pendingRooms;
-        _notifyActiveRooms.value = activeRooms;
       }
     }
     socketService!.updateRoomList(
@@ -82,38 +81,15 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
     var currentUser = Provider.of<UserModel>(context, listen: false);
+
     var type = data['id'] as String;
-    switch (type) {
-      case 'create_room':
-        _socketCreateRoom(
-          user: currentUser,
-          data: data,
-        );
-        break;
-      case 'join_room':
-        _socketJoinRoom(
-          user: currentUser,
-          data: data,
-        );
-        break;
-      case 'remove_room':
-        _socketRemoveRoom(
-          user: currentUser,
-          data: data,
-        );
-        break;
-      case 'leave_user':
-        _socketLeaveUser(
-          user: currentUser,
-          data: data,
-        );
-        break;
-      case 'leave_tour':
-        _socketLeaveTour(
-          user: currentUser,
-          data: data,
-        );
-        break;
+    if (type == 'create_room') _socketCreateRoom(user: currentUser, data: data);
+    if (type == 'join_room') _socketJoinRoom(user: currentUser, data: data);
+    if (type == 'remove_room') _socketRemoveRoom(user: currentUser, data: data);
+    if (type == 'leave_user') _socketLeaveUser(user: currentUser, data: data);
+    if (type == 'leave_tour') _socketLeaveTour(user: currentUser, data: data);
+    if (type == 'update_status') {
+      _socketRoomStatus(user: currentUser, data: data);
     }
   }
 
@@ -121,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     UserModel? user,
     dynamic data,
   }) async {
-    var roomid = data['title'] as String;
+    var roomid = (data['title'] as String).replaceAll('room', '');
     var resp = await NetworkProvider.of().post(
       kGetRoom,
       {
@@ -131,9 +107,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (resp != null) {
       if (resp['ret'] == 10000) {
+        var isContained = false;
+        for (var room in _pendingRooms) {
+          if (room.id == roomid) {
+            isContained = true;
+            break;
+          }
+        }
+        for (var room in _activeRooms) {
+          if (room.id == roomid) {
+            isContained = true;
+            break;
+          }
+        }
+        if (isContained) {
+          return;
+        }
         var room = RoomModel()..setFromJson(resp['result']);
-        var _pendingRooms = _notifyPendingRooms.value;
-        _notifyPendingRooms.value = _pendingRooms..add(room);
+        _pendingRooms.insert(0, room);
+        setState(() {});
       }
     }
   }
@@ -153,21 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
     if (resp != null) {
       if (resp['ret'] == 10000) {
         var user = UserModel()..setFromJson(resp['result']);
-        var _pendingRoom = _notifyPendingRooms.value;
-        for (var room in _pendingRoom) {
+        for (var room in _pendingRooms) {
           if (roomid == room.id) {
             room.addUser(user);
           }
         }
-        _notifyPendingRooms.value = _pendingRoom;
 
-        var _activeRoom = _notifyActiveRooms.value;
-        for (var room in _activeRoom) {
+        for (var room in _activeRooms) {
           if (roomid == room.id) {
             room.addUser(user);
           }
         }
-        _notifyActiveRooms.value = _activeRoom;
+        if (mounted) setState(() {});
       }
     }
   }
@@ -175,17 +164,86 @@ class _HomeScreenState extends State<HomeScreen> {
   void _socketRemoveRoom({
     UserModel? user,
     dynamic data,
-  }) async {}
+  }) async {
+    var roomid = (data['title'] as String).replaceAll('room', '');
+    for (var room in _pendingRooms) {
+      if (room.id == roomid) {
+        _pendingRooms.remove(room);
+        break;
+      }
+    }
+    for (var room in _activeRooms) {
+      if (room.id == roomid) {
+        _pendingRooms.remove(room);
+        break;
+      }
+    }
+    setState(() {});
+  }
 
   void _socketLeaveUser({
     UserModel? user,
     dynamic data,
-  }) async {}
+  }) async {
+    var roomid = (data['title'] as String).replaceAll('room', '');
+    var userid = (data['content'] as String).replaceAll('user', '');
+    for (var room in _pendingRooms) {
+      if (room.id == roomid) {
+        room.removeUser(userid);
+        break;
+      }
+    }
+    for (var room in _activeRooms) {
+      if (room.id == roomid) {
+        room.removeUser(userid);
+        break;
+      }
+    }
+    setState(() {});
+  }
 
   void _socketLeaveTour({
     UserModel? user,
     dynamic data,
   }) async {}
+
+  void _socketRoomStatus({
+    UserModel? user,
+    dynamic data,
+  }) async {
+    var roomid = (data['title'] as String).replaceAll('room', '');
+    var status = data['content'] as String;
+    switch (status.roomStatus) {
+      case RoomStatus.waiting:
+        break;
+      case RoomStatus.prepare:
+        for (var room in _pendingRooms) {
+          if (room.id == roomid) {
+            _pendingRooms.remove(room);
+            _activeRooms.insert(0, room);
+            break;
+          }
+        }
+        break;
+      case RoomStatus.play:
+        for (var room in _activeRooms) {
+          if (room.id == roomid) {
+            room.setStatus(status.roomStatus);
+            break;
+          }
+        }
+        break;
+      case RoomStatus.result:
+        for (var room in _activeRooms) {
+          if (room.id == roomid) {
+            _activeRooms.remove(room);
+            break;
+          }
+        }
+        break;
+    }
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
@@ -382,118 +440,110 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _pendingWidget() {
-    return ValueListenableBuilder(
-      valueListenable: _notifyPendingRooms,
-      builder: (context, value, child) {
-        var _rooms = _notifyPendingRooms.value;
-        return Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                S.current.pending_room.thinText(
-                  color: Colors.red,
-                ),
-                const Spacer(),
-                HelpButton(
-                  onClick: () {},
-                ),
-              ],
+            S.current.pending_room.thinText(
+              color: Colors.red,
             ),
-            const SizedBox(
-              height: offsetSm,
+            const Spacer(),
+            HelpButton(
+              onClick: () {},
             ),
-            _rooms.isEmpty
-                ? SizedBox(
-                    height: 90.0,
-                    child: Center(
-                      child: 'Have not any room yet'.thinText(
-                        fontSize: fontSm,
-                      ),
-                    ),
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      return _rooms[index].listWidget(
-                        detail: () {
-                          var currentRoom =
-                              Provider.of<RoomModel>(context, listen: false);
-                          currentRoom.setFromJson(_rooms[index].toJson());
-
-                          NavigatorProvider.of(context).push(
-                            screen: const RoomScreen(),
-                            pop: (val) {
-                              if (val != null) {
-                                var currentUser = Provider.of<UserModel>(
-                                    context,
-                                    listen: false);
-                                _leaveRoom(currentRoom, currentUser);
-                              }
-                            },
-                          );
+          ],
+        ),
+        const SizedBox(
+          height: offsetSm,
+        ),
+        _pendingRooms.isEmpty
+            ? SizedBox(
+                height: 90.0,
+                child: Center(
+                  child: 'Have not any room yet'.thinText(
+                    fontSize: fontSm,
+                  ),
+                ),
+              )
+            : ListView.separated(
+                shrinkWrap: true,
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  var room = _pendingRooms[index];
+                  return room.listWidget(
+                    detail: () {
+                      var currentRoom =
+                          Provider.of<RoomModel>(context, listen: false);
+                      currentRoom.setFromJson(room.toJson());
+                      NavigatorProvider.of(context).push(
+                        screen: const RoomScreen(),
+                        pop: (val) {
+                          if (val != null) {
+                            var currentUser = Provider.of<UserModel>(
+                              context,
+                              listen: false,
+                            );
+                            _leaveRoom(room, currentUser);
+                          }
                         },
                       );
                     },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: offsetSm,
-                      );
-                    },
-                    itemCount: _rooms.length,
-                  ),
-          ],
-        );
-      },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _pendingRooms.length,
+              ),
+      ],
     );
   }
 
   Widget _activeWidget() {
-    return ValueListenableBuilder(
-      valueListenable: _notifyActiveRooms,
-      builder: (context, value, child) {
-        var _rooms = _notifyActiveRooms.value;
-        return Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                S.current.active_room.thinText(
-                  color: Colors.green,
-                ),
-                const Spacer(),
-                HelpButton(
-                  onClick: () {},
-                ),
-              ],
+            S.current.active_room.thinText(
+              color: Colors.green,
             ),
-            const SizedBox(
-              height: offsetSm,
+            const Spacer(),
+            HelpButton(
+              onClick: () {},
             ),
-            _rooms.isEmpty
-                ? SizedBox(
-                    height: 90.0,
-                    child: Center(
-                      child: 'Have not any room yet'.thinText(
-                        fontSize: fontSm,
-                      ),
-                    ),
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      return RoomModel().listWidget();
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: offsetSm,
-                      );
-                    },
-                    itemCount: _rooms.length,
-                  ),
           ],
-        );
-      },
+        ),
+        const SizedBox(
+          height: offsetSm,
+        ),
+        _activeRooms.isEmpty
+            ? SizedBox(
+                height: 90.0,
+                child: Center(
+                  child: 'Have not any room yet'.thinText(
+                    fontSize: fontSm,
+                  ),
+                ),
+              )
+            : ListView.separated(
+                shrinkWrap: true,
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  var room = _activeRooms[index];
+                  return room.listWidget(
+                    isStatus: true,
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: offsetSm,
+                  );
+                },
+                itemCount: _activeRooms.length,
+              ),
+      ],
     );
   }
 

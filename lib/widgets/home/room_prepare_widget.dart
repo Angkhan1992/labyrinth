@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:slide_countdown/slide_countdown.dart';
+
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
-import 'package:slide_countdown/slide_countdown.dart';
 
 class RoomPrepareWidget extends StatelessWidget {
   final UserModel currentUser;

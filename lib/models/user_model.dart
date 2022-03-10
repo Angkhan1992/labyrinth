@@ -225,7 +225,7 @@ class UserModel extends ChangeNotifier {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                usrName!.mediumText(),
+                usrName!.mediumText(textAlign: TextAlign.start),
                 '${usrCountry!} - ${usrGender! == '1' ? S.current.female : S.current.male}'
                     .thinText(fontSize: fontSm),
               ],
@@ -290,6 +290,77 @@ class UserModel extends ChangeNotifier {
           ],
         ),
       ),
+    );
+  }
+
+  Widget actionAvatar() {
+    double size = 44.0;
+    var emptyAvatar = Icon(
+      Icons.account_circle,
+      size: size,
+      color: Colors.lightGreen,
+    );
+    return Stack(
+      children: [
+        Container(
+          width: 48.0,
+          height: 48.0,
+          alignment: Alignment.center,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(size / 2.0),
+            child: CachedNetworkImage(
+              width: size,
+              height: size,
+              imageUrl: usrAvatar!,
+              placeholder: (context, url) => Stack(
+                children: [
+                  emptyAvatar,
+                  const Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
+                ],
+              ),
+              errorWidget: (context, url, error) => emptyAvatar,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Transform(
+          transform: Matrix4.rotationZ(kPI / 20 * 9),
+          alignment: FractionalOffset.center,
+          child: const SizedBox(
+            width: 48.0,
+            height: 48.0,
+            child: CircularProgressIndicator(
+              value: 0.8,
+              strokeWidth: 2.0,
+              color: Colors.lightGreen,
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 4.0,
+                vertical: 2.0,
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.lightGreen,
+                border: Border.all(
+                  color: Colors.white,
+                ),
+              ),
+              child: getAvatarName().mediumText(
+                fontSize: 8.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

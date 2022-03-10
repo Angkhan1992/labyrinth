@@ -59,10 +59,12 @@ class BlockModel {
   static Widget getFillModel(
     double size,
     GameModel provider,
+    ScrollController controller,
   ) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(offsetXSm),
       child: GridView.builder(
+        controller: controller,
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: (size - 2) / 3,

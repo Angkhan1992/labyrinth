@@ -166,7 +166,7 @@ class FacebookButton extends Container {
 class ProgressWidget extends SizedBox {
   ProgressWidget({
     Key? key,
-    double size = 14.0,
+    double size = 16.0,
     double strokeWidth = 2.0,
     Color color = kPrimaryColor,
   }) : super(

@@ -44,6 +44,7 @@ const kJoinRoom = kHome + 'join_room';
 const kLeaveUser = kHome + 'leave_user';
 const kGetRooms = kHome + 'get_rooms';
 const kGetRoom = kHome + 'get_room';
+const kUpdateRoom = kHome + 'update_room';
 
 const kRootAvatar = 'avatar';
 
@@ -73,3 +74,5 @@ const kEmptyAvatarMd = Icon(
   size: 44.0,
   color: kAccentColor,
 );
+
+const kPI = 3.141592654;

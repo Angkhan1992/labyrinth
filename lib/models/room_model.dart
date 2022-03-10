@@ -73,13 +73,19 @@ class RoomModel extends ChangeNotifier {
     };
   }
 
-  void addUser(UserModel user) {
+  void addUser(
+    UserModel user, {
+    Function(UserModel)? joinAll,
+  }) {
     for (var listUser in _users) {
       if (listUser.id! == user.id!) {
         return;
       }
     }
     _users.add(user);
+    if ('${_users.length}' == amount) {
+      if (joinAll != null) joinAll(_users.first);
+    }
     notifyListeners();
   }
 
@@ -157,7 +163,26 @@ class RoomModel extends ChangeNotifier {
 
   Widget listWidget({
     Function()? detail,
+    bool isStatus = false,
   }) {
+    String status = _status.rawValue.toUpperCase();
+    Color color = Colors.white;
+
+    switch (_status) {
+      case RoomStatus.waiting:
+        color = Colors.white;
+        break;
+      case RoomStatus.prepare:
+        color = Colors.blue;
+        break;
+      case RoomStatus.play:
+        color = Colors.red;
+        break;
+      case RoomStatus.result:
+        color = Colors.green;
+        break;
+    }
+
     return Bounceable(
       onTap: detail,
       child: Container(
@@ -219,6 +244,24 @@ class RoomModel extends ChangeNotifier {
                     ),
                   ),
                 },
+                const Spacer(),
+                if (isStatus)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                      vertical: 2.0,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: color,
+                      ),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: status.thinText(
+                      fontSize: fontXSm,
+                      color: color,
+                    ),
+                  ),
               ],
             ),
             const SizedBox(

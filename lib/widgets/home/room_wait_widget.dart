@@ -4,7 +4,6 @@ import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/screens/home/room_screen.dart';
-import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/extension.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +14,7 @@ class RoomWaitWidget extends StatelessWidget {
   final RoomScreenStatus status;
   final Function()? joinUser;
 
-  const RoomWaitWidget({
+  RoomWaitWidget({
     Key? key,
     required this.currentUser,
     required this.room,
@@ -23,17 +22,22 @@ class RoomWaitWidget extends StatelessWidget {
     this.joinUser,
   }) : super(key: key);
 
+  final _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: offsetBase,
           vertical: offsetXMd,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GridView.builder(
+              controller: _scrollController,
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent:
@@ -68,7 +72,7 @@ class RoomWaitWidget extends StatelessWidget {
                   }
                 }
                 return index % 2 == 0
-                    ? BlockModel.getFillModel(width, _game)
+                    ? BlockModel.getFillModel(width, _game, _scrollController)
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(offsetXSm),
@@ -78,33 +82,34 @@ class RoomWaitWidget extends StatelessWidget {
               },
               itemCount: 49,
             ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: offsetSm,
+                vertical: offsetXSm,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(offsetBase),
+                color: Colors.lightGreen,
+              ),
+              child: 'Players'.thinText(fontSize: fontSm, color: Colors.white),
+            ),
             const SizedBox(
-              height: offsetXMd,
+              height: offsetSm,
             ),
             Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: offsetSm,
-                    vertical: offsetXSm,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(offsetBase),
-                    color: kAccentColor,
-                  ),
-                  child:
-                      'Players'.thinText(fontSize: fontSm, color: Colors.white),
-                ),
-                const SizedBox(
-                  width: offsetBase,
-                ),
-                for (var user in room.getUsers()) ...{
-                  user.circleAvatar(),
-                  const SizedBox(
-                    width: offsetXSm,
-                  ),
-                },
-              ],
+              children: room
+                  .getUsers()
+                  .map(
+                    (user) => Row(
+                      children: [
+                        user.actionAvatar(),
+                        const SizedBox(
+                          width: offsetSm,
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
             const SizedBox(
               height: offsetBase,

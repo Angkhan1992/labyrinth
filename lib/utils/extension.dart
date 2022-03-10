@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
+import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
-import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/themes/textstyles.dart';
 import 'package:labyrinth/widgets/button.dart';
 
@@ -97,6 +97,7 @@ extension StringExtension on String {
     double fontSize = fontBase,
     Color color = Colors.black,
     TextAlign textAlign = TextAlign.center,
+    int? lines,
   }) {
     return Text(
       this,
@@ -105,6 +106,7 @@ extension StringExtension on String {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: lines,
     );
   }
 
@@ -112,6 +114,7 @@ extension StringExtension on String {
     double fontSize = fontBase,
     Color color = Colors.black,
     TextAlign textAlign = TextAlign.center,
+    int? lines,
   }) {
     return Text(
       this,
@@ -120,6 +123,7 @@ extension StringExtension on String {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: lines,
     );
   }
 
@@ -127,6 +131,7 @@ extension StringExtension on String {
     double fontSize = fontBase,
     Color color = Colors.black,
     TextAlign textAlign = TextAlign.center,
+    int? lines,
   }) {
     return Text(
       this,
@@ -135,6 +140,7 @@ extension StringExtension on String {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: lines,
     );
   }
 
@@ -142,6 +148,7 @@ extension StringExtension on String {
     double fontSize = fontBase,
     Color color = Colors.black,
     TextAlign textAlign = TextAlign.center,
+    int? lines,
   }) {
     return Text(
       this,
@@ -150,6 +157,7 @@ extension StringExtension on String {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: lines,
     );
   }
 
@@ -157,6 +165,7 @@ extension StringExtension on String {
     double fontSize = fontBase,
     Color color = Colors.black,
     TextAlign textAlign = TextAlign.center,
+    int? lines,
   }) {
     return Text(
       this,
@@ -165,6 +174,7 @@ extension StringExtension on String {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: lines,
     );
   }
 
@@ -252,6 +262,15 @@ extension StringExtension on String {
       return 'In a day';
     }
     return 'Some days';
+  }
+
+  RoomStatus get roomStatus {
+    for (var status in RoomStatus.values) {
+      if (status.rawValue == this) {
+        return status;
+      }
+    }
+    return RoomStatus.waiting;
   }
 }
 

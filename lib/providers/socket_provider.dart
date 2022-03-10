@@ -153,6 +153,16 @@ class SocketProvider {
     );
   }
 
+  void updateRoomStatus(RoomModel room, String status) {
+    _socket!.emit(
+      'update_room',
+      {
+        'roomid': 'room${room.id}',
+        'status': status,
+      },
+    );
+  }
+
   void createRoom(RoomModel room, UserModel user) {
     _socket!.emit(
       'create_room',

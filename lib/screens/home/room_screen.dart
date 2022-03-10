@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/loading_provider.dart';
+import 'package:labyrinth/widgets/home/room_prepare_widget.dart';
 import 'package:labyrinth/widgets/home/room_wait_widget.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +58,7 @@ class _RoomScreenState extends State<RoomScreen> {
         if (type == 'join_user') _joinUser(data);
         if (type == 'remove_room') _removeRoom(data);
         if (type == 'leave_user') _leaveUser(data);
+        if (type == 'update_status') _roomStatus(data);
       },
     );
     if (widget.isCreator) {
@@ -74,7 +77,32 @@ class _RoomScreenState extends State<RoomScreen> {
     if (resp != null) {
       if (resp['ret'] == 10000) {
         var addUser = UserModel()..setFromJson(resp['result']);
-        _room!.addUser(addUser);
+        _room!.addUser(
+          addUser,
+          joinAll: (owner) {
+            Timer.run(() async {
+              LoadingProvider.of(context).show();
+              if (owner.id == _currentUser!.id) {
+                var resp = await NetworkProvider.of().post(
+                  kUpdateRoom,
+                  {
+                    'id': _room!.id,
+                    'rm_status': RoomStatus.prepare.rawValue,
+                  },
+                );
+                if (resp != null) {
+                  if (resp['ret'] == 10000) {
+                    socketService!.updateRoomStatus(
+                      _room!,
+                      RoomStatus.prepare.rawValue,
+                    );
+                    return;
+                  }
+                }
+              }
+            });
+          },
+        );
         return;
       } else {
         if (mounted) {
@@ -96,18 +124,27 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   void _removeRoom(dynamic data) async {
+    if (!mounted) {
+      return;
+    }
     if (_room!.getStatus().isWaiting) {
       DialogProvider.of(context).showSnackBar(
         'This room was removed by creator',
         type: SnackBarType.info,
       );
       Navigator.of(context).pop();
-    } else {}
+    }
   }
 
   void _leaveUser(dynamic data) async {
     var usrID = (data['title'] as String).replaceAll('user', '');
     _room!.removeUser(usrID);
+  }
+
+  void _roomStatus(dynamic data) async {
+    LoadingProvider.of(context).hide();
+    var status = data['title'] as String;
+    _room!.setStatus(status.roomStatus);
   }
 
   @override
@@ -124,10 +161,18 @@ class _RoomScreenState extends State<RoomScreen> {
             ),
             leading: Container(),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(LineIcons.userFriends),
-              ),
+              room.getStatus().isWaiting
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: const Icon(LineIcons.userFriends),
+                    )
+                  : IconButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.red,
+                      ),
+                    ),
             ],
           ),
           body: ValueListenableBuilder(
@@ -139,7 +184,11 @@ class _RoomScreenState extends State<RoomScreen> {
                       room: room,
                       joinUser: () => _joinToUser(),
                     )
-                  : Container();
+                  : room.getStatus().isPrepare
+                      ? RoomPrepareWidget(
+                          currentUser: _currentUser,
+                        )
+                      : Container();
             },
             valueListenable: _valueEvent,
           ),
