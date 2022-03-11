@@ -40,7 +40,11 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
   void _initData() async {
     var gameProvider = Provider.of<GameModel>(context, listen: false);
     await gameProvider.init();
-    _blockModel = BlockModel.of(gameProvider, _titleIndex);
+    _blockModel = BlockModel.of(
+      gameProvider,
+      titleIndex: _titleIndex,
+      type: BlockType.fixed,
+    );
   }
 
   @override

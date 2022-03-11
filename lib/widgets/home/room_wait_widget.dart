@@ -31,26 +31,22 @@ class RoomWaitWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: offsetBase,
-          vertical: offsetXMd,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               controller: _scrollController,
               shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent:
-                    (MediaQuery.of(context).size.width - offsetBase * 2 - 6) /
-                        7,
+              padding: const EdgeInsets.symmetric(vertical: offsetSm),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7,
                 childAspectRatio: 1,
                 crossAxisSpacing: 1,
                 mainAxisSpacing: 1,
               ),
               itemBuilder: (context, index) {
-                var width =
-                    (MediaQuery.of(context).size.width - offsetBase * 2 - 6) /
-                        7;
                 var _game = Provider.of<GameModel>(context, listen: false);
                 for (var position in room.heroPositions()) {
                   if (index == position) {
@@ -72,7 +68,7 @@ class RoomWaitWidget extends StatelessWidget {
                   }
                 }
                 return index % 2 == 0
-                    ? BlockModel.getFillModel(width, _game, _scrollController)
+                    ? BlockModel.getFillModel(_game, _scrollController)
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(offsetXSm),
@@ -82,17 +78,10 @@ class RoomWaitWidget extends StatelessWidget {
               },
               itemCount: 49,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: offsetSm,
-                vertical: offsetXSm,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(offsetBase),
-                color: Colors.lightGreen,
-              ),
-              child: 'Players'.thinText(fontSize: fontSm, color: Colors.white),
+            const SizedBox(
+              height: offsetBase,
             ),
+            'Players'.tag(background: Colors.lightGreen),
             const SizedBox(
               height: offsetSm,
             ),
@@ -114,23 +103,12 @@ class RoomWaitWidget extends StatelessWidget {
             const SizedBox(
               height: offsetBase,
             ),
+            'Tours'.tag(background: Colors.deepPurpleAccent),
+            const SizedBox(
+              height: offsetSm,
+            ),
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: offsetSm,
-                    vertical: offsetXSm,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(offsetBase),
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  child:
-                      'Tours'.thinText(fontSize: fontSm, color: Colors.white),
-                ),
-                const SizedBox(
-                  width: offsetBase,
-                ),
                 if (room.getTours().isNotEmpty) ...{
                   room.getTourUser(0).circleAvatar(),
                   const SizedBox(

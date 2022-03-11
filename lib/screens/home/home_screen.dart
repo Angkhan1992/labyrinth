@@ -220,6 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
         for (var room in _pendingRooms) {
           if (room.id == roomid) {
             _pendingRooms.remove(room);
+            room.setStatus(status.roomStatus);
             _activeRooms.insert(0, room);
             break;
           }
@@ -479,6 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         screen: const RoomScreen(),
                         pop: (val) {
                           if (val != null) {
+                            if (!mounted) return;
                             var currentUser = Provider.of<UserModel>(
                               context,
                               listen: false,

@@ -20,6 +20,8 @@ class RoomModel extends ChangeNotifier {
 
   var _status = RoomStatus.waiting;
 
+  List<List<List<int>>> _boardData = [];
+
   RoomModel();
 
   void setFromJson(Map<String, dynamic> json) {
@@ -93,6 +95,15 @@ class RoomModel extends ChangeNotifier {
     return _users;
   }
 
+  int getUserIndex(UserModel user) {
+    for (var value in _users) {
+      if (value.id == user.id) {
+        return _users.indexOf(value);
+      }
+    }
+    return 0;
+  }
+
   UserModel? getUser(int index) {
     if (index > _users.length - 1) return null;
     return _users[index];
@@ -105,6 +116,11 @@ class RoomModel extends ChangeNotifier {
       }
     }
     return false;
+  }
+
+  bool isOwner(UserModel user) {
+    if (_users.isEmpty) return false;
+    return _users.first.id! == user.id!;
   }
 
   void removeUser(String userid) {
@@ -146,6 +162,51 @@ class RoomModel extends ChangeNotifier {
 
   List<int> heroPositions() {
     return amount == '4' ? [0, 6, 42, 48] : [0, 48];
+  }
+
+  List<int> heroPlayPositions() {
+    return amount == '4' ? [0, 8, 72, 80] : [0, 80];
+  }
+
+  List<int> heroEmptyPositions() {
+    return [
+      0,
+      1,
+      3,
+      5,
+      7,
+      8,
+      9,
+      27,
+      45,
+      63,
+      72,
+      17,
+      35,
+      53,
+      71,
+      80,
+      73,
+      75,
+      77,
+      79
+    ];
+  }
+
+  List<int> heroTopPositions() {
+    return [2, 4, 6];
+  }
+
+  List<int> heroLeftPositions() {
+    return [18, 36, 54];
+  }
+
+  List<int> heroRightPositions() {
+    return [26, 44, 62];
+  }
+
+  List<int> heroBottomPositions() {
+    return [74, 76, 78];
   }
 
   UserModel getTourUser(int index) {
@@ -284,6 +345,10 @@ class RoomModel extends ChangeNotifier {
         ),
       ),
     );
+  }
+
+  void initCard() {
+    notifyListeners();
   }
 }
 

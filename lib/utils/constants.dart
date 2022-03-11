@@ -76,3 +76,80 @@ const kEmptyAvatarMd = Icon(
 );
 
 const kPI = 3.141592654;
+
+enum ArrowDirection {
+  left,
+  right,
+  top,
+  down,
+}
+
+const kCardWidth = 50.0;
+const kCardHeight = 70.0;
+const kBorderPadding = 2.0;
+
+// 5(card3) + 12(card21) + 16(card22) =33   -----     flexiable cards
+// 12(card3) + 4(card22) = 16     -----     fixed cards
+// 1(card3)     -----     free card
+
+//12cards --- 0cards
+const kCard21Type = [
+  [
+    [1, 0, 1],
+    [1, 0, 1],
+    [1, 0, 1],
+  ],
+  [
+    [1, 1, 1],
+    [0, 0, 0],
+    [1, 1, 1],
+  ],
+];
+
+//20cards --- 6cards
+const kCard22Type = [
+  [
+    [1, 0, 1],
+    [1, 0, 0],
+    [1, 1, 1],
+  ],
+  [
+    [1, 1, 1],
+    [1, 0, 0],
+    [1, 0, 1],
+  ],
+  [
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 0, 1],
+  ],
+  [
+    [1, 0, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+  ],
+];
+
+//18cards --- 18cards
+const kCard3Type = [
+  [
+    [1, 0, 1],
+    [1, 0, 0],
+    [1, 0, 1],
+  ],
+  [
+    [1, 1, 1],
+    [0, 0, 0],
+    [1, 0, 1],
+  ],
+  [
+    [1, 0, 1],
+    [0, 0, 1],
+    [1, 0, 1],
+  ],
+  [
+    [1, 0, 1],
+    [0, 0, 0],
+    [1, 1, 1],
+  ],
+];

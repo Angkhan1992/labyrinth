@@ -370,6 +370,7 @@ class UserModel extends ChangeNotifier {
 
   Widget circleAvatar({
     double size = 24.0,
+    bool isAnimation = false,
   }) {
     if (usrAvatar != null) {
       var emptyAvatar = Icon(

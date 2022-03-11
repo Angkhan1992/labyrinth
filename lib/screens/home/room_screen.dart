@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:labyrinth/providers/loading_provider.dart';
-import 'package:labyrinth/widgets/home/room_prepare_widget.dart';
-import 'package:labyrinth/widgets/home/room_wait_widget.dart';
+import 'package:labyrinth/widgets/home/room_play_widget.dart';
+import 'package:labyrinth/widgets/home/room_result_widget.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -11,12 +10,15 @@ import 'package:labyrinth/generated/l10n.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/providers/dialog_provider.dart';
+import 'package:labyrinth/providers/loading_provider.dart';
 import 'package:labyrinth/providers/network_provider.dart';
 import 'package:labyrinth/providers/socket_provider.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/home/room_prepare_widget.dart';
+import 'package:labyrinth/widgets/home/room_wait_widget.dart';
 
 class RoomScreen extends StatefulWidget {
   final bool isCreator;
@@ -67,6 +69,7 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   void _joinUser(dynamic data) async {
+    if (!mounted) return;
     var usrID = data['title'] as String;
     var resp = await NetworkProvider.of().post(
       kGetUser,
@@ -79,28 +82,26 @@ class _RoomScreenState extends State<RoomScreen> {
         var addUser = UserModel()..setFromJson(resp['result']);
         _room!.addUser(
           addUser,
-          joinAll: (owner) {
-            Timer.run(() async {
-              LoadingProvider.of(context).show();
-              if (owner.id == _currentUser!.id) {
-                var resp = await NetworkProvider.of().post(
-                  kUpdateRoom,
-                  {
-                    'id': _room!.id,
-                    'rm_status': RoomStatus.prepare.rawValue,
-                  },
-                );
-                if (resp != null) {
-                  if (resp['ret'] == 10000) {
-                    socketService!.updateRoomStatus(
-                      _room!,
-                      RoomStatus.prepare.rawValue,
-                    );
-                    return;
-                  }
+          joinAll: (owner) async {
+            LoadingProvider.of(context).show();
+            if (owner.id == _currentUser!.id) {
+              var resp = await NetworkProvider.of().post(
+                kUpdateRoom,
+                {
+                  'id': _room!.id,
+                  'rm_status': RoomStatus.prepare.rawValue,
+                },
+              );
+              if (resp != null) {
+                if (resp['ret'] == 10000) {
+                  socketService!.updateRoomStatus(
+                    _room!,
+                    RoomStatus.prepare.rawValue,
+                  );
+                  return;
                 }
               }
-            });
+            }
           },
         );
         return;
@@ -142,6 +143,7 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   void _roomStatus(dynamic data) async {
+    if (!mounted) return;
     LoadingProvider.of(context).hide();
     var status = data['title'] as String;
     _room!.setStatus(status.roomStatus);
@@ -153,44 +155,93 @@ class _RoomScreenState extends State<RoomScreen> {
     return Consumer<RoomModel>(
       builder: (context, room, child) {
         return Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            title: room.name.semiBoldText(
-              fontSize: fontXMd,
-              color: kAccentColor,
-            ),
-            leading: Container(),
-            actions: [
-              room.getStatus().isWaiting
-                  ? IconButton(
-                      onPressed: () {},
-                      icon: const Icon(LineIcons.userFriends),
-                    )
-                  : IconButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      icon: const Icon(
-                        Icons.logout,
-                        color: Colors.red,
+          body: Column(
+            children: [
+              const SizedBox(
+                height: kToolbarHeight,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: offsetBase),
+                child: room.getStatus().isPlay
+                    ? Container()
+                    : Row(
+                        children: [
+                          const SizedBox(
+                            width: offsetSm,
+                          ),
+                          room.name.semiBoldText(
+                            fontSize: fontXMd,
+                            color: kAccentColor,
+                          ),
+                          const Spacer(),
+                          room.getStatus().isWaiting
+                              ? IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    LineIcons.userFriends,
+                                    color: kAccentColor,
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  icon: const Icon(
+                                    Icons.logout,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                        ],
                       ),
-                    ),
+              ),
+              Expanded(
+                child: ValueListenableBuilder(
+                  builder: (context, value, child) {
+                    return room.getStatus().isWaiting
+                        ? RoomWaitWidget(
+                            currentUser: _currentUser,
+                            status: _valueEvent.value,
+                            room: room,
+                            joinUser: () => _joinToUser(),
+                          )
+                        : room.getStatus().isPrepare
+                            ? RoomPrepareWidget(
+                                currentUser: _currentUser,
+                                room: room,
+                                onRun: () async {
+                                  LoadingProvider.of(context).show();
+                                  if (room.isOwner(_currentUser)) {
+                                    var resp = await NetworkProvider.of().post(
+                                      kUpdateRoom,
+                                      {
+                                        'id': _room!.id,
+                                        'rm_status': RoomStatus.play.rawValue,
+                                      },
+                                    );
+                                    if (resp != null) {
+                                      if (resp['ret'] == 10000) {
+                                        socketService!.updateRoomStatus(
+                                          _room!,
+                                          RoomStatus.play.rawValue,
+                                        );
+                                        return;
+                                      }
+                                    }
+                                  }
+                                },
+                              )
+                            : room.getStatus().isPlay
+                                ? RoomPlayWidget(
+                                    room: room,
+                                  )
+                                : RoomResultWidget(
+                                    room: room,
+                                  );
+                  },
+                  valueListenable: _valueEvent,
+                ),
+              ),
             ],
-          ),
-          body: ValueListenableBuilder(
-            builder: (context, value, child) {
-              return room.getStatus().isWaiting
-                  ? RoomWaitWidget(
-                      currentUser: _currentUser,
-                      status: _valueEvent.value,
-                      room: room,
-                      joinUser: () => _joinToUser(),
-                    )
-                  : room.getStatus().isPrepare
-                      ? RoomPrepareWidget(
-                          currentUser: _currentUser,
-                        )
-                      : Container();
-            },
-            valueListenable: _valueEvent,
           ),
         );
       },
