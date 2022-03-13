@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:labyrinth/models/room_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:labyrinth/generated/l10n.dart';
@@ -38,10 +39,12 @@ class _GameEnvScreenState extends State<GameEnvScreen> {
   }
 
   void _initData() async {
-    var gameProvider = Provider.of<GameModel>(context, listen: false);
-    await gameProvider.init();
+    var gameModel = Provider.of<GameModel>(context, listen: false);
+    await gameModel.init();
+    var roomModel = Provider.of<RoomModel>(context, listen: false);
     _blockModel = BlockModel.of(
-      gameProvider,
+      gameModel,
+      roomModel,
       titleIndex: _titleIndex,
       type: BlockType.fixed,
     );

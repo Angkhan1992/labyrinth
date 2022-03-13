@@ -354,7 +354,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _event!.value = LoginEvent.login;
     var resp = await NetworkProvider.of().post(
-      kNormalLogin,
+      kDebugMode ? kLoginBio : kNormalLogin,
       {
         'email': _email,
         'pass': _pass,

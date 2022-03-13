@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/models/block_model.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
@@ -78,6 +79,7 @@ class RoomPlayWidget extends StatelessWidget {
   Widget _boardWidget(BuildContext context) {
     var size =
         (MediaQuery.of(context).size.width - kBorderPadding * 2 - 8) / 9.0;
+    var _game = Provider.of<GameModel>(context, listen: false);
     return AspectRatio(
       aspectRatio: 1,
       child: Padding(
@@ -93,85 +95,157 @@ class RoomPlayWidget extends StatelessWidget {
                     width: size,
                     height: size,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(offsetXSm),
-                      color: kAccentColor,
+                      color: _game.backgroundColor(),
+                      borderRadius: BorderRadius.circular(
+                        offsetXSm,
+                      ),
                     ),
+                    child: getChild(_game, i, j),
                   ),
                 ),
               },
             },
-            // GridView.builder(
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   controller: _scrollController,
-            //   shrinkWrap: true,
-            //   padding: const EdgeInsets.symmetric(vertical: offsetSm),
-            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 9,
-            //     childAspectRatio: 1,
-            //     crossAxisSpacing: 1,
-            //     mainAxisSpacing: 1,
-            //   ),
-            //   itemBuilder: (context, index) {
-            //     var _game = Provider.of<GameModel>(context, listen: false);
-            //     for (var position in room.heroPlayPositions()) {
-            //       if (index == position) {
-            //         var posIndex = room.heroPlayPositions().indexOf(position);
-            //         return Container(
-            //           decoration: BoxDecoration(
-            //             borderRadius: BorderRadius.circular(offsetXSm),
-            //             color: heroColors[posIndex],
-            //           ),
-            //           alignment: Alignment.center,
-            //           child: room.getUser(posIndex) == null
-            //               ? const Icon(
-            //                   Icons.help_outline,
-            //                   size: 24.0,
-            //                   color: Colors.white,
-            //                 )
-            //               : room.getUser(posIndex)!.circleAvatar(),
-            //         );
-            //       }
-            //     }
-            //     for (var position in room.heroLeftPositions()) {
-            //       if (index == position) {
-            //         return ArrowWidget(direction: ArrowDirection.right);
-            //       }
-            //     }
-            //     for (var position in room.heroRightPositions()) {
-            //       if (index == position) {
-            //         return ArrowWidget(direction: ArrowDirection.left);
-            //       }
-            //     }
-            //     for (var position in room.heroTopPositions()) {
-            //       if (index == position) {
-            //         return ArrowWidget(direction: ArrowDirection.down);
-            //       }
-            //     }
-            //     for (var position in room.heroBottomPositions()) {
-            //       if (index == position) {
-            //         return ArrowWidget(direction: ArrowDirection.top);
-            //       }
-            //     }
-            //     for (var position in room.heroEmptyPositions()) {
-            //       if (index == position) {
-            //         return Container();
-            //       }
-            //     }
-            //     return index % 2 == 0
-            //         ? BlockModel.getFillModel(_game, _scrollController)
-            //         : Container(
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(offsetXSm),
-            //               color: Colors.white,
-            //             ),
-            //           );
-            //   },
-            //   itemCount: 81,
-            // )
           ],
         ),
       ),
     );
+  }
+
+  Widget getChild(GameModel game, int i, int j) {
+    int index = i + j * 9;
+    for (var position in room.heroPlayPositions()) {
+      if (index == position) {
+        var heroIndex = room.heroPlayPositions().indexOf(position);
+        return BlockModel(
+          game: game,
+          room: room,
+          titleIndexs: [],
+          type: BlockType.hero,
+          index: index,
+          isSelected: true,
+          icon: room.getUser(heroIndex)!.usrAvatar!,
+        ).body();
+      }
+    }
+    for (var position in room.navLeftPositions()) {
+      if (index == position) {
+        return BlockModel(
+          game: game,
+          room: room,
+          titleIndexs: [],
+          type: BlockType.navLeft,
+          index: index,
+          isSelected: false,
+        ).body();
+      }
+    }
+    for (var position in room.navRightPositions()) {
+      if (index == position) {
+        return BlockModel(
+          game: game,
+          room: room,
+          titleIndexs: [],
+          type: BlockType.navRight,
+          index: index,
+          isSelected: false,
+        ).body();
+      }
+    }
+    for (var position in room.navTopPositions()) {
+      if (index == position) {
+        return BlockModel(
+          game: game,
+          room: room,
+          titleIndexs: [],
+          type: BlockType.navUp,
+          index: index,
+          isSelected: false,
+        ).body();
+      }
+    }
+    for (var position in room.navBottomPositions()) {
+      if (index == position) {
+        return BlockModel(
+          game: game,
+          room: room,
+          titleIndexs: [],
+          type: BlockType.navDown,
+          index: index,
+          isSelected: false,
+        ).body();
+      }
+    }
+
+    for (var position in room.startPositions()) {
+      if (index == position) {
+        var posIndex = room.startPositions().indexOf(position);
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(offsetXSm),
+            border: Border.all(
+              color: kAccentColor,
+              width: 0.5,
+            ),
+          ),
+          child: BlockModel(
+            game: game,
+            room: room,
+            titleIndexs: kCard22Type[posIndex],
+            type: BlockType.start,
+            index: posIndex,
+            isSelected: false,
+          ).body(),
+        );
+      }
+    }
+
+    for (var position in room.fixedPositions()) {
+      if (index == position) {
+        var posIndex = room.fixedPositions().indexOf(position);
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(offsetXSm),
+            border: Border.all(
+              color: kAccentColor,
+              width: 0.5,
+            ),
+          ),
+          child: BlockModel(
+            game: game,
+            room: room,
+            titleIndexs: fixedCardIndex[posIndex],
+            type: BlockType.fixed,
+            index: posIndex,
+            isSelected: false,
+          ).body(),
+        );
+      }
+    }
+
+    for (var position in room.flexiblePositions()) {
+      if (index == position) {
+        var posIndex = room.flexiblePositions().indexOf(position);
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(offsetXSm),
+            border: Border.all(
+              color: kAccentColor,
+              width: 0.5,
+            ),
+          ),
+          child: BlockModel(
+            game: game,
+            room: room,
+            titleIndexs: room.getBoardData()[posIndex],
+            type: BlockType.flexible,
+            index: posIndex,
+            isSelected: false,
+          ).body(),
+        );
+      }
+    }
+
+    return Container();
   }
 
   Widget _cardWdiget(BuildContext context) {

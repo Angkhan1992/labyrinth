@@ -1,41 +1,51 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/models/game_model.dart';
+import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
+import 'package:labyrinth/utils/extension.dart';
 import 'package:labyrinth/widgets/home/room_widget.dart';
 
 class BlockModel {
-  GameModel provider;
+  GameModel game;
+  RoomModel room;
   List<List<int>> titleIndexs;
   BlockType type;
   int index;
   bool isSelected;
+  String? icon;
 
   List<int> _tileType = [];
 
   BlockModel({
-    required this.provider,
+    required this.game,
+    required this.room,
     required this.titleIndexs,
     required this.type,
     required this.index,
     required this.isSelected,
+    this.icon,
   });
 
   factory BlockModel.of(
-    GameModel provider, {
+    GameModel game,
+    RoomModel room, {
     required List<List<int>> titleIndex,
     BlockType type = BlockType.empty,
     int index = 0,
     bool isSelected = false,
+    String? icon,
   }) {
     return BlockModel(
-      provider: provider,
+      game: game,
+      room: room,
       titleIndexs: titleIndex,
       type: type,
       index: index,
       isSelected: isSelected,
+      icon: icon,
     )..init();
   }
 
@@ -55,7 +65,7 @@ class BlockModel {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: provider.backgroundColor(),
+        color: game.backgroundColor(),
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: borderColor),
       ),
@@ -66,7 +76,7 @@ class BlockModel {
             crossAxisCount: 3,
           ),
           itemBuilder: (context, index) {
-            return _tileType[index] == 1 ? provider.tileWidget() : Container();
+            return _tileType[index] == 1 ? game.tileWidget() : Container();
           },
           itemCount: 9,
         ),
@@ -127,30 +137,30 @@ class BlockModel {
     return Center(
       child: isSelected
           ? AvatarGlow(
-              endRadius: 40.0,
-              glowColor: kAccentColor,
+              endRadius: 20.0,
+              glowColor: Colors.red,
               child: Material(
-                elevation: 2.0,
+                elevation: 5.0,
                 shape: const CircleBorder(),
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey[100],
-                  child: Image.asset(
-                    'assets/icons/ic_face_id.svg',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24.0),
+                  child: Image.network(
+                    icon!,
                     height: 24,
                     width: 24,
+                    fit: BoxFit.cover,
                   ),
-                  radius: 24.0,
                 ),
               ),
             )
-          : CircleAvatar(
-              backgroundColor: Colors.grey[100],
-              child: Image.asset(
-                'assets/icons/ic_face_id.svg',
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(24.0),
+              child: Image.network(
+                icon!,
                 height: 24,
                 width: 24,
+                fit: BoxFit.cover,
               ),
-              radius: 24.0,
             ),
     );
   }
@@ -163,7 +173,7 @@ class BlockModel {
     Function(int)? onTap,
   }) {
     return ArrowWidget(
-      direction: ArrowDirection.down,
+      direction: ArrowDirection.top,
       onTap: () => onTap!(index),
     );
   }
@@ -172,7 +182,7 @@ class BlockModel {
     Function(int)? onTap,
   }) {
     return ArrowWidget(
-      direction: ArrowDirection.top,
+      direction: ArrowDirection.down,
       onTap: () => onTap!(index),
     );
   }
@@ -181,7 +191,7 @@ class BlockModel {
     Function(int)? onTap,
   }) {
     return ArrowWidget(
-      direction: ArrowDirection.left,
+      direction: ArrowDirection.right,
       onTap: () => onTap!(index),
     );
   }
@@ -190,21 +200,135 @@ class BlockModel {
     Function(int)? onTap,
   }) {
     return ArrowWidget(
-      direction: ArrowDirection.right,
+      direction: ArrowDirection.left,
       onTap: () => onTap!(index),
     );
   }
 
   Widget _startCard() {
-    return Container();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(offsetXSm),
+      child: Stack(
+        children: [
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+            ),
+            itemBuilder: (context, index) {
+              int i = index ~/ 3;
+              var j = index % 3;
+              var value = titleIndexs[i][j];
+              return value == 1 ? game.tileWidget() : Container();
+            },
+            itemCount: 9,
+          ),
+          if (room.amount == '4') ...{
+            Positioned.fill(
+              child: Center(
+                child: Container(
+                  width: 14.0,
+                  height: 14.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kUserColors[index],
+                  ),
+                ),
+              ),
+            ),
+          } else ...{
+            if (index % 2 == 0) ...{
+              Positioned.fill(
+                child: Center(
+                  child: Container(
+                    width: 14.0,
+                    height: 14.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: kUserColors[index ~/ 2],
+                    ),
+                  ),
+                ),
+              ),
+            }
+          },
+        ],
+      ),
+    );
   }
 
   Widget _fixedCard() {
-    return Container();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(offsetXSm),
+      child: Stack(
+        children: [
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+            ),
+            itemBuilder: (context, index) {
+              int i = index ~/ 3;
+              var j = index % 3;
+              var value = titleIndexs[i][j];
+              return value == 1 ? game.tileWidget() : Container();
+            },
+            itemCount: 9,
+          ),
+          Positioned.fill(
+            child: Center(
+              child: Container(
+                width: 16.0,
+                height: 16.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.red),
+                ),
+                child: '${index + 1}'.mediumText(
+                  fontSize: fontXSm,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _flexibleCard() {
-    return Container();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(offsetXSm),
+      child: Stack(
+        children: [
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+            ),
+            itemBuilder: (context, index) {
+              int i = index ~/ 3;
+              var j = index % 3;
+              var value = titleIndexs[i][j];
+              return value == 1 ? game.tileWidget() : Container();
+            },
+            itemCount: 9,
+          ),
+        ],
+      ),
+    );
   }
 }
 

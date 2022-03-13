@@ -109,11 +109,6 @@ const kCard21Type = [
 //20cards --- 6cards
 const kCard22Type = [
   [
-    [1, 0, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-  ],
-  [
     [1, 1, 1],
     [1, 0, 0],
     [1, 0, 1],
@@ -126,6 +121,11 @@ const kCard22Type = [
   [
     [1, 0, 1],
     [0, 0, 1],
+    [1, 1, 1],
+  ],
+  [
+    [1, 0, 1],
+    [1, 0, 0],
     [1, 1, 1],
   ],
 ];
@@ -152,4 +152,19 @@ const kCard3Type = [
     [0, 0, 0],
     [1, 1, 1],
   ],
+];
+
+List<List<List<int>>> fixedCardIndex = [
+  kCard3Type[1],
+  kCard3Type[1],
+  kCard3Type[0],
+  kCard3Type[0],
+  kCard3Type[1],
+  kCard3Type[2],
+  kCard3Type[0],
+  kCard3Type[3],
+  kCard3Type[2],
+  kCard3Type[2],
+  kCard3Type[3],
+  kCard3Type[3],
 ];

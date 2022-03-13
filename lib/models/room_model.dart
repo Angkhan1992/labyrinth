@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 
@@ -6,6 +8,7 @@ import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/themes/shadows.dart';
+import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
 
 class RoomModel extends ChangeNotifier {
@@ -168,7 +171,7 @@ class RoomModel extends ChangeNotifier {
     return amount == '4' ? [0, 8, 72, 80] : [0, 80];
   }
 
-  List<int> heroEmptyPositions() {
+  List<int> emptyPositions() {
     return [
       0,
       1,
@@ -193,20 +196,66 @@ class RoomModel extends ChangeNotifier {
     ];
   }
 
-  List<int> heroTopPositions() {
+  List<int> navTopPositions() {
     return [2, 4, 6];
   }
 
-  List<int> heroLeftPositions() {
+  List<int> navLeftPositions() {
     return [18, 36, 54];
   }
 
-  List<int> heroRightPositions() {
+  List<int> navRightPositions() {
     return [26, 44, 62];
   }
 
-  List<int> heroBottomPositions() {
+  List<int> navBottomPositions() {
     return [74, 76, 78];
+  }
+
+  List<int> startPositions() {
+    return [10, 16, 70, 64];
+  }
+
+  List<int> fixedPositions() {
+    return [12, 14, 28, 30, 32, 34, 46, 48, 50, 52, 66, 68];
+  }
+
+  List<int> flexiblePositions() {
+    return [
+      11,
+      13,
+      15,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      29,
+      31,
+      33,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      47,
+      49,
+      51,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      65,
+      67,
+      69,
+    ];
   }
 
   UserModel getTourUser(int index) {
@@ -216,6 +265,38 @@ class RoomModel extends ChangeNotifier {
   void setStatus(RoomStatus status) {
     _status = status;
     notifyListeners();
+  }
+
+  void initBoard() {
+    _boardData.clear();
+    for (var i = 0; i < 5; i++) {
+      var length = kCard3Type.length;
+      var index = Random().nextInt(length - 1);
+      _boardData.add(kCard3Type[index]);
+    }
+    for (var i = 0; i < 12; i++) {
+      var length = kCard21Type.length;
+      var index = Random().nextInt(length - 1);
+      _boardData.add(kCard21Type[index]);
+    }
+    for (var i = 0; i < 16; i++) {
+      var length = kCard22Type.length;
+      var index = Random().nextInt(length - 1);
+      _boardData.add(kCard22Type[index]);
+    }
+
+    for (var i = 0; i < 330; i++) {
+      var first = Random().nextInt(32);
+      var second = Random().nextInt(32);
+      var value = _boardData[first];
+      _boardData[first] = _boardData[second];
+      _boardData[second] = value;
+    }
+    notifyListeners();
+  }
+
+  List<List<List<int>>> getBoardData() {
+    return _boardData;
   }
 
   RoomStatus getStatus() {
