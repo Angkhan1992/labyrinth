@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:labyrinth/models/block_model.dart';
-import 'package:labyrinth/themes/shadows.dart';
-import 'package:labyrinth/widgets/home/free_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
+import 'package:labyrinth/models/block_model.dart';
 import 'package:labyrinth/models/game_model.dart';
 import 'package:labyrinth/models/room_model.dart';
 import 'package:labyrinth/models/user_model.dart';
 import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
+import 'package:labyrinth/themes/shadows.dart';
 import 'package:labyrinth/utils/constants.dart';
+import 'package:labyrinth/widgets/home/free_card_widget.dart';
 
 class RoomPlayWidget extends StatelessWidget {
   final RoomModel room;
@@ -22,22 +22,24 @@ class RoomPlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _statusWidget(),
-        const SizedBox(
-          height: offsetBase,
-        ),
-        _boardWidget(context),
-        const SizedBox(
-          height: offsetBase,
-        ),
-        _cardWdiget(context),
-        const SizedBox(
-          height: offsetBase,
-        ),
-        _controlPanel(context),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _statusWidget(),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          _boardWidget(context),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          _cardWdiget(context),
+          const SizedBox(
+            height: offsetBase,
+          ),
+          _controlPanel(context),
+        ],
+      ),
     );
   }
 
@@ -95,8 +97,13 @@ class RoomPlayWidget extends StatelessWidget {
           children: [
             for (var j = 0; j < 9; j++) ...{
               for (var i = 0; i < 9; i++) ...{
-                Positioned(
-                  top: j * (size + 1),
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: kAnimationDuring),
+                  top: (j > 0 && j < 8 && i == room.getMoveIndex() * 2)
+                      ? (j + 1) * (size + 1)
+                      : (j > 0 && j < 8 && i == (room.getMoveIndex() - 3) * 2)
+                          ? (j - 1) * (size + 1)
+                          : j * (size + 1),
                   left: i * (size + 1),
                   child: Container(
                     width: size,
@@ -109,6 +116,9 @@ class RoomPlayWidget extends StatelessWidget {
                     ),
                     child: getChild(context, _game, i, j),
                   ),
+                  onEnd: () {
+                    room.setMoveIndex(-1);
+                  },
                 ),
               },
             },
@@ -168,7 +178,11 @@ class RoomPlayWidget extends StatelessWidget {
           type: BlockType.navUp,
           index: index,
           isSelected: false,
-        ).body();
+        ).body(
+          onTap: (val) {
+            room.setMoveIndex(val + 1);
+          },
+        );
       }
     }
     for (var position in room.navBottomPositions()) {
@@ -331,7 +345,7 @@ class RoomPlayWidget extends StatelessWidget {
             heroColor: heroColor,
             rotate: () {
               Future.delayed(
-                const Duration(milliseconds: 200),
+                const Duration(milliseconds: kAnimationDuring),
                 () {
                   if (kDebugMode) {
                     print('[Animation] rotated');

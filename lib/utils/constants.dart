@@ -87,6 +87,7 @@ enum ArrowDirection {
 const kCardWidth = 50.0;
 const kCardHeight = 70.0;
 const kBorderPadding = 2.0;
+const kAnimationDuring = 200;
 
 // 5(card3) + 12(card21) + 16(card22) =33   -----     flexiable cards
 // 12(card3) + 4(card22) = 16     -----     fixed cards

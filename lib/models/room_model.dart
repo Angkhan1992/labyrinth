@@ -26,6 +26,7 @@ class RoomModel extends ChangeNotifier {
   final List<List<List<int>>> _boardData = [];
   int _playCounter = 0;
   List<List<int>> _freeCard = kCard3Type[0];
+  int _moveIndex = -1;
 
   RoomModel();
 
@@ -304,6 +305,15 @@ class RoomModel extends ChangeNotifier {
 
   int getPlayCounter() {
     return _playCounter;
+  }
+
+  void setMoveIndex(int index) {
+    _moveIndex = index;
+    notifyListeners();
+  }
+
+  int getMoveIndex() {
+    return _moveIndex;
   }
 
   void setBoardData(List<dynamic> data) {
