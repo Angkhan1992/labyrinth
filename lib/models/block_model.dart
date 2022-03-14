@@ -155,11 +155,14 @@ class BlockModel {
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(24.0),
-              child: Image.network(
-                icon!,
-                height: 24,
-                width: 24,
-                fit: BoxFit.cover,
+              child: Opacity(
+                opacity: 0.5,
+                child: Image.network(
+                  icon!,
+                  height: 24,
+                  width: 24,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
     );

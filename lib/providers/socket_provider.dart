@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -205,6 +207,19 @@ class SocketProvider {
       {
         'roomid': 'room${room.id}',
         'userid': 'user${user.id}',
+      },
+    );
+  }
+
+  void initBoardData(RoomModel room, List<List<List<int>>> data) {
+    if (kDebugMode) {
+      print("[Room] init board ===> ${jsonEncode(data)}");
+    }
+    _socket!.emit(
+      'init_board',
+      {
+        'roomid': 'room${room.id}',
+        'data': jsonEncode(data),
       },
     );
   }

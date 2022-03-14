@@ -37,6 +37,7 @@ dependencies:
     avatar_glow: any
     slide_countdown: any
     loading_animation_widget: any
+    animated_rotation: any
     
     socket_io_client: any
     flutter_simple_dependency_injection: any

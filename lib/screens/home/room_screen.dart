@@ -1,8 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:labyrinth/widgets/home/room_play_widget.dart';
-import 'package:labyrinth/widgets/home/room_result_widget.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +16,9 @@ import 'package:labyrinth/themes/colors.dart';
 import 'package:labyrinth/themes/dimens.dart';
 import 'package:labyrinth/utils/constants.dart';
 import 'package:labyrinth/utils/extension.dart';
+import 'package:labyrinth/widgets/home/room_play_widget.dart';
 import 'package:labyrinth/widgets/home/room_prepare_widget.dart';
+import 'package:labyrinth/widgets/home/room_result_widget.dart';
 import 'package:labyrinth/widgets/home/room_wait_widget.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -61,6 +62,7 @@ class _RoomScreenState extends State<RoomScreen> {
         if (type == 'remove_room') _removeRoom(data);
         if (type == 'leave_user') _leaveUser(data);
         if (type == 'update_status') _roomStatus(data);
+        if (type == 'init_board') _initBoard(data);
       },
     );
     if (widget.isCreator) {
@@ -149,6 +151,10 @@ class _RoomScreenState extends State<RoomScreen> {
     _room!.setStatus(status.roomStatus);
   }
 
+  void _initBoard(dynamic data) async {
+    _room!.setBoardData(jsonDecode(data['title']) as List<dynamic>);
+  }
+
   @override
   Widget build(BuildContext context) {
     var _currentUser = Provider.of<UserModel>(context, listen: false);
@@ -209,6 +215,12 @@ class _RoomScreenState extends State<RoomScreen> {
                                 currentUser: _currentUser,
                                 room: room,
                                 onRun: () async {
+                                  if (room.getUser(0)!.id! ==
+                                      _currentUser.id!) {
+                                    room.initBoard();
+                                    socketService!.initBoardData(
+                                        room, room.getBoardData());
+                                  }
                                   LoadingProvider.of(context).show();
                                   if (room.isOwner(_currentUser)) {
                                     var resp = await NetworkProvider.of().post(

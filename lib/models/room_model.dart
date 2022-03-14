@@ -23,7 +23,9 @@ class RoomModel extends ChangeNotifier {
 
   var _status = RoomStatus.waiting;
 
-  List<List<List<int>>> _boardData = [];
+  final List<List<List<int>>> _boardData = [];
+  int _playCounter = 0;
+  List<List<int>> _freeCard = kCard3Type[0];
 
   RoomModel();
 
@@ -295,8 +297,42 @@ class RoomModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPlayCounter(int counter) {
+    _playCounter = counter;
+    notifyListeners();
+  }
+
+  int getPlayCounter() {
+    return _playCounter;
+  }
+
+  void setBoardData(List<dynamic> data) {
+    _boardData.clear();
+    for (var a in data) {
+      List<List<int>> groupA = [];
+      for (var b in (a as List<dynamic>)) {
+        List<int> groupB = [];
+        for (var c in (b as List<dynamic>)) {
+          groupB.add(int.parse(c.toString()));
+        }
+        groupA.add(groupB);
+      }
+      _boardData.add(groupA);
+    }
+    notifyListeners();
+  }
+
   List<List<List<int>>> getBoardData() {
     return _boardData;
+  }
+
+  List<List<int>> getFreeCard() {
+    return _freeCard;
+  }
+
+  void setFreeCard(List<List<int>> data) {
+    _freeCard = data;
+    notifyListeners();
   }
 
   RoomStatus getStatus() {
@@ -426,10 +462,6 @@ class RoomModel extends ChangeNotifier {
         ),
       ),
     );
-  }
-
-  void initCard() {
-    notifyListeners();
   }
 }
 

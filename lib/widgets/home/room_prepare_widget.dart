@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labyrinth/providers/socket_provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import 'package:labyrinth/models/room_model.dart';
@@ -20,7 +21,6 @@ class RoomPrepareWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    room.initBoard();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: offsetBase,

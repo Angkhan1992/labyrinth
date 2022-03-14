@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labyrinth/models/block_model.dart';
+import 'package:labyrinth/themes/shadows.dart';
+import 'package:labyrinth/widgets/home/free_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
@@ -30,6 +33,10 @@ class RoomPlayWidget extends StatelessWidget {
           height: offsetBase,
         ),
         _cardWdiget(context),
+        const SizedBox(
+          height: offsetBase,
+        ),
+        _controlPanel(context),
       ],
     );
   }
@@ -100,7 +107,7 @@ class RoomPlayWidget extends StatelessWidget {
                         offsetXSm,
                       ),
                     ),
-                    child: getChild(_game, i, j),
+                    child: getChild(context, _game, i, j),
                   ),
                 ),
               },
@@ -111,7 +118,7 @@ class RoomPlayWidget extends StatelessWidget {
     );
   }
 
-  Widget getChild(GameModel game, int i, int j) {
+  Widget getChild(BuildContext context, GameModel game, int i, int j) {
     int index = i + j * 9;
     for (var position in room.heroPlayPositions()) {
       if (index == position) {
@@ -122,7 +129,8 @@ class RoomPlayWidget extends StatelessWidget {
           titleIndexs: [],
           type: BlockType.hero,
           index: index,
-          isSelected: true,
+          isSelected:
+              heroIndex == (room.getPlayCounter() % int.parse(room.amount)),
           icon: room.getUser(heroIndex)!.usrAvatar!,
         ).body();
       }
@@ -176,6 +184,12 @@ class RoomPlayWidget extends StatelessWidget {
       }
     }
 
+    var currentUser = Provider.of<UserModel>(
+      context,
+      listen: false,
+    );
+    var heroColor = heroColors[room.getUserIndex(currentUser)];
+
     for (var position in room.startPositions()) {
       if (index == position) {
         var posIndex = room.startPositions().indexOf(position);
@@ -183,8 +197,8 @@ class RoomPlayWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(offsetXSm),
             border: Border.all(
-              color: kAccentColor,
-              width: 0.5,
+              color: heroColor,
+              width: 1,
             ),
           ),
           child: BlockModel(
@@ -206,8 +220,8 @@ class RoomPlayWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(offsetXSm),
             border: Border.all(
-              color: kAccentColor,
-              width: 0.5,
+              color: heroColor,
+              width: 1,
             ),
           ),
           child: BlockModel(
@@ -229,8 +243,8 @@ class RoomPlayWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(offsetXSm),
             border: Border.all(
-              color: kAccentColor,
-              width: 0.5,
+              color: heroColor,
+              width: 1,
             ),
           ),
           child: BlockModel(
@@ -262,14 +276,6 @@ class RoomPlayWidget extends StatelessWidget {
           height: kCardHeight,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(offsetSm),
-            border: Border.all(color: heroColor),
-          ),
-        ),
-        Container(
-          width: kCardWidth,
-          height: kCardHeight,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(offsetSm),
             color: heroColor,
           ),
         ),
@@ -281,7 +287,61 @@ class RoomPlayWidget extends StatelessWidget {
             border: Border.all(color: heroColor),
           ),
         ),
+        Container(
+          width: kCardWidth,
+          height: kCardHeight,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(offsetSm),
+            color: heroColor,
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _controlPanel(BuildContext context) {
+    var currentUser = Provider.of<UserModel>(
+      context,
+      listen: false,
+    );
+    var heroColor = heroColors[room.getUserIndex(currentUser)];
+    var _game = Provider.of<GameModel>(context, listen: false);
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: offsetXMd,
+        vertical: offsetSm,
+      ),
+      width: double.infinity,
+      height: 120.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(offsetSm),
+        color: Colors.white,
+        boxShadow: [
+          kTopLeftShadow,
+          kBottomRightShadow,
+        ],
+      ),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: offsetMd,
+          ),
+          FreeCardWidget(
+            gameModel: _game,
+            heroColor: heroColor,
+            rotate: () {
+              Future.delayed(
+                const Duration(milliseconds: 200),
+                () {
+                  if (kDebugMode) {
+                    print('[Animation] rotated');
+                  }
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
